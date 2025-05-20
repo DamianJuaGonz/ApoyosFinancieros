@@ -1,0 +1,14 @@
+<div class="products-container">
+  <h2 class="section-title">Nuestros productos</h2>
+  
+  <div class="blue-rectangle">
+    <div class="products-grid">
+      <div class="product-item" *ngFor="let product of products">
+        <img [src]="product.image" [alt]="product.name" class="product-image">
+        <p class="product-name">{{product.name}}</p>
+      </div>
+    </div>
+  </div>
+  
+  <h3 class="service-text">¡Siempre a tu servicio!</h3>
+</div>
