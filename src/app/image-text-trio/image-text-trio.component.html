@@ -1,0 +1,11 @@
+<div class="trio-container">
+  <div class="trio-item" *ngFor="let item of items">
+
+
+    <img [src]="item.image" [alt]="item.altText" class="trio-image">
+    
+    <!--<h3 class="trio-title">{{item.title}}</h3>
+  -->
+    <p class="trio-text">{{item.text}}</p>
+  </div>
+</div>

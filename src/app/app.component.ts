@@ -4,12 +4,13 @@ import { CabeceraTodosComponent } from './cabecera-todos/cabecera-todos.componen
 import { FooterComponent } from './footer/footer.component';
 import { CreditBannerComponent } from './credit-banner/credit-banner.component';
 import { ProductsSectionComponent } from './products-section/products-section.component';
+import { ImageTextTrioComponent } from './image-text-trio/image-text-trio.component';
 
 
  
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CabeceraTodosComponent,FooterComponent,CreditBannerComponent,ProductsSectionComponent],
+  imports: [RouterOutlet,CabeceraTodosComponent,FooterComponent,CreditBannerComponent,ProductsSectionComponent,ImageTextTrioComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
