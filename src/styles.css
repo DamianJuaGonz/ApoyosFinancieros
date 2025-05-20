@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+/* Elimina márgenes predeterminados del navegador */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100vh;
+}
+
+/* Reset para todos los elementos (opcional pero recomendado) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

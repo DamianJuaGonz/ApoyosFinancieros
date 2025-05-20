@@ -1,0 +1,39 @@
+<header class="cabecera">
+  <div class="cabecera-contenido">
+    <div class="logo-y-menu">
+       
+      <a routerLink="/" class="logo" >
+        <img src="assets/logo-footer.svg"   >
+        <!-- Logo temporal 
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="white"/>
+          <path d="M20 10L25 15H15L20 10Z" fill="#0056b3"/>
+          <path d="M25 25L20 30L15 25H25Z" fill="#0056b3"/>
+          <rect x="15" y="15" width="10" height="10" fill="#0056b3"/>
+        </svg>-->
+    
+      </a>
+      
+      <nav class="menu-principal">
+        <ul class="menu-lista">
+          @for (item of menuItems; track item.title) {
+            <li class="menu-item">
+              <a [routerLink]="item.path" class="menu-boton">{{item.title}}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="acciones">
+      <div class="buscador">
+        <input type="text" placeholder="Buscar" class="buscador-input">
+        <svg class="buscador-icono" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.5 11.5L14 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <button class="boton-solicitar">Solicitar crédito</button>
+    </div>
+  </div>
+</header>

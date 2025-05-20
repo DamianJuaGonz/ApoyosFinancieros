@@ -1,0 +1,22 @@
+<footer class="footer">
+  <div class="footer-contenido">
+    <div class="logo-derechos">
+      <img src="assets/logo-footer.svg" alt="MYJ Asesores Financieros" class="logo">
+      <p class="derechos">Derechos reservados © 2025 MYJ Asesores Financieros</p>
+    </div>
+
+    <div class="redes-contacto">
+      <div class="redes-sociales">
+        @for (red of redesSociales; track red.nombre) {
+          <img [src]="red.icono" [alt]="red.nombre" class="icono-red">
+        }
+      </div>
+      
+      <div class="informacion-contacto">
+        @for (info of informacionContacto; track info.texto) {
+          <p class="info-item">{{info.texto}}</p>
+        }
+      </div>
+    </div>
+  </div>
+</footer>
