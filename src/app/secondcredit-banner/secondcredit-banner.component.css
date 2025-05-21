@@ -1,0 +1,107 @@
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 110vh; /* Mitad de la altura de la pantalla */
+  min-height: 300px; /* Altura mínima para móviles */
+  background-image: url('/FoldelLandPag/image25.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.text-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  text-align: left;
+}
+
+.main-title {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1.5;
+}
+
+.interest-button {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 4px;
+  padding: 12px 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: white;
+    color: #1976d2;
+    transform: translateY(-2px);
+  }
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(0.10, 0.15, 0.24) 0.7px, transparent 0.1px),
+    linear-gradient(to bottom, rgba(0.10, 0.15, 0.24) 0.7px, transparent 0.1px);
+  background-size: 0.7px 0.7px;
+  pointer-events: none;
+}
+
+/* Efecto overlay oscuro para mejor legibilidad */
+.banner-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .banner-container {
+    height: 60vh;
+    padding: 20px;
+    align-items: center;
+  }
+  
+  .main-title {
+    font-size: 1.8rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .interest-button {
+    padding: 10px 25px;
+  }
+}

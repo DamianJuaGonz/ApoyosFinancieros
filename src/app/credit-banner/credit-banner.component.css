@@ -1,9 +1,11 @@
 .banner-container {
   position: relative;
   width: 100%;
-  height: 33vh; /* Puedes ajustar entre 33vh (1/3) y 50vh (1/2) */
-  min-height: 500px; /* Altura mínima para móviles */
-  background-image: url('https://i.ibb.co/1tXvZLm9/salsa.pngq');
+  height: 80vh; /* Puedes ajustar entre 33vh (1/3) y 50vh (1/2) */
+
+  min-height: 500px; /* Altura mínima para móviles 500*/
+  /*background-image: url('FoldelLandPag/Pima.png');*/
+  background-image: url("/FoldelLandPag/pimaD.png");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -24,6 +26,8 @@
   font-family: 'Inter', sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
+  font-weight: 200;
+
 }
 
 .info-button {
@@ -35,7 +39,7 @@
   border-radius: 8px; /* Esquinas levemente redondeadas */
   cursor: pointer;
   transition: all 0.3s ease;
-
+ 
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

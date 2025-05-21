@@ -10,28 +10,28 @@ import { Component } from '@angular/core';
 export class ProductsSectionComponent {
  products = [
     {
-      name: 'Crédito Empresarial',
-      image: 'assets/images/business-credit.png'
+      name: 'Credito Personal',
+      image: 'icon/cr1.png'
     },
     {
-      name: 'Línea de Capital',
-      image: 'assets/images/capital-line.png'
+      name: 'Credito de flujo',
+      image: 'icon/cr2.png'
     },
     {
-      name: 'Crédito Pyme',
-      image: 'assets/images/sme-loan.png'
+      name: 'Credito al consumo',
+      image: 'icon/cr3.png'
     },
     {
-      name: 'Financiamiento',
-      image: 'assets/images/financing.png'
+      name: 'Credito comercial',
+      image: 'icon/cr4.png'
     },
     {
-      name: 'Tarjeta de Crédito',
-      image: 'assets/images/credit-card.png'
+      name: 'Credito para incremento',
+      image: 'icon/cr5.png'
     },
     {
-      name: 'Leasing',
-      image: 'assets/images/leasing.png'
+      name: 'Credito Grupal',
+      image: 'icon/cr6.png'
     }
   ];
 

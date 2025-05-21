@@ -1,11 +1,30 @@
 .trio-container {
   display: flex;
   justify-content: space-between;
-  padding: 0 5%; /* Espacio entre las imágenes y los bordes de la página */
-  margin: 40px 0;
+  padding: 0 15%; /* Espacio entre las imágenes y los bordes de la página */
+  margin: 10px 0;
   gap: 30px; /* Espacio entre las imágenes */
 }
-
+.service-text {
+    /*
+     font-family: 'Inter', sans-serif;
+  margin-top: 60px;
+  font-size: 1.5rem;
+ /* color: #333;
+  font-weight: 400;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  */
+    text-align: center;
+  position: relative;
+       font-family: 'Inter', sans-serif;
+       margin-top: 60px;
+   
+   
+  margin-bottom: 0px;
+  font-size: 1.5rem;
+  color: #333;
+  
+}
 .trio-item {
   flex: 1;
   display: flex;
@@ -18,13 +37,14 @@
   width: 100%;
   max-width: 300px;
   height: auto;
-  border-radius: 8px;
+  /*border-radius: 8px;*/
   margin-bottom: 20px;
   object-fit: cover;
   aspect-ratio: 1/1; /* Para imágenes cuadradas */
 }
 
 .trio-title {
+  font-family: 'Inter', sans-serif;
   color: #000; /* Texto negro */
   font-size: 1.5rem;
   font-weight: 600;
@@ -32,6 +52,8 @@
 }
 
 .trio-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
   color: #000; /* Texto negro */
   font-size: 1rem;
   line-height: 1.5;
