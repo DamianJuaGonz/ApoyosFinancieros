@@ -16,13 +16,13 @@ export class ImageCarouselComponent {
  
 
   isTransitioning = false;
-primertxt="Haz crecer \ntu negocio";
+ 
 
   slides = [
     {
       image: 'FoldelLandPag/image31.png',
       alt: 'Imagen 1',
-      text: this.primertxt,
+      text: 'Haz crecer tu negocio',
       description: ''
     },
     {

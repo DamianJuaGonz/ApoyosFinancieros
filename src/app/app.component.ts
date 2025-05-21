@@ -21,7 +21,8 @@ import { RecruitmentBannerComponent } from './recruitment-banner/recruitment-ban
 })
 export class AppComponent {
   title = 'landingpage';
-
+  algo="Oportunidades y beneficios";
+  algo2="";
   teamMembers = [
     {
       image: 'FoldelLandPag/image27.png',
@@ -46,19 +47,19 @@ export class AppComponent {
   // Segundo conjunto de items (ejemplo diferente)
   services = [
     {
-      image: 'https://i.ibb.co/qY1cGN8C/image-32.png',
+      image: 'FoldelLandPag/image37.png',
       altText: 'Crédito rápido',
       title: 'Crédito Express',
       text: 'Aprobación en 24 horas'
     },
     {
-      image: 'https://i.ibb.co/qY1cGN8C/image-32.png',
+      image: 'FoldelLandPag/image38.png',
       altText: 'Crédito empresarial',
       title: 'Para tu Negocio',
       text: 'Capital de trabajo desde $50,000'
     },
     {
-      image: 'https://i.ibb.co/qY1cGN8C/image-32.png',
+      image: 'FoldelLandPag/image13.png',
       altText: 'Préstamo personal',
       title: 'Préstamos',
       text: 'Hasta 36 meses para pagar'

@@ -36,4 +36,5 @@ export class ImageTextTrioComponent {
     title: string;
     text: string;
   }> = []; // Valor por defecto array vacío
+      @Input() texto: string = ""; // Valor por defecto array vacío
 }
