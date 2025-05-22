@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   redesSociales = [
-    { nombre: 'Facebook', icono: 'assets/facebook-icon.svg' },
-    { nombre: 'Instagram', icono: 'assets/instagram-icon.svg' },
-    { nombre: 'WhatsApp', icono: 'assets/whatsapp-icon.svg' }
+    { nombre: 'Facebook', icono: 'img/rs1.png' },
+    { nombre: 'Instagram', icono: 'img/rs2.png' },
+    { nombre: 'WhatsApp', icono:'img/rs3.png' }
   ];
 
   informacionContacto = [

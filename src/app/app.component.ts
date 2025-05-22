@@ -2,20 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CabeceraTodosComponent } from './cabecera-todos/cabecera-todos.component';
 import { FooterComponent } from './footer/footer.component';
-import { CreditBannerComponent } from './credit-banner/credit-banner.component';
-import { ProductsSectionComponent } from './products-section/products-section.component';
-import { ImageTextTrioComponent } from './image-text-trio/image-text-trio.component';
-import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
-import { SecondcreditBannerComponent } from './secondcredit-banner/secondcredit-banner.component';
-import { RecruitmentBannerComponent } from './recruitment-banner/recruitment-banner.component';
-
-
-
+ 
  
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CabeceraTodosComponent,FooterComponent,CreditBannerComponent,ProductsSectionComponent,ImageTextTrioComponent,
-    ImageCarouselComponent,SecondcreditBannerComponent,RecruitmentBannerComponent],
+  imports: [RouterOutlet,CabeceraTodosComponent,FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -25,44 +16,44 @@ export class AppComponent {
   algo2="";
   teamMembers = [
     {
-      image: 'FoldelLandPag/image27.png',
+      image: 'img/image27.png',
       altText: 'Prestamos al instante',
-      title: '',
-      text: 'Prestamos al instante',
+      title: 'Prestamos al instante',
+      text: '',
     },
     {
-      image: 'FoldelLandPag/image28.png',
+      image: 'img/image28.png',
       altText: 'Facilidad de pago',
-      title: '',
-      text: 'Facilidad de pago',
+      title: 'Facilidad de pago',
+      text: '',
     },
     {
-      image: 'FoldelLandPag/image29.png',
+      image: 'img/image29.png',
       altText: 'Tramite facil y rapido',
-      title: '',
-      text: 'Tramite facil y rapido',
+      title: 'Tramite facil y rapido',
+      text: '',
     }
   ];
 
   // Segundo conjunto de items (ejemplo diferente)
   services = [
     {
-      image: 'FoldelLandPag/image37.png',
+      image: 'img/image37.png',
       altText: 'Crédito rápido',
-      title: 'Crédito Express',
-      text: 'Aprobación en 24 horas'
+      title: '¡Contactanos!',
+      text: 'Comunícate con nosotros vía telefónica o por redes sociales.'
     },
     {
-      image: 'FoldelLandPag/image38.png',
+      image: 'img/image38.png',
       altText: 'Crédito empresarial',
-      title: 'Para tu Negocio',
-      text: 'Capital de trabajo desde $50,000'
+      title: '¡Rellena el formato en linea!',
+      text: 'Rellena el formato online.'
     },
     {
-      image: 'FoldelLandPag/image13.png',
+      image: 'img/image13.png',
       altText: 'Préstamo personal',
-      title: 'Préstamos',
-      text: 'Hasta 36 meses para pagar'
+      title: '¡Visitanos!',
+      text: 'Visitanos en las oficinas.'
     }
   ];
 }

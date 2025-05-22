@@ -20,19 +20,19 @@ export class ImageCarouselComponent {
 
   slides = [
     {
-      image: 'FoldelLandPag/image31.png',
+      image: 'img/image31.png',
       alt: 'Imagen 1',
       text: 'Haz crecer tu negocio',
       description: ''
     },
     {
-      image: 'FoldelLandPag/image32.png',
+      image: 'img/image32.png',
       alt: 'Imagen 2',
       text: 'Oportunidades de crecimiento',
       description: ''
     },
     {
-      image: 'FoldelLandPag/image33.png',
+      image: 'img/image33.png',
       alt: 'Imagen 3',
       text: 'Edúcate financieramente',
       description: ''
