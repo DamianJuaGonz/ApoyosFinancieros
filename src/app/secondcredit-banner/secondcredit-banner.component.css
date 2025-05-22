@@ -3,7 +3,8 @@
   width: 100%;
   height: 110vh; /* Mitad de la altura de la pantalla */
   min-height: 300px; /* Altura mínima para móviles */
-  background-image: url('/img/image25.png');
+  /*
+  background-image: url('/img/image25.png');*/
   background-size: cover;
   background-position: center;
   display: flex;

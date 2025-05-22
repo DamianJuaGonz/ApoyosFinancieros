@@ -1,0 +1,17 @@
+<div class="section-container">
+  <h2 class="section-title">{{title}}</h2>
+  
+  <div class="top-row">
+    <div class="image-box" *ngFor="let item of topItems">
+      <img [src]="item.image" [alt]="item.text" class="box-image">
+      <p class="box-text">{{item.text}}</p>
+    </div>
+  </div>
+  
+  <div class="bottom-row">
+    <div class="image-box" *ngFor="let item of bottomItems">
+      <img [src]="item.image" [alt]="item.text" class="box-image">
+      <p class="box-text">{{item.text}}</p>
+    </div>
+  </div>
+</div>

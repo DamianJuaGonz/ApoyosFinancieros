@@ -1,0 +1,25 @@
+<div class="split-container">
+  <!-- Título principal izquierdo (corregido) -->
+  <h2 class="main-title">{{mainTitle}}</h2>
+  
+  <div class="content-wrapper">
+    <!-- Sección izquierda -->
+    <div class="left-section">
+      <h3 class="section-title">{{leftTitle}}</h3>
+      <ul class="item-list">
+        <li *ngFor="let item of leftItems">{{item}}</li>
+      </ul>
+    </div>
+    
+    <!-- Sección derecha -->
+    <div class="right-section">
+      <h3 class="section-title">{{rightTitle}}</h3>
+      <ul class="item-list">
+        <li *ngFor="let item of rightItems">{{item}}</li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Texto final centrado -->
+  <p class="footer-text">{{footerText}}</p>
+</div>

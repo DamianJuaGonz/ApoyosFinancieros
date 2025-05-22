@@ -1,1 +1,51 @@
-<p>requisitos works!</p>
+<!-- Banner principal -->
+<app-grid-banner
+  [title]="mainBanner.title"
+  [description]="mainBanner.description"
+  [imageUrl]="mainBanner.image"
+  [gridColor]="mainBanner.gridColor">
+</app-grid-banner>
+
+<!-- Otros contenidos... -->
+
+<!-- Banner promocional -->
+
+<app-split-content
+  [mainTitle]="contentData.mainTitle"
+  [leftTitle]="contentData.leftTitle"
+  [rightTitle]="contentData.rightTitle"
+  [leftItems]="contentData.leftItems"
+  [rightItems]="contentData.rightItems"
+  [footerText]="contentData.footerText">
+</app-split-content>
+<!-- Otros contenidos... -->
+
+
+<app-blue-rectangle [text]="rectangleText1"
+  [backgroundColor]="'#88B5CE'">
+</app-blue-rectangle>
+
+
+<app-contact-banner
+  [backgroundImage]="'assets/images/custom-background.jpg'"
+  [contactData]="{
+    title: '¡CONTÁCTANOS HOY MISMO!',
+    phone: '5551234567',
+    email: 'info@empresa.com',
+    address: 'Calle Principal 123, Ciudad',
+    availability: 'Atención las 24 horas',
+    socialMedia: [
+      {icon: 'assets/social/facebook.svg', alt: 'FB'},
+      {icon: 'assets/social/instagram.svg', alt: 'IG'},
+      {icon: 'assets/social/whatsapp.svg', alt: 'WA'}
+    ],
+    bottomImage: 'assets/icons/help-icon.png'
+  }">
+</app-contact-banner>
+<!--
+<app-contact-banner
+  [backgroundImage]="'assets/images/custom-bg.jpg'"
+  [contactData]="customContactData">
+</app-contact-banner>
+
+*/-->

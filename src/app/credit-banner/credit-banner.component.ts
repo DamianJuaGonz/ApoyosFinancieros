@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-credit-banner',
@@ -7,10 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './credit-banner.component.css'
 })
 export class CreditBannerComponent {
+   @Input() imageUrl: string = '';
   // Puedes añadir lógica para el botón aquí
   showMoreInfo() {
     // Lógica al hacer clic en el botón
     console.log('Botón "Más información" clickeado');
     // Puedes redirigir a otra página o mostrar un modal
+    
   }
 }

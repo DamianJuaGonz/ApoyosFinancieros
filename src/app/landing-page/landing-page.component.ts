@@ -14,6 +14,10 @@ import { RecruitmentBannerComponent } from '../recruitment-banner/recruitment-ba
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
+
+  image= 'img/Pima.png';
+  secondcred= 'img/image25.png';
+  recrcred= 'img/Unete.png';
   title = 'landingpage';
   algo="Oportunidades y beneficios";
   algo2="";

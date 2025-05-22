@@ -5,7 +5,7 @@
 
   min-height: 500px; /* Altura mínima para móviles 500*/
   /*background-image: url('FoldelLandPag/Pima.png');*/
- background-image: url('/img/Pima.png');
+ /*background-image: url('/img/Pima.png');*/
 
   background-size: cover;
   background-position: center;

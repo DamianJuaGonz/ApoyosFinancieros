@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-secondcredit-banner',
@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './secondcredit-banner.component.css'
 })
 export class SecondcreditBannerComponent {
- 
+ @Input() imageUrl: string = '';
   // Puedes añadir lógica para el botón aquí
   showInterest() {
     // Lógica al hacer clic en el botón

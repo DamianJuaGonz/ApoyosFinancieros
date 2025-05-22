@@ -1,4 +1,7 @@
-<app-credit-banner></app-credit-banner>
+<app-credit-banner
+   [imageUrl]="image"></app-credit-banner>
+
+ 
 <app-products-section></app-products-section>
 <app-image-text-trio 
   [items]="teamMembers"  [texto]="algo">
@@ -7,10 +10,14 @@
 
 
 
-<app-secondcredit-banner></app-secondcredit-banner>
+<app-secondcredit-banner
+  [imageUrl]="secondcred">
+</app-secondcredit-banner>
 <app-image-text-trio 
   [items]="services" [texto]="algo2">
 </app-image-text-trio>
-<app-recruitment-banner></app-recruitment-banner>
+<app-recruitment-banner
+[imageUrl]="recrcred">
+</app-recruitment-banner>
 
 

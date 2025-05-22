@@ -1,0 +1,9 @@
+<div class="banner-container" [style.background-image]="'url(' + imageUrl + ')'">
+  <div class="text-content">
+    <h1 class="banner-title" [style.color]="textColor">{{title}}</h1>
+    <p class="banner-description" [style.color]="textColor">{{description}}</p>
+  </div>
+  <div class="blue-grid-overlay" 
+       [style.background-image]="'linear-gradient(to right, ' + gridColor + ' 1px, transparent 1px), linear-gradient(to bottom, ' + gridColor + ' 1px, transparent 1px)'"
+       [style.opacity]="gridOpacity"></div>
+</div>

@@ -1,1 +1,37 @@
-<p>unete works!</p>
+
+<!-- Banner principal -->
+<app-grid-banner
+  [title]="mainBanner.title"
+  [description]="mainBanner.description"
+  [imageUrl]="mainBanner.image"
+  [gridColor]="mainBanner.gridColor">
+</app-grid-banner>
+
+
+<app-split-content
+  [mainTitle]="contentData.mainTitle"
+  [leftTitle]="contentData.leftTitle"
+  [rightTitle]="contentData.rightTitle"
+  [leftItems]="contentData.leftItems"
+  [rightItems]="contentData.rightItems"
+  [footerText]="contentData.footerText">
+</app-split-content>
+<!-- Otros contenidos... -->
+
+
+<app-blue-rectangle [text]="rectangleText1"
+  [backgroundColor]="'#88B5CE'">
+</app-blue-rectangle>
+
+<app-image-box-section
+  [title]="sectionData.title"
+  [topItems]="sectionData.topItems"
+  [bottomItems]="sectionData.bottomItems">
+</app-image-box-section>
+
+<!-- Opcional: con color personalizado -->
+<app-blue-rectangle 
+  [text]="rectangleText2" 
+  [backgroundColor]="'#88B5CE'">
+</app-blue-rectangle>
+<!-- Banner promocional -->
