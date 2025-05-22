@@ -1,0 +1,18 @@
+<div class="product-container">
+  <!-- Margen superior y nombre del producto -->
+  <div class="top-margin"></div>
+  <h3 class="product-name">{{productName}}</h3>
+  
+  <!-- Rectángulo gris con productos -->
+  <div class="gray-rectangle">
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let product of products">
+        <div class="image-container">
+          <img [src]="product.image" [alt]="product.title" class="product-image">
+        </div>
+        <h4 class="product-title">{{product.title}}</h4>
+        <p class="product-description">{{product.description}}</p>
+      </div>
+    </div>
+  </div>
+</div>
