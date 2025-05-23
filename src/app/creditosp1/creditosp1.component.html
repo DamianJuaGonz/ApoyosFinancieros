@@ -1,0 +1,26 @@
+<div class="split-container">
+  <!-- Sección azul superior -->
+  <div class="blue-section">
+    <!-- Rectángulo aqua -->
+    <div class="aqua-box">{{aquaBoxText}}</div>
+    
+    <!-- Rectángulo azul marino superpuesto -->
+    <div class="navy-box">{{navyBoxText}}</div>
+    
+    <!-- Contenido principal izquierdo -->
+    <div class="left-content">
+      <h1 class="main-title">{{title}}</h1>
+      <p class="main-description">{{description}}</p>
+    </div>
+    
+    <!-- Imágenes derecha -->
+    <div class="right-images">
+      <img *ngFor="let img of rightImages" [src]="img" alt="Imagen descriptiva" class="side-image">
+    </div>
+  </div>
+  
+  <!-- Sección blanca inferior -->
+  <div class="white-section">
+    <p class="white-text">{{whiteSectionText}}</p>
+  </div>
+</div>

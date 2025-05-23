@@ -1,0 +1,36 @@
+<div class="values-container">
+  <!-- Espacio vacío inicial -->
+  <div class="empty-space-top"></div>
+  
+  <!-- Título del carrusel -->
+  <h2 class="values-title">{{title}}</h2>
+  
+  <!-- Carrusel -->
+  <div class="carousel-wrapper">
+    <button class="nav-button prev" (click)="prevValue()">‹</button>
+    
+    <div class="carousel">
+      <div class="slide" *ngFor="let value of values; let i = index" [class.active]="i === currentIndex">
+        <div class="sky-blue-section">
+          <h3 class="value-title">{{value.title}}</h3>
+          <img [src]="value.image" [alt]="value.title" class="value-image">
+        </div>
+        <div class="royal-blue-section">
+          <p class="value-description">{{value.description}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <button class="nav-button next" (click)="nextValue()">›</button>
+  </div>
+  
+  <!-- Indicadores -->
+  <div class="indicators">
+    <span *ngFor="let value of values; let i = index" 
+          [class.active]="i === currentIndex"
+          (click)="currentIndex = i"></span>
+  </div>
+  
+  <!-- Espacio vacío final -->
+  <div class="empty-space-bottom"></div>
+</div>
