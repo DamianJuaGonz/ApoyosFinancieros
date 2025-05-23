@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 70vh;
-  min-height: 500px;
+  min-height: 550px;
   background-size: cover;
   background-position: center;
   font-family: 'Inter', sans-serif;
@@ -13,18 +13,38 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 40%;
+  height: 30%;
   background: white;
   z-index: 1;
 }
 
 .gray-box {
-  position: absolute;
-  bottom: 4%; /* 10% sobre el cuadro blanco */
-  width: 90%;
+
+/* width: 90%;
   left: 5%;
-  height: 80%;
-  background: #f5f5f5;
+
+  height: 70%;
+  
+  
+   width: 70%;
+  height: 15vh;
+  
+  min-height: 80px;
+  margin: 0 auto;
+  display: flex;
+  */
+
+  
+  position: absolute;
+
+  
+  bottom: 15%; /* 10% sobre el cuadro blanco */
+   width: 60%;
+  left: 20%; 
+
+
+
+  background: #CCCCCB;
   z-index: 2;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -36,7 +56,7 @@
 
 .blue-box {
   align-self: center;
-  background: #1976d2;
+  background: #3C3878;
   color: white;
   padding: 15px 30px;
   border-radius: 4px;
@@ -47,7 +67,7 @@
   max-width: 400px;
   text-align: center;
   margin-top: auto; /* Esto lo empuja hacia abajo */
-  margin-bottom: -25px; /* Mitad sobre el cuadro blanco */
+  margin-bottom: -50px; /* Mitad sobre el cuadro blanco */
   position: relative;
   z-index: 3;
 }
@@ -135,12 +155,14 @@
 @media (max-width: 768px) {
   .contact-container {
     height: auto;
-    min-height: 600px;
+    min-height: 800px;
   }
   
   .gray-box {
     height: auto;
     padding-bottom: 40px;
+     width: 90%;
+  left: 5%; 
   }
   
   .content-wrapper {
@@ -165,4 +187,10 @@
     font-size: 1rem;
     margin-bottom: -15px;
   }
+}
+
+.espacio
+{width: 100%;
+height: 50px;
+  z-index: 1;
 }

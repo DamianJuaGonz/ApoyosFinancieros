@@ -14,46 +14,50 @@ import { ContactBannerComponent } from '../contact-banner/contact-banner.compone
 
 
 export class RequisitosComponent {
-customContactData = {
-  title: "¡CONTÁCTANOS PARA MÁS INFORMACIÓN!",
-  phone: "5551234567",
-  email: "contacto@empresa.com",
-  address: "Av. Principal 123, Ciudad, CP 00000",
-  availability: "Servicio disponible 24/7",
-  socialMedia: [
-    { icon: 'assets/icons/facebook-blue.png', alt: 'Facebook' },
-    { icon: 'assets/icons/linkedin.png', alt: 'LinkedIn' },
-    { icon: 'assets/icons/whatsapp.png', alt: 'WhatsApp' }
-  ],
-  bottomImage: 'assets/icons/support-icon.png'
-};
 
 
 
-  rectangleText1 = "Nota: Presentar estos documentos en fisico a las oficinas.";
+
+  contentData = {
+    mainTitle: '¿Cuáles son los requisitos?',
+    leftTitle: 'REQUISITOS',
+    rightTitle: 'DOCUMENTOS',
+    leftItems: [
+      'Ser mayor de 18 años.', 
+      'Tener actividad laboral vigente y comprobable con un minimo de un años de atiguedad.' 
+      ,'Numeros telefonicos (solicitante,aval y referencia).'
+    ],
+    rightItems: [
+      'INE vigente(solicitante y aval).', 
+      'Comprobante de domicilio actualizado (solicitante y aval).',
+      'Referencia personal.'
+    ],
+    footerText: 'Todo debera ser en copias cotejado con el original'
+  };
+
+    rectangleText1 = "Nota: En caso de ser fotos, que sean legibles y que el agulo o documento este derecho.";
   mainBanner = {
     title: 'REQUISITOS',
     description: '(Generales de solicitud de credito )',
     image: 'img/image43.png',
     gridColor: '#8DBBD6'
   };
-  contentData = {
-    mainTitle: 'Nuestros Servicios',
-    leftTitle: 'Créditos Personales',
-    rightTitle: 'Créditos Empresariales',
-    leftItems: [
-      'Aprobación en 24 horas',
-      'Hasta 36 meses para pagar',
-      'Sin aval para montos menores',
-      'Tasas preferenciales'
-    ],
-    rightItems: [
-      'Capital de trabajo',
-      'Líneas de crédito renovables',
-      'Financiamiento a largo plazo',
-      'Soluciones a medida'
-    ],
-    footerText: 'Todos nuestros productos cuentan con seguro de protección de pagos incluido'
-  };
+
+  customContactData = {
+  title: "¡SI TIENES DUDAS CONTACTANOS!",
+  phone: "2383825275",
+  email: "estregramyj@gmail.com",
+  address: "Independecia Ote. 735 Interior 2 Tehuacán ; Pue. CP 75700",
+  availability: "Servicio disponible 24/7",
+  socialMedia: [
+    { icon: 'img/rs1.png', alt: 'Facebook' },
+    { icon: 'img/rs2.png', alt: 'LinkedIn' },
+    { icon: 'img/rs3.png', alt: 'WhatsApp' }
+  ],
+  bottomImage: 'img/image48.png'
+};
+
+
+
 
 }

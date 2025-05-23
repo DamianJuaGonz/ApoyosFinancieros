@@ -29,7 +29,7 @@ import { ImageBoxSectionComponent } from '../image-box-section/image-box-section
 export class UneteComponent {
 // En tu componente padre
 sectionData = {
-  title: "Nuestros Servicios",
+  title: "Únete a nosotros y accede a múltiples beneficios que impulsarán tu desarrollo profesional:",
   topItems: [
     { image: 'icon/ns1.png', text: 'Capacitación constante' },
     { image: 'icon/ns2.png', text: 'Bonos de productividad' },
