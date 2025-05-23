@@ -17,8 +17,35 @@ bannerData = {
   navyBoxText: "Oferta 2023",
   whiteSectionText: "Nuestro equipo de asesores está listo para ayudarte a encontrar el producto financiero que mejor se adapte a tus necesidades. Contáctanos para una consulta gratuita y sin compromiso.",
   rightImages: [
-    'assets/images/finance1.jpg',
-    'assets/images/finance2.jpg'
+    'img/py2.png',
+    'img/py1.png'
   ]
 };
+sectionData = {
+  title: "Nuestros Valores",
+  backgroundImage: "assets/images/team-background.jpg",
+  leftBox: {
+    title: "Compromiso",
+    items: [
+      "Excelencia en servicio",
+      "Soporte 24/7",
+      "Soluciones personalizadas"
+    ]
+  },
+  rightBox: {
+    title: "Ventajas",
+    items: [
+      "Tasas competitivas",
+      "Proceso rápido",
+      "Asesoría especializada"
+    ]
+  }
+};
+
+blockData = {
+  grayText: "Este es el contenido del bloque gris centrado. Puede incluir cualquier texto descriptivo.",
+  blueText: "Este es el contenido del bloque azul. El color ayuda a destacar información importante.",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+};
+
 }

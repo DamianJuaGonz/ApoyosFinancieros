@@ -1,0 +1,56 @@
+.spaced-container {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  
+}
+
+.empty-space {
+  width: 100%;
+  /* La altura se controla desde el input */
+}
+
+.gray-block {
+  max-width: 780px;
+  margin: 0 auto;
+  background-color: #EDEDED;
+  padding: 40px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  p {
+    color: #333;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.blue-block {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #1C1B63;
+  padding: 30px;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+  p {
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gray-block, .blue-block {
+    max-width: 90%;
+    padding: 30px 20px;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+}

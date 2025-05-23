@@ -1,6 +1,7 @@
 .split-container {
   width: 100%;
   height: 100vh;
+  
   font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
@@ -9,7 +10,7 @@
 .blue-section {
   width: 100%;
   height: 50%;
-  background-color: #1976d2;
+  background-color: #223751;
   position: relative;
   padding: 40px;
   box-sizing: border-box;
@@ -19,70 +20,86 @@
   width: 100%;
   height: 50%;
   background-color: white;
-  padding: 40px;
+  padding: 0px;
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
+  position: relative;
 }
 
 .aqua-box {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  bottom: 350px; /* Posición desde el borde inferior */
+  left: 100px; /* Posición desde el borde izquierdo */
   background-color: #00bcd4; /* Azul aqua */
   color: white;
-  padding: 15px 25px;
+  padding: 25px 30px;
   font-weight: 600;
-  font-size: 1.1rem;
-  z-index: 2;
+      width: 200px;
+  font-size: 1.2rem;
+  z-index: 1;
+  height:80px; 
   border-radius: 4px 0 0 4px;
+  align-items: center;
+  text-align: center;
 }
 
 .navy-box {
+  text-align: center;
   position: absolute;
-  top: 0;
-  left: 180px; /* Ajustar según el ancho del aqua-box */
+  bottom: 270px; /* Misma posición vertical que aqua-box */
+  left: calc(100px + 150px); /* 20px (margen) + ancho aproximado del aqua-box */
   background-color: #003366; /* Azul marino */
+      width: 200px;
   color: white;
   padding: 25px 30px;
   font-weight: 700;
   font-size: 1.2rem;
-  z-index: 1;
-  height: 100px;
+  height:80px; /* Altura total del rectángulo */
+  /* 50% arriba (sección azul) y 50% abajo (sección blanca) */
+  transform: translateY(-50%); /* Sube la mitad de su altura */
+  z-index: 2;
+  border-radius: 0 4px 4px 0;
   display: flex;
   align-items: center;
-  border-radius: 0 4px 4px 0;
 }
 
 .left-content {
   position: relative;
   z-index: 3;
+  align-items: center;
   max-width: 50%;
-  margin-top: 80px;
+  margin-top: 40px;
 }
 
 .main-title {
   color: white;
   font-size: 2.5rem;
+  
   font-weight: 700;
   margin-bottom: 15px;
+  
+  text-align: center;
 }
 
 .main-description {
   color: rgba(255, 255, 255, 0.9);
+  
   font-size: 1.1rem;
+  
   line-height: 1.6;
-  max-width: 80%;
+  max-width: 100%;
+
+  text-align: center;
 }
 
 .right-images {
   position: absolute;
-  right: 40px;
+  right: 160px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   gap: 20px;
   z-index: 2;
+  align-items: center;
 }
 
 .side-image {
@@ -99,11 +116,19 @@
 }
 
 .white-text {
+
   color: #333;
   font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 80%;
-  margin: 0 auto;
+  /*line-height: 1.6;
+  */
+  max-width: 100%;
+  /*margin-left: calc(200px + 20px + 20px); /* Margen + aqua-box + navy-box */
+align-items: center;
+text-align: center;
+
+  padding-top: 120px; /* Espacio para los rectángulos */
+  padding-left: 25%;
+  padding-right: 25%;
 }
 
 /* Responsive */
@@ -112,13 +137,17 @@
     font-size: 2rem;
   }
   
-  .main-description {
+  .main-description, .white-text {
     font-size: 1rem;
   }
   
   .side-image {
     width: 120px;
     height: 120px;
+  }
+  
+  .white-text {
+    /*margin-left: calc(20px + 120px + 150px);*/
   }
 }
 
@@ -129,7 +158,7 @@
   
   .left-content {
     max-width: 100%;
-    margin-top: 120px;
+    margin-top: 20px;
   }
   
   .right-images {
@@ -143,14 +172,16 @@
   
   .aqua-box, .navy-box {
     position: relative;
-    top: auto;
+    bottom: auto;
     left: auto;
     display: inline-block;
     margin-bottom: 15px;
+    transform: none;
+    height: auto;
   }
   
   .navy-box {
-    margin-left: -5px; /* Para que se pegue al aqua-box */
+    margin-left: -5px;
   }
   
   .main-title {
@@ -159,12 +190,7 @@
   
   .white-text {
     max-width: 100%;
-  }
-}
-.aqua-box, .navy-box {
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-3px);
+    margin-left: 0;
+    padding-top: 25px;
   }
 }

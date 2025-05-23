@@ -31,13 +31,13 @@ export class UneteComponent {
 sectionData = {
   title: "Nuestros Servicios",
   topItems: [
-    { image: 'icon/cr2.png', text: 'Créditos Rápidos' },
-    { image: 'icon/cr2.png', text: 'Préstamos Personales' },
-    { image: 'icon/cr2.png', text: 'Financiamiento Empresarial' }
+    { image: 'icon/ns1.png', text: 'Capacitación constante' },
+    { image: 'icon/ns2.png', text: 'Bonos de productividad' },
+    { image: 'icon/ns3.png', text: 'Comisiones' }
   ],
   bottomItems: [
-    { image: 'icon/cr2.png', text: 'Seguros incluidos' },
-    { image: 'icon/cr2.png', text: 'Asesoría 24/7' }
+    { image: 'icon/ns4.png', text: 'Excelente ambiente laboral' },
+    { image: 'icon/ns5.png', text: 'Buen Horario' }
   ]
 };
 
@@ -55,22 +55,22 @@ sectionData = {
 
   
 contentData = {
-    mainTitle: 'Nuestros Servicios',
-    leftTitle: 'Créditos Personales',
-    rightTitle: 'Créditos Empresariales',
+    mainTitle: '¿Cuáles son los requisitos?',
+    leftTitle: 'REQUISITOS',
+    rightTitle: 'DOCUMENTOS',
     leftItems: [
-      'Aprobación en 24 horas',
-      'Hasta 36 meses para pagar',
-      'Sin aval para montos menores',
-      'Tasas preferenciales'
+      'Edad de 18 a 50 años.',
+      'Estudio minimo preparatoria.',
+      'Gusto por la ventas.',
+      'Actividad en campo.'
     ],
     rightItems: [
-      'Capital de trabajo',
-      'Líneas de crédito renovables',
-      'Financiamiento a largo plazo',
-      'Soluciones a medida'
+      'INE vigente.',
+      'Comprobante de domicilio actualizado.',
+      'Referencia personal y familiar.',
+      'Carta de recomendacion'
     ],
-    footerText: 'Todos nuestros productos cuentan con seguro de protección de pagos incluido'
+    footerText: ''
   };
   // Datos para el banner secundario
 

@@ -1,1 +1,25 @@
-<p>creditosp2 works!</p>
+<div class="section-container" [style.background-image]="'url(' + backgroundImage + ')'">
+  <div class="grid-overlay"></div>
+  
+  <div class="content-wrapper">
+    <h2 class="section-title">{{title}}</h2>
+    
+    <div class="boxes-container">
+      <!-- Cuadro izquierdo -->
+      <div class="grid-box left-box">
+        <h3 class="box-title">{{leftBox.title}}</h3>
+        <ul class="box-list">
+          <li *ngFor="let item of leftBox.items">{{item}}</li>
+        </ul>
+      </div>
+      
+      <!-- Cuadro derecho -->
+      <div class="grid-box right-box">
+        <h3 class="box-title">{{rightBox.title}}</h3>
+        <ul class="box-list">
+          <li *ngFor="let item of rightBox.items">{{item}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
