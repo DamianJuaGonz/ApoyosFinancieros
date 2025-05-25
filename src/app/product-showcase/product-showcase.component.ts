@@ -8,8 +8,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './product-showcase.component.css'
 })
 export class ProductShowcaseComponent {
+
 @Input() productName: string = "Product name";
-  
+  @Input() sobrenosotros: string= "Conoce mas de nosotros";
   @Input() products = [
     {
       image: 'assets/images/product1.jpg',
