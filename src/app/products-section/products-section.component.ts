@@ -5,7 +5,7 @@ import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-products-section',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule],
   templateUrl: './products-section.component.html',
   styleUrl: './products-section.component.css'
 })
