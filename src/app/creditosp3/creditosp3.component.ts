@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { routes } from '../app.routes';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-creditosp3',
-  imports: [],
+  imports: [CommonModule,RouterModule],
   templateUrl: './creditosp3.component.html',
   styleUrl: './creditosp3.component.css'
 })

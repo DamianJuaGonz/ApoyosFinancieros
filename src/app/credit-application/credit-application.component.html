@@ -1,0 +1,170 @@
+<div class="credit-container">
+  <h1 class="main-title">SOLICITUD DE CRÉDITO</h1>
+  
+  <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+    <!-- Sección de datos personales -->
+    <div class="form-section">
+      <div class="section-header">
+        <h2 class="section-title">Datos del solicitante:</h2>
+        <div class="image-upload">
+          <label for="profileImage">
+            <div class="image-preview" [style.background-image]="'url(' + (profileImage || 'assets/default-profile.png') + ')'"></div>
+            <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event)" hidden>
+            <span class="upload-text">Subir foto</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-grid">
+        <!-- Fila 1 -->
+        <div class="form-field">
+          <div class="field-label">Nombre</div>
+          <input type="text" formControlName="nombre">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Apellido Paterno</div>
+          <input type="text" formControlName="apellidoPaterno">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Apellido Materno</div>
+          <input type="text" formControlName="apellidoMaterno">
+        </div>
+        
+        <!-- Fila 2 -->
+        <div class="form-field">
+          <div class="field-label">CURP</div>
+          <input type="text" formControlName="curp" placeholder="Ej. ABCD123456HABCDEF12">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Número de teléfono</div>
+          <input type="tel" formControlName="telefono" placeholder="10 dígitos">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">E-mail</div>
+          <input type="email" formControlName="email">
+        </div>
+        
+        <!-- Fila 3 -->
+        <div class="form-field">
+          <div class="field-label">Vivienda</div>
+          <select formControlName="vivienda">
+            <option value="">Seleccione...</option>
+            <option value="propia">Casa propia</option>
+            <option value="prestada">Prestada</option>
+            <option value="familiar">Familiar</option>
+            <option value="renta">Renta</option>
+          </select>
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Calle</div>
+          <input type="text" formControlName="calle">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Número</div>
+          <input type="text" formControlName="numero">
+        </div>
+        
+        <!-- Fila 4 -->
+        <div class="form-field">
+          <div class="field-label">Colonia</div>
+          <input type="text" formControlName="colonia">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Localidad</div>
+          <input type="text" formControlName="localidad">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Código Postal</div>
+          <input type="text" formControlName="cp" placeholder="5 dígitos">
+        </div>
+        
+        <!-- Fila 5 -->
+        <div class="form-field">
+          <div class="field-label">Estado</div>
+          <input type="text" formControlName="estado">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Nombre del cónyuge</div>
+          <input type="text" formControlName="conyuge">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Número de hijos</div>
+          <input type="number" formControlName="hijos" min="0">
+        </div>
+        
+        <!-- Fila 6 -->
+        <div class="form-field full-width">
+          <div class="field-label">Marca y modelo de la unidad móvil</div>
+          <input type="text" formControlName="vehiculo">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección de datos laborales -->
+    <div class="form-section">
+      <h2 class="section-title right-align">Datos laborales del solicitante:</h2>
+      
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="field-label">Dirección del negocio/empleo</div>
+          <input type="text" formControlName="direccionTrabajo">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Puesto que desempeña</div>
+          <input type="text" formControlName="puesto">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Antigüedad (años)</div>
+          <input type="number" formControlName="antiguedad" min="0">
+        </div>
+        
+        <div class="form-field">
+          <div class="field-label">Teléfono del trabajo</div>
+          <input type="tel" formControlName="telefonoTrabajo" placeholder="10 dígitos">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección de datos del préstamo -->
+    <div class="form-section">
+      <h2 class="section-title right-align">Datos del préstamo solicitado:</h2>
+      
+      <div class="gray-box">
+        <div class="box-title">General</div>
+        
+        <div class="form-grid">
+          <div class="form-field">
+            <div class="field-label">Monto solicitado ($)</div>
+            <input type="number" formControlName="monto" min="1000">
+          </div>
+          
+          <div class="form-field">
+            <div class="field-label">Plazo (meses)</div>
+            <input type="number" formControlName="plazo" min="1">
+          </div>
+          
+          <div class="form-field full-width">
+            <div class="field-label">Propósito del préstamo</div>
+            <textarea formControlName="proposito" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="submit-btn" [disabled]="!creditForm.valid">Enviar Solicitud</button>
+    </div>
+  </form>
+</div>

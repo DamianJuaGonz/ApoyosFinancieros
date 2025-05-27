@@ -5,6 +5,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RequisitosComponent } from './requisitos/requisitos.component';
 import { NosotrosComponent } from './nosotros/nosotros.component';
 import { CreditosComponent } from './creditos/creditos.component';
+import { CreditApplicationComponent } from './credit-application/credit-application.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent}, // Ruta principal
@@ -14,7 +15,7 @@ export const routes: Routes = [
 
 
 { path: 'credito6', component: CreditosComponent }, // Ruta para Únete
-{ path: 'credito/:grupalx', component: CreditosComponent } ,
+
 
 
 
@@ -25,7 +26,8 @@ export const routes: Routes = [
 { path: 'credito-de-flujo', component: CreditosComponent,data: { tipo: 'flujo' } } ,
 { path: 'credito-incremento', component: CreditosComponent,data: { tipo: 'incremento' } } ,
 { path: 'credito-comercial', component: CreditosComponent,data: { tipo: 'comercial' } } ,
-{ path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } 
+{ path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } ,
 
 
+{ path: 'formulario', component: CreditApplicationComponent }, // Ruta para Únete
 ];

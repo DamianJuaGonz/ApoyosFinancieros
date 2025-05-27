@@ -33,14 +33,45 @@
   padding: 30px;
   border-radius: 0px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  
+  cursor: pointer;
+
+
+  transition: all 0.3s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+&:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    
+    .product-name {
+          font-family: 'Inter', sans-serif;
+  color: #AFDEE8;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  font-weight: 500;
+  text-align: center;
+    }
+  }
+  &:focus {
+    outline: 2px solid #1976d2;
+    outline-offset: 2px;
+  }
   p {
     color: white;
     font-size: 1.5rem;
     line-height: 1.6;
     margin: 0;
     text-align: center;
+
   }
+         &:focus {
+    outline: 2px solid #1976d2;
+    outline-offset: 2px;
+  }
+
 }
 
 /* Responsive */

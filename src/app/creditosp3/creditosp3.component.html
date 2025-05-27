@@ -11,8 +11,9 @@
   <div class="empty-space" [style.height]="spaceHeight2"></div>
   
   <!-- Rectángulo azul -->
-  <div class="blue-block">
-    <p>{{blueBlockText}}</p>
+  <div class="blue-block" [routerLink]="'/formulario'">
+    <p >{{blueBlockText}}</p>
+      <!-- TAqui va la logica para crear un nuevo componente -->
   </div>
   
   <!-- Tercer espacio en blanco -->
