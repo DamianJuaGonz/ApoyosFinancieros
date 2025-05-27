@@ -5,15 +5,17 @@
 
 
     <div class="products-grid">
-      <div 
-         [routerLink]="product.path" class="product-item" *ngFor="let product of products">
+
+      
+      <div  *ngFor="let product of products" [routerLink]="product.path" 
+           class="product-item">
 
         <img [src]="product.image" [alt]="product.name" class="product-image">
         <p class="product-name">{{product.name}}</p>
       
       
       
-    </div >
+    </div>
     </div>
   </div>
   

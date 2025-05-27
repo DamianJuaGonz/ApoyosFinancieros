@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Creditosp1Component } from '../creditosp1/creditosp1.component';
 import { Creditosp2Component } from '../creditosp2/creditosp2.component';
 import { Creditosp3Component } from '../creditosp3/creditosp3.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-creditos',
@@ -10,6 +11,7 @@ import { Creditosp3Component } from '../creditosp3/creditosp3.component';
   styleUrl: './creditos.component.css'
 })
 export class CreditosComponent {
+  /*
 bannerData = {
   title: "Soluciones Financieras",
   description: "Encuentra las mejores opciones crediticias para tus necesidades personales y empresariales",
@@ -47,5 +49,292 @@ blockData = {
   blueText: "Este es el contenido del bloque azul. El color ayuda a destacar información importante.",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 };
+*/
+
+private datosCreditos = {
+    grupal: {
+      bannerData : {
+  title: "Plan de credito grupal",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+}
+,
+    personal: {
+      bannerData : {
+  title: "Plan de credito personal",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+},
+ 
+
+      flujo: {
+      bannerData : {
+  title: "Plan de credito de flujo",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+},
+   
+
+      incremento: {
+      bannerData : {
+  title: "Plan de credito para incremento",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+},
+  
+
+
+      comercial: {
+      bannerData : {
+  title: "Plan de credito comercial",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+},
+   
+
+      consumo: {
+      bannerData : {
+  title: "Plan de credito al consumo",
+  description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
+  aquaBoxText: "Facil y rapido",
+  navyBoxText: "En linea!",
+  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  rightImages: [
+    'img/py2.png',
+    'img/py1.png'
+  ]
+},
+    sectionData : {
+  title: "Nuestros Valores",
+  backgroundImage: "img/image55.png",
+  leftBox: {
+    title: "Requisitos",
+    items: [
+      "Identificación Oficial, INE. (vigente)", 
+      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
+      "Deposito en garantia.", 
+      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+    ]
+  },
+  rightBox: {
+    title: "Condiciones",
+    items: [
+      "Tener negocio propio o actividad laboral comprobable.", 
+      "Ser verificada en domicilio y actividad.", 
+      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
+       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+    ]
+  }
+},
+
+blockData : {
+  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  blueText: "Rellena la solicitud en linea",
+  spaceSize: "120px" // Tamaño personalizado para los espacios
+}
+
+
+}
+  };
+
+ bannerData: any;
+  sectionData: any;
+  blockData: any;
+
+  constructor(private route: ActivatedRoute) {
+    // Obtener el tipo de crédito desde "data"
+    const tipo = this.route.snapshot.data['tipo'] as keyof typeof this.datosCreditos;;
+    
+    // Cargar los datos correspondientes
+    const datos = this.datosCreditos[tipo];
+    this.bannerData = datos.bannerData;
+    this.sectionData = datos.sectionData;
+    this.blockData = datos.blockData;
+  }
 
 }

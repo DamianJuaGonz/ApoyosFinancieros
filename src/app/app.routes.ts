@@ -11,6 +11,21 @@ export const routes: Routes = [
 { path: 'unete', component: UneteComponent }, // Ruta para Únete
 { path: 'requisitos', component: RequisitosComponent }, // Ruta para Únete
 { path: 'nosotros', component: NosotrosComponent }, // Ruta para Únete
+
+
 { path: 'credito6', component: CreditosComponent }, // Ruta para Únete
+{ path: 'credito/:grupalx', component: CreditosComponent } ,
+
+
+
+{ path: 'credito-grupal', component: CreditosComponent,data: { tipo: 'grupal' } } ,
+{ path: 'credito-personal', component: CreditosComponent,data: { tipo: 'personal' } } ,
+
+
+{ path: 'credito-de-flujo', component: CreditosComponent,data: { tipo: 'flujo' } } ,
+{ path: 'credito-incremento', component: CreditosComponent,data: { tipo: 'incremento' } } ,
+{ path: 'credito-comercial', component: CreditosComponent,data: { tipo: 'comercial' } } ,
+{ path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } 
+
 
 ];
