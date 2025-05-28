@@ -1,21 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+ 
+import { Router } from 'express';
+import { CreditService } from '../services/credit.service';
 
+ 
 @Component({
   selector: 'app-credit-application',
   imports: [CommonModule,ReactiveFormsModule],
+ 
   templateUrl: './credit-application.component.html',
   styleUrl: './credit-application.component.css'
 })
 export class CreditApplicationComponent {
-  
-  creditForm: FormGroup;
+   creditForm: FormGroup;
   profileImage: string | ArrayBuffer | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private creditService: CreditService) {
     this.creditForm = this.fb.group({
       // Datos personales
+      /*
       nombre: ['', Validators.required],
       apellidoPaterno: ['', Validators.required],
       apellidoMaterno: ['', Validators.required],
@@ -42,7 +47,7 @@ export class CreditApplicationComponent {
       // Datos del préstamo
       monto: ['', [Validators.required, Validators.min(1000)]],
       plazo: ['', [Validators.required, Validators.min(1)]],
-      proposito: ['']
+      proposito: ['']*/
     });
   }
 
@@ -57,12 +62,27 @@ export class CreditApplicationComponent {
     }
   }
 
-  onSubmit() {
-    if (this.creditForm.valid) {
-      console.log('Formulario enviado:', this.creditForm.value);
-      // Aquí iría la lógica para enviar el formulario
-    } else {
-      console.log('Formulario inválido');
-    }
+onSubmit() {
+  if (this.creditForm.valid) {
+    const solicitud = {
+      datosPersonales: this.creditForm.getRawValue(),
+      datosLaborales: this.creditForm.getRawValue(),
+      datosPrestamo: this.creditForm.getRawValue(),
+      foto: this.profileImage
+    };
+
+    this.creditService.crearSolicitud(solicitud).subscribe({
+      next: (res) => {
+        alert('Solicitud enviada correctamente');
+        this.creditForm.reset();
+        this.profileImage = null;
+      },
+      error: (err) => {
+        console.error('Error al enviar solicitud:', err);
+        alert('Ocurrió un error al enviar la solicitud');
+      }
+    });
   }
+}
+ 
 }

@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class CabeceraTodosComponent {
   menuItems = [
-    { title: 'Clientes', path: '/clientes' },
+    { title: 'Clientes', path: '/admin' },
     { title: 'Nosotros', path: '/nosotros' },
     { title: 'Requisitos', path: '/requisitos' },
     { title: 'Únete', path: '/unete' }
