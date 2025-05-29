@@ -1,74 +1,155 @@
 <div class="admin-container">
-  <div *ngIf="!isLoggedIn" class="login-form">
-    <h2>Panel de Administración</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="form-group">
-        <label>Usuario:</label>
-        <input type="text" formControlName="username" class="form-control">
+  <!-- Login Form -->
+  <div *ngIf="!isLoggedIn" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="icon/LOGO.png" alt="Logo" class="logo">
+        <h2>Acceso Administrativo</h2>
       </div>
-      <div class="form-group">
-        <label>Contraseña:</label>
-        <input type="password" formControlName="password" class="form-control">
-      </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Iniciar Sesión</button>
-    </form>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username" 
+            placeholder="Ingrese su usuario"
+            class="form-input"
+          >
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Ingrese su contraseña"
+            class="form-input"
+          >
+        </div>
+        <button 
+          type="submit" 
+          class="login-btn"
+          [disabled]="!loginForm.valid"
+        >
+          Iniciar Sesión
+        </button>
+      </form>
+    </div>
   </div>
 
-  <div *ngIf="isLoggedIn">
-    <div class="admin-header">
-      <h2>Panel de Administración</h2>
-      <button (click)="logout()" class="logout-btn">Cerrar Sesión</button>
-    </div>
+  <!-- Admin Dashboard -->
+  <div *ngIf="isLoggedIn" class="dashboard">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>
+          <i class="fas fa-tachometer-alt"></i> Panel de Control
+        </h1>
+        <button (click)="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </div>
+    </header>
 
-    <div class="admin-sections">
-      <!-- Sección de solicitudes pendientes -->
-      <div class="solicitudes-section">
-        <h3>Solicitudes Pendientes</h3>
-        <div *ngIf="solicitudes.length === 0" class="no-data">
-          No hay solicitudes pendientes
+    <!-- Main Content -->
+    <main class="dashboard-content">
+      <!-- Stats Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-value">{{solicitudes.length}}</div>
+          <div class="stat-label">Pendientes</div>
+          <i class="fas fa-clock stat-icon"></i>
         </div>
-        <div *ngFor="let solicitud of solicitudes" class="solicitud-card">
-          <div class="solicitud-header">
-            <h4>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h4>
-            <span class="fecha">{{solicitud.fechaSolicitud | date:'medium'}}</span>
-          </div>
-          
-          <div class="solicitud-body">
-            <div class="solicitud-foto" *ngIf="solicitud.foto">
-              <img [src]="solicitud.foto" alt="Foto del solicitante">
-            </div>
-            
-            <div class="solicitud-datos">
-              <p><strong>Teléfono:</strong> {{solicitud.datosPersonales.telefono}}</p>
-              <p><strong>Monto solicitado:</strong> ${{solicitud.datosPrestamo.monto | number}}</p>
-              <p><strong>Propósito:</strong> {{solicitud.datosPrestamo.proposito}}</p>
-            </div>
-          </div>
-          
-          <div class="solicitud-actions">
-            <button (click)="aprobarSolicitud(solicitud.id)" class="btn-aprobar">Aprobar</button>
-            <button (click)="rechazarSolicitud(solicitud.id)" class="btn-rechazar">Rechazar</button>
-          </div>
+        <div class="stat-card approved">
+          <div class="stat-value">{{solicitudesAprobadas.length}}</div>
+          <div class="stat-label">Aprobadas</div>
+          <i class="fas fa-check-circle stat-icon"></i>
         </div>
       </div>
-      
-      <!-- Sección de solicitudes aprobadas -->
-      <div class="solicitudes-section">
-        <h3>Solicitudes Aprobadas</h3>
-        <div *ngIf="solicitudesAprobadas.length === 0" class="no-data">
-          No hay solicitudes aprobadas
+
+      <!-- Solicitudes Pendientes -->
+      <section class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-hourglass-half"></i> Solicitudes Pendientes</h2>
         </div>
-        <div *ngFor="let solicitud of solicitudesAprobadas" class="solicitud-card aprobada">
-          <div class="solicitud-header">
-            <h4>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h4>
-            <span class="fecha">{{solicitud.fechaSolicitud | date:'medium'}}</span>
-          </div>
-          <div class="solicitud-body">
-            <p><strong>Monto aprobado:</strong> ${{solicitud.datosPrestamo.monto | number}}</p>
-            <p><strong>Estado:</strong> Aprobada</p>
+        
+        <div *ngIf="solicitudes.length === 0" class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No hay solicitudes pendientes</p>
+        </div>
+
+        <div class="card-grid">
+          <div *ngFor="let solicitud of solicitudes" class="request-card">
+            <div class="card-header">
+              <div class="user-info">
+                <div *ngIf="solicitud.foto" class="user-avatar">
+                  <img [src]="solicitud.foto" alt="Foto">
+                </div>
+                <div class="user-details">
+                  <h3>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h3>
+                  <span class="request-date">
+                    <i class="far fa-calendar-alt"></i> 
+                    {{solicitud.fechaSolicitud | date:'mediumDate'}}
+                  </span>
+                </div>
+              </div>
+              <span class="badge pending">Pendiente</span>
+            </div>
+
+            <div class="card-body">
+              <div class="info-row">
+                <span><i class="fas fa-phone"></i> {{solicitud.datosPersonales.telefono}}</span>
+                <span><i class="fas fa-dollar-sign"></i> {{solicitud.datosPrestamo.monto | number}}</span>
+              </div>
+              
+              <div *ngIf="solicitud.datosPrestamo.proposito" class="info-row">
+                <p class="purpose">
+                  <i class="far fa-comment-dots"></i> 
+                  {{solicitud.datosPrestamo.proposito}}
+                </p>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button (click)="aprobarSolicitud(solicitud.id)" class="action-btn approve">
+                <i class="fas fa-check"></i> Aprobar
+              </button>
+              <button (click)="rechazarSolicitud(solicitud.id)" class="action-btn reject">
+                <i class="fas fa-times"></i> Rechazar
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <!-- Solicitudes Aprobadas -->
+      <section class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-check-circle"></i> Solicitudes Aprobadas</h2>
+        </div>
+        
+        <div *ngIf="solicitudesAprobadas.length === 0" class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No hay solicitudes aprobadas</p>
+        </div>
+
+        <div class="approved-list">
+          <div *ngFor="let solicitud of solicitudesAprobadas" class="approved-item">
+            <div class="approved-avatar">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="approved-info">
+              <h4>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h4>
+              <div class="meta-info">
+                <span><i class="far fa-calendar-alt"></i> {{solicitud.fechaSolicitud | date:'mediumDate'}}</span>
+                <span><i class="fas fa-dollar-sign"></i> {{solicitud.datosPrestamo.monto | number}}</span>
+              </div>
+            </div>
+            <span class="badge approved">Aprobada</span>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </div>
