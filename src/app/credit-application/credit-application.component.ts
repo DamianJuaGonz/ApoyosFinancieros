@@ -20,6 +20,33 @@ export class CreditApplicationComponent {
   constructor(private fb: FormBuilder,private creditService: CreditService) {
     this.creditForm = this.fb.group({
       // Datos personales
+       nombre:[''],
+      apellidoPaterno: [''],
+      apellidoMaterno: [''],
+      curp: [''],
+      telefono: [''],
+      email: [''],
+      vivienda: [''],
+      calle: [''],
+      numero: [''],
+      colonia:[''],
+      localidad: [''],
+      cp: [''],
+      estado: [''],
+      conyuge: [''],
+      hijos: [''],
+      vehiculo: [''],
+      
+      // Datos laborales
+      direccionTrabajo:[''],
+      puesto:[''],
+      antiguedad:[''],
+      telefonoTrabajo: [''],
+
+      // Datos del préstamo
+      monto: [''],
+      plazo: [''],
+      proposito: ['']
       /*
       nombre: ['', Validators.required],
       apellidoPaterno: ['', Validators.required],
