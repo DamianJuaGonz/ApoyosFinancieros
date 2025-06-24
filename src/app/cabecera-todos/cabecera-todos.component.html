@@ -1,17 +1,8 @@
 <header class="cabecera">
   <div class="cabecera-contenido">
     <div class="logo-y-menu">
-       
-      <a routerLink="/" class="logo" >
-        <img src="icon/LOGO.png"  class="logo" >
-        <!-- Logo temporal 
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="white"/>
-          <path d="M20 10L25 15H15L20 10Z" fill="#0056b3"/>
-          <path d="M25 25L20 30L15 25H25Z" fill="#0056b3"/>
-          <rect x="15" y="15" width="10" height="10" fill="#0056b3"/>
-        </svg>-->
-    
+      <a routerLink="/" class="logo">
+        <img src="icon/LOGO.png" class="logo">
       </a>
       
       <nav class="menu-principal">
@@ -27,13 +18,43 @@
     
     <div class="acciones">
       <div class="buscador">
-        <input type="text" placeholder="Buscar" class="buscador-input">
-        <svg class="buscador-icono" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <input 
+          type="text" 
+          placeholder="Buscar" 
+          class="buscador-input"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchInput()"
+          (keydown.enter)="onKeyPress($any($event))"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+        >
+        <svg 
+          class="buscador-icono" 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          (click)="onSearchClick()"
+        >
           <path d="M11.5 11.5L14 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
           <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.5"/>
         </svg>
+        
+        @if (showSuggestions && filteredItems.length > 0) {
+          <div class="sugerencias">
+            @for (item of filteredItems; track item.title) {
+              <div 
+                class="sugerencia-item"
+                (mousedown)="selectItem(item)"
+              >
+                {{item.title}}
+              </div>
+            }
+          </div>
+        }
       </div>
-      <button class="boton-solicitar">Solicitar crédito</button>
+      <button routerLink="/formulario" class="boton-solicitar">Solicitar crédito</button>
     </div>
-  </div>
+  </div> 
 </header>

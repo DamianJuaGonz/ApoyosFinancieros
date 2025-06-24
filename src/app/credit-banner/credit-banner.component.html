@@ -1,6 +1,18 @@
 <div class="banner-container" [style.background-image]="'url(' + imageUrl + ')'">
+  <!-- Reja triangular azul -->
+  <div class="triangular-grill"></div>
+  
   <div class="banner-content">
     <h1 class="banner-title">SOLICITA TU <br> CRÉDITO Y <br> HAZ CRECER <br> TU NEGOCIO</h1>
-    <button class="info-button">Más información</button>
+  </div>
+
+  <!-- Indicadores del slider (bolitas) -->
+  <div class="slider-indicators">
+    <div 
+      *ngFor="let img of images; let i = index" 
+      [class.active]="i === currentImageIndex"
+      class="indicator"
+      (click)="changeImage(i)">
+    </div>
   </div>
 </div>

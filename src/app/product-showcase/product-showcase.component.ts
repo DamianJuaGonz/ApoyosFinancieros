@@ -10,6 +10,11 @@ import { Component, Input } from '@angular/core';
 export class ProductShowcaseComponent {
 
 @Input() productName: string = "Product name";
+
+@Input() productNameC1: string = "Somos una financiera especializada en apoyar al sector educativo, brindando ";
+@Input() productNameC2: string = "asesoría y productos que impulsan la seguridad económica, la confianza y la";
+@Input() productNameC3: string = "tranquilidad de nuestros clientes.";
+
   @Input() sobrenosotros: string= "Conoce mas de nosotros";
   @Input() products = [
     {

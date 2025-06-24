@@ -37,6 +37,18 @@ export class ImageCarouselComponent {
       text: 'Edúcate financieramente',
       description: ''
     },
+    {
+      image: 'img/image57.png',
+      alt: 'Imagen 4',
+      text: 'Impulso al emprendimiento',
+      description: ''
+    },
+    {
+      image: 'img/image58.png',
+      alt: 'Imagen 5',
+      text: 'Acceso inmediato a recursos',
+      description: ''
+    },
 
   ];
 

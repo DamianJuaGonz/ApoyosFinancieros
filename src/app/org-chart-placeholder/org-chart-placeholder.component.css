@@ -18,10 +18,22 @@
   flex: 1; /* Ocupa todo el espacio disponible */
   min-height: 50vh; /* Mínimo la mitad de la pantalla */
   border: 2px dashed #ccc; /* Opcional: borde para visualizar el espacio */
+   
   margin: 20px;
   border-radius: 4px;
 }
-
+.image-container {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  margin-top: 5%;
+  /*
+  margin-left: 20px;
+  margin-right: 40px;*/
+  padding-left: 15%;
+  padding-right: 15%;
+  margin-bottom: 20px;
+}
 /* Si prefieres el espacio completamente vacío sin borde: */
 /*
 .empty-space {
