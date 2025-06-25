@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-secondcredit-banner',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './secondcredit-banner.component.html',
   styleUrl: './secondcredit-banner.component.css'
 })

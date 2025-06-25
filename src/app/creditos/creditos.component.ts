@@ -143,11 +143,11 @@ blockData : {
 
       flujo: {
       bannerData : {
-  title: "Plan de credito de flujo",
+  title: "Plan de credito de Nomina",
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  whiteSectionText: "Un crédito diseñado para trabajadores que reciben su salario a través de una cuenta bancaria, permitiéndoles acceder a financiamiento de forma sencilla, con descuentos automáticos vía nómina y sin necesidad de aval.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
@@ -159,19 +159,17 @@ blockData : {
   leftBox: {
     title: "Requisitos",
     items: [
-      "Identificación Oficial, INE. (vigente)", 
-      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
-      "Deposito en garantia.", 
-      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+      "Identificación Oficial, INE. (vigente)",
+      "Comprobante via nomina de los ultimos dos meses.",
+      "Comprobante de domicilio."
     ]
   },
   rightBox: {
     title: "Condiciones",
     items: [
       "Tener negocio propio o actividad laboral comprobable.", 
-      "Ser verificada en domicilio y actividad.", 
-      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
-       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+      "Ser verificada en domicilio y actividad.",
+      "Antiguedad laboral de un año."
     ]
   }
 },
@@ -192,7 +190,7 @@ blockData : {
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  whiteSectionText: "Un financiamiento dirigido a clientes con buen historial que desean aumentar su monto de crédito para continuar impulsando sus proyectos o necesidades personales.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
@@ -204,19 +202,15 @@ blockData : {
   leftBox: {
     title: "Requisitos",
     items: [
-      "Identificación Oficial, INE. (vigente)", 
-      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
-      "Deposito en garantia.", 
-      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+      "Identificación Oficial, INE. (vigente)",
+       "Comprobante domiciliario no mayor a 3 meses de actualización.",
+        "Antiguedad laboral de un año."
     ]
   },
   rightBox: {
     title: "Condiciones",
     items: [
-      "Tener negocio propio o actividad laboral comprobable.", 
-      "Ser verificada en domicilio y actividad.", 
-      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
-       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+      "Tener negocio propio o actividad laboral comprobable.", "Ser verificada en domicilio y actividad."
     ]
   }
 },
@@ -283,7 +277,7 @@ blockData : {
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  whiteSectionText: "Un crédito diseñado para negocios y empresas que buscan impulsar su crecimiento, adquirir inventario, mejorar infraestructura o cubrir necesidades operativas, con plazos y montos adaptados a su capacidad financiera.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
@@ -295,19 +289,17 @@ blockData : {
   leftBox: {
     title: "Requisitos",
     items: [
-      "Identificación Oficial, INE. (vigente)", 
-      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
-      "Deposito en garantia.", 
-      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+      "Identificación Oficial, INE. (vigente)",
+      "Comprobante domiciliario no mayor a 3 meses de actualización.",
+       "Aval y referencia personal."
     ]
   },
   rightBox: {
     title: "Condiciones",
     items: [
-      "Tener negocio propio o actividad laboral comprobable.", 
-      "Ser verificada en domicilio y actividad.", 
-      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
-       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+      "Actividad laboral comprobable.",
+      "Ser verificada en domicilio y actividad.",
+      "Antiguedad laboral de un año"
     ]
   }
 },

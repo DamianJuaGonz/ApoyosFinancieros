@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-recruitment-banner',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './recruitment-banner.component.html',
   styleUrl: './recruitment-banner.component.css'
 })

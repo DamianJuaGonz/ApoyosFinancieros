@@ -24,7 +24,7 @@ export const routes: Routes = [
 { path: 'credito-personal', component: CreditosComponent,data: { tipo: 'personal' } } ,
 
 
-{ path: 'credito-de-flujo', component: CreditosComponent,data: { tipo: 'flujo' } } ,
+{ path: 'credito-de-nomina', component: CreditosComponent,data: { tipo: 'flujo' } } ,
 { path: 'credito-incremento', component: CreditosComponent,data: { tipo: 'incremento' } } ,
 { path: 'credito-comercial', component: CreditosComponent,data: { tipo: 'comercial' } } ,
 { path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } ,
