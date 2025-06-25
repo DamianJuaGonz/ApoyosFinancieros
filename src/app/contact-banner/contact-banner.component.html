@@ -25,14 +25,35 @@
       
       <!-- Sección derecha (redes sociales) -->
       <div class="right-section">
+
         <p class="label">Redes sociales:</p>
+        
         <div class="social-icons">
-          <img *ngFor="let social of contactData.socialMedia" 
+
+                  @for (red of contactData.socialMedia; track red.alt) {
+
+          <a [href]="red.url" >
+          <img 
+          [src]="red.icon" [alt]="red.alt" class="social-icon" >
+        </a>
+        }
+
+
+
+          <!--
+             <img *ngFor="let social of contactData.socialMedia" 
+          [href]="social.url" 
                [src]="social.icon" 
                [alt]="social.alt" 
                class="social-icon">
+          
+               
+
+        -->
+     
         </div>
         <img [src]="contactData.bottomImage" alt="Contacto" class="bottom-icon">
+
       </div>
     </div>
     

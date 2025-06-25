@@ -47,12 +47,12 @@ export class RequisitosComponent {
   title: "¡SI TIENES DUDAS CONTACTANOS!",
   phone: "2383825275",
   email: "estregramyj@gmail.com",
-  address: "Independecia Ote. 735 Interior 2 Tehuacán ; Pue. CP 75700",
+  address: "CALLE 18 NORTE 100 PLANTA 3, COL AQUILES SERDAN. TEHUACAN PUEBLA CP 75750",
   availability: "Servicio disponible 24/7",
   socialMedia: [
-    { icon: 'img/rs1.png', alt: 'Facebook' },
-    { icon: 'img/rs2.png', alt: 'LinkedIn' },
-    { icon: 'img/rs3.png', alt: 'WhatsApp' }
+    { icon: 'img/rs1.png', alt: 'Facebook', url: 'https://www.facebook.com/share/1G12QYeBJ3/'  },
+    { icon: 'img/rs2.png', alt: 'LinkedIn',url: 'https://www.instagram.com/apoyos_financieros1?igsh=MXRyeG45cHJvaHBxNQ%3D%3D ' },
+    { icon: 'img/rs3.png', alt: 'WhatsApp', url: 'https://wa.me/5212383825275' }
   ],
   bottomImage: 'img/image48.png'
 };

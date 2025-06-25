@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class CabeceraTodosComponent {
   menuItems = [
-    { title: 'Clientes', path: '/admin' },
+    { title: 'Clientes', path: '/' },
     { title: 'Nosotros', path: '/nosotros' },
     { title: 'Requisitos', path: '/requisitos' },
     { title: 'Únete', path: '/unete' }

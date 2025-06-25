@@ -12,15 +12,15 @@ export class ContactBannerComponent {
   @Input() backgroundImage: string = 'assets/images/contact-bg.jpg';
   
   @Input() contactData = {
-    title: "¡SI TIENES DUDAS CONTACTANOS!",
+    title: "¡SI TIENES DUDAS3 CONTACTANOS!3",
     phone: "2383825275",
     email: "estragramyl@gmail.com",
-    address: "Independencia Ote. 735 Interior 2 Tehuacán, Pue. CP 75700",
+    address: "CALLE 18 NORTE 100 PLANTA 3, COL AQUILES SERDAN. TEHUACAN PUEBLA CP 75750",
     availability: "Estamos las 24/7 para ayudarte",
     socialMedia: [
-      { icon: 'assets/icons/facebook.png', alt: 'Facebook' },
-      { icon: 'assets/icons/twitter.png', alt: 'Twitter' },
-      { icon: 'assets/icons/instagram.png', alt: 'Instagram' }
+      { icon: 'assets/icons/facebook.png', alt: 'Facebook', url: 'https://wa.me/5212383825275' },
+      { icon: 'assets/icons/twitter.png', alt: 'Twitter' , url: 'https://wa.me/5212383825275' },
+      { icon: 'assets/icons/instagram.png', alt: 'Instagram' , url: 'https://wa.me/5212383825275' }
     ],
     bottomImage: 'assets/icons/contact-icon.png'
   };
