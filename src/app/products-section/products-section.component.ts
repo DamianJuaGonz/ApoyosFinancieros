@@ -19,8 +19,8 @@ export class ProductsSectionComponent {
     },
     {
       id: 2,
-      name: 'Credito de flujo', 
-      image: 'icon/cr2.png',
+      name: 'Credito de nomina', 
+      image: 'icon/money1.png',
       path: '/credito-de-flujo'
     },
     {

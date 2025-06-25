@@ -37,7 +37,7 @@
 
 @media (max-width: 768px) {
   .triangular-grill {
- 
+ height: 500%;
     width: 530%; /* Más ancho en móviles */
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%); /* Ajuste de ángulo */
   }

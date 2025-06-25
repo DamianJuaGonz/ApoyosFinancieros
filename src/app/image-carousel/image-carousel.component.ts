@@ -34,7 +34,7 @@ export class ImageCarouselComponent {
     {
       image: 'img/image33.png',
       alt: 'Imagen 3',
-      text: 'Edúcate financieramente',
+      text: 'Facilita compras importantes',
       description: ''
     },
     {
