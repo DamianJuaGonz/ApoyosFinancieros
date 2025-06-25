@@ -8,15 +8,15 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   redesSociales = [
-    { nombre: 'Facebook', icono: 'img/rs1.png' },
-    { nombre: 'Instagram', icono: 'img/rs2.png' },
-    { nombre: 'WhatsApp', icono:'img/rs3.png' }
+    { nombre: 'Facebook', icono: 'img/rs1.png', url: 'https://www.facebook.com/share/1G12QYeBJ3/' },
+    { nombre: 'Instagram', icono: 'img/rs2.png', url: 'https://www.instagram.com/apoyos_financieros1?igsh=MXRyeG45cHJvaHBxNQ%3D%3D ' },
+    { nombre: 'WhatsApp', icono:'img/rs3.png' , url: 'https://wa.me/5212383825275'}
   ];
 
   informacionContacto = [
-    { texto: 'Av. Principal #123, Col. Centro, Ciudad' },
-    { texto: 'Teléfono: 55 1234 5678' },
-    { texto: 'correo@myjasesores.com' },
-    { texto: 'Lunes a Viernes: 9:00 - 18:00 hrs' }
+    { texto: 'Dirección : CALLE 18 NORTE 100 PLANTA 3, COL AQUILES SERDAN. TEHUACAN PUEBLA CP 75750' },
+    { texto: 'Teléfono: 238 382 5275' },
+    { texto: 'Correo electrónico: estregramyj@gmail.com' },
+    { texto: ' Horarios de atención: Lunes a Viernes: 9:00 - 18:00 hrs' }
   ];
 }

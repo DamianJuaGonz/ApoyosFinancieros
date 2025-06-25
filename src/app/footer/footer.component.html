@@ -8,7 +8,9 @@
     <div class="redes-contacto">
       <div class="redes-sociales">
         @for (red of redesSociales; track red.nombre) {
-          <img [src]="red.icono" [alt]="red.nombre" class="icono-red">
+          <a [href]="red.url" >
+          <img [src]="red.icono" [alt]="red.nombre" class="icono-red" >
+        </a>
         }
       </div>
       
