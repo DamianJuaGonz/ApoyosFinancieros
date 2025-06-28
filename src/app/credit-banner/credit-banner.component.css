@@ -12,6 +12,8 @@
   overflow: hidden;
 }
 
+
+
 .triangular-grill {
   position: absolute;
   top: 0;
@@ -37,11 +39,15 @@
 
 @media (max-width: 768px) {
   .triangular-grill {
- height: 500%;
-    width: 530%; /* Más ancho en móviles */
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%); /* Ajuste de ángulo */
+    position: absolute;
+  min-width: 90%;
+    min-height: 100%;
+    width: 1%; /* Más ancho en móviles */
+
+    clip-path: polygon(0% 0%, 100% 0%, 100% 330%); /* Ajuste de ángulo */
   }
 }
+
 .banner-content {
   position: relative;
   padding-right: 5%;
