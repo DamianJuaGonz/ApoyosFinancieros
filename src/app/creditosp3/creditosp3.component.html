@@ -1,9 +1,10 @@
 <div class="spaced-container">
   <!-- Primer espacio en blanco -->
-  <div class="empty-space" [style.height]="spaceHeight"></div>
+   
+  <div class="empty-space" [style.height]="spaceHeight" *ngIf="grayBlockText?.trim()"></div>
   
-  <!-- Rectángulo gris -->
-  <div class="gray-block">
+  <!-- Rectángulo gris - Solo visible si hay texto -->
+  <div class="gray-block" *ngIf="grayBlockText?.trim()">
     <p>{{grayBlockText}}</p>
   </div>
   
@@ -12,8 +13,7 @@
   
   <!-- Rectángulo azul -->
   <div class="blue-block" [routerLink]="'/formulario'">
-    <p >{{blueBlockText}}</p>
-      <!-- TAqui va la logica para crear un nuevo componente -->
+    <p>{{blueBlockText}}</p>
   </div>
   
   <!-- Tercer espacio en blanco -->

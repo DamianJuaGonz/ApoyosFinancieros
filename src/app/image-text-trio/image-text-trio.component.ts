@@ -30,6 +30,7 @@ export class ImageTextTrioComponent {
       text: 'Tercer texto descriptivo, completando el trío de elementos visuales.'
     }
   ];*/
+  textoTitulo: string="¿Sabes como obtener tu credito ?";
     @Input() items: Array<{
     image: string;
     altText: string;

@@ -17,6 +17,6 @@ export class FooterComponent {
     { texto: 'Dirección : CALLE 18 NORTE 100 PLANTA 3, COL AQUILES SERDAN. TEHUACAN PUEBLA CP 75750' },
     { texto: 'Teléfono: 238 382 5275' },
     { texto: 'Correo electrónico: estregramyj@gmail.com' },
-    { texto: ' Horarios de atención: Lunes a Viernes: 9:00 - 18:00 hrs' }
+    { texto: ' Horarios de atención: Lunes a Viernes: 9:00am - 5:30pm' }
   ];
 }

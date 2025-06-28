@@ -65,7 +65,7 @@ private datosCreditos = {
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
@@ -102,37 +102,35 @@ blockData : {
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  whiteSectionText: "Ideal para quienes buscan cubrir necesidades como educación, salud, mejoras en el hogar, adquisición de bienes o imprevistos, con pagos cómodos y atención personalizada.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
     items: [
-      "Identificación Oficial, INE. (vigente)", 
-      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
-      "Deposito en garantia.", 
-      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
-    ]
+      "Identificación Oficial, INE. (vigente)",
+      "Comprobante domiciliario no mayor a 3 meses de actualización.",
+      "Aval y referencia personal."
+        ]
   },
   rightBox: {
     title: "Condiciones",
     items: [
-      "Tener negocio propio o actividad laboral comprobable.", 
-      "Ser verificada en domicilio y actividad.", 
-      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
-       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+      "Actividad laboral comprobable.",
+      "Ser verificada en domicilio y actividad.",
+      "Antiguedad laboral de un año."
     ]
   }
 },
 
 blockData : {
-  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  grayText: "",
   blueText: "Rellena la solicitud en linea",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 }
@@ -154,7 +152,7 @@ blockData : {
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
@@ -175,7 +173,7 @@ blockData : {
 },
 
 blockData : {
-  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  grayText: "",
   blueText: "Rellena la solicitud en linea",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 }
@@ -197,7 +195,7 @@ blockData : {
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
@@ -216,7 +214,7 @@ blockData : {
 },
 
 blockData : {
-  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  grayText: "",
   blueText: "Rellena la solicitud en linea",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 }
@@ -232,37 +230,35 @@ blockData : {
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para apoyar a grupos de personas (de 6 a 10 integrantes) que desean financiar sus actividades productivas en conjunto.",
+  whiteSectionText: "Un crédito diseñado para negocios y empresas que buscan impulsar su crecimiento, adquirir inventario, mejorar infraestructura o cubrir necesidades operativas, con plazos y montos adaptados a su capacidad financiera.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
     items: [
-      "Identificación Oficial, INE. (vigente)", 
-      "Comprobante domiciliario no mayor a 3 meses de actualización.", 
-      "Deposito en garantia.", 
-      "Internamente se debe realizar todo el procedimiento que se lleva a cabo para autorizar los créditos en trámite."
+      "Identificación Oficial, INE. (vigente)",
+      "Comprobante domiciliario no mayor a 3 meses de actualización.",
+      "Aval y referencia personal."
     ]
   },
   rightBox: {
     title: "Condiciones",
     items: [
-      "Tener negocio propio o actividad laboral comprobable.", 
-      "Ser verificada en domicilio y actividad.", 
-      "Tener compromiso de ahorrar cada semana para favorecer el incremento del monto de su préstamo, monto mínimo de 20 pesos en adelante.",
-       "El número de integrantes permitido es de 6 a máximo 10 integrantes."
+      "Actividad laboral comprobable.",
+      "Ser verificada en domicilio y actividad.",
+      "Antiguedad laboral de un año "
     ]
   }
 },
 
 blockData : {
-  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  grayText: "",
   blueText: "Rellena la solicitud en linea",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 }
@@ -277,21 +273,22 @@ blockData : {
   description: "Haz realidad tus metas con nuestro crédito fácil y rápido",
   aquaBoxText: "Facil y rapido",
   navyBoxText: "En linea!",
-  whiteSectionText: "Un crédito diseñado para negocios y empresas que buscan impulsar su crecimiento, adquirir inventario, mejorar infraestructura o cubrir necesidades operativas, con plazos y montos adaptados a su capacidad financiera.",
+  whiteSectionText: "Pensado para quienes desean comprar electrodomésticos, muebles, ropa, tecnología o cubrir gastos personales, con plazos flexibles y aprobación rápida.",
   rightImages: [
     'img/py2.png',
     'img/py1.png'
   ]
 },
     sectionData : {
-  title: "Nuestros Valores",
+  title: "Conoce mas sobre este credito",
   backgroundImage: "img/image55.png",
   leftBox: {
     title: "Requisitos",
     items: [
       "Identificación Oficial, INE. (vigente)",
       "Comprobante domiciliario no mayor a 3 meses de actualización.",
-       "Aval y referencia personal."
+      "Antiguedad laboral de un año.",
+      "Aval y referencia personal."
     ]
   },
   rightBox: {
@@ -305,7 +302,7 @@ blockData : {
 },
 
 blockData : {
-  grayText: "Nota: En este préstamo se avalan entre todas las solicitantes, firmando una hoja compromiso de pagare grupal, donde todas se comprometen a pagar en caso de que alguna quede mal.",
+  grayText: "",
   blueText: "Rellena la solicitud en linea",
   spaceSize: "120px" // Tamaño personalizado para los espacios
 }

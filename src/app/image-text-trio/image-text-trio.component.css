@@ -71,3 +71,14 @@
     max-width: 100%;
   }
 }
+
+.product-name2 {
+  margin-top: 20px;
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-left: 5%;
+  margin-bottom: 30px;
+  
+  text-align: center;
+}
