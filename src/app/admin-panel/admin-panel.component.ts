@@ -300,8 +300,8 @@ rechazarSolicitud(solicitud: any) {
 worksheet.getCell('H16').value = solicitud.datosPrestamo.montoAutorizado;
   worksheet.getCell('J16').value = solicitud.datosPrestamo.plazoAutorizado;
 
-  worksheet.getCell('F27').value = solicitud.totalIngresos;
-  worksheet.getCell('J27').value = solicitud.totalEgresos;
+  worksheet.getCell('F27').value = "$"+solicitud.totalIngresos;
+  worksheet.getCell('J27').value = "$"+solicitud.totalEgresos;
   worksheet.getCell('F16').value = solicitud.datosPrestamo.proposito;
 
   // Ingresos detallados
@@ -310,17 +310,17 @@ worksheet.getCell('H16').value = solicitud.datosPrestamo.montoAutorizado;
   worksheet.getCell('B19').value = solicitud.datosPrestamo.descripcionIngresosExtra;
 
 
-  worksheet.getCell('F24').value = solicitud.datosPrestamo.ingresosExtra;
-  worksheet.getCell('F25').value = solicitud.datosPrestamo.gananciasNegocio;
+  worksheet.getCell('F24').value = "$"+solicitud.datosPrestamo.ingresosExtra;
+  worksheet.getCell('F25').value = "$"+solicitud.datosPrestamo.gananciasNegocio;
 
   // Egresos detallados
-  worksheet.getCell('J19').value = solicitud.datosPrestamo.gastosServiciosHogar;
-  worksheet.getCell('J20').value = solicitud.datosPrestamo.gastosComidaVestido;
-  worksheet.getCell('J21').value = solicitud.datosPrestamo.gastosRentaVivienda;
-  worksheet.getCell('J22').value = solicitud.datosPrestamo.otrosGastosPersonales
-  worksheet.getCell('J24').value = solicitud.datosPrestamo.gastosServiciosNegocio;
-  worksheet.getCell('J25').value = solicitud.datosPrestamo.gastosRentaNegocio;
-  worksheet.getCell('J26').value = solicitud.datosPrestamo.inversionNegocio;
+  worksheet.getCell('J19').value = "$"+solicitud.datosPrestamo.gastosServiciosHogar;
+  worksheet.getCell('J20').value = "$"+solicitud.datosPrestamo.gastosComidaVestido;
+  worksheet.getCell('J21').value = "$"+solicitud.datosPrestamo.gastosRentaVivienda;
+  worksheet.getCell('J22').value = "$"+solicitud.datosPrestamo.otrosGastosPersonales
+  worksheet.getCell('J24').value = "$"+solicitud.datosPrestamo.gastosServiciosNegocio;
+  worksheet.getCell('J25').value = "$"+solicitud.datosPrestamo.gastosRentaNegocio;
+  worksheet.getCell('J26').value = "$"+solicitud.datosPrestamo.inversionNegocio;
 
   //fALTA VALOR ESTIMADO DE MERCANCIAS
 

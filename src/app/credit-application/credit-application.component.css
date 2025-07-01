@@ -7,7 +7,7 @@
 
 .main-title {
   text-align: center;
-  color: #333;
+  color: black;
   font-size: 2.2rem;
   margin-bottom: 40px;
   font-weight: 700;
@@ -25,7 +25,7 @@
 }
 
 .section-title {
-  color: #1976d2;
+  color: black;
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 20px;
@@ -79,7 +79,7 @@
   margin-bottom: 15px;
   
   .field-label {
-    background-color: #f5f5f5;
+    background-color: white;
     padding: 8px 12px;
     border-radius: 4px 4px 0 0;
     font-size: 0.9rem;
@@ -202,8 +202,8 @@
 }
 
 .image-preview {
-  width: 120px;
-  height: 120px;
+  width: 220px;
+  height: 220px;
   border-radius: 4px; /* Cambiado a cuadrado */
   background-color: #f5f5f5;
   background-size: cover;
@@ -228,7 +228,7 @@
 }
 
 .ie-title {
-  color: #1976d2;
+  color: black;
   font-size: 1.2rem;
   margin-bottom: 20px;
   padding-bottom: 8px;

@@ -58,7 +58,7 @@ export class CreditApplicationComponent implements AfterViewInit {
       proposito: [''],
     
        // Ingresos
-      ingresosFijos: ['', [Validators.required, Validators.min(0)]],
+      //ingresosFijos: ['', [Validators.required, Validators.min(0)]],
       descripcionIngresosExtra: [''],
       ingresosExtra: ['', [Validators.min(0)]],
       gananciasNegocio: ['', [Validators.min(0)]],
@@ -134,9 +134,9 @@ ngAfterViewInit() {
   }
    calcularTotalIngresos(): number {
     const form = this.creditForm.value;
-    return (form.ingresosFijos || 0) + 
-           (form.ingresosExtra || 0) + 
+    return (form.ingresosExtra || 0) + 
            (form.gananciasNegocio || 0);
+           //(form.ingresosFijos || 0) + 
   }
 
   calcularTotalEgresos(): number {
