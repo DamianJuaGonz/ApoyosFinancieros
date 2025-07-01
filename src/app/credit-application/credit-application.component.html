@@ -10,13 +10,13 @@
         <!-- Fila 1 -->
         <div class="form-field">
         
-          <input type="text" formControlName="nombre">
+          <input type="text" class="gray-box2" formControlName="nombre">
           <div class="field-label">Nombre</div>
         </div>
         
         <div class="form-field">
          
-          <input type="text" formControlName="apellidoPaterno">
+          <input type="text" class="gray-box2" formControlName="apellidoPaterno">
            <div class="field-label">Apellido Paterno</div>
         </div>
         
@@ -27,7 +27,7 @@
           -->
           <div class="square-image-upload">
             <label for="profileImage">
-              <div class="image-preview" [style.background-image]="'url(' + (profileImage || 'assets/default-profile.png') + ')'"></div>
+              <div class="image-preview" [style.background-image]="'url(' + (profileImage || 'img/sinperfil.png') + ')'"></div>
               <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event)" hidden>
 
 <!--<span class="upload-text">Haz clic para subir foto</span>
@@ -39,33 +39,33 @@
         <!-- Fila 2 -->
         <div class="form-field">
           
-          <input type="text" formControlName="apellidoMaterno">
+          <input type="text" class="gray-box2" formControlName="apellidoMaterno">
           <div class="field-label">Apellido Materno</div>
         </div>
         
         <div class="form-field">
           
-          <input type="text" formControlName="curp" placeholder="Ej. ABCD123456HABCDEF12">
+          <input type="text"  class="gray-box2" formControlName="curp" placeholder="Ej. ABCD123456HABCDEF12">
           <div class="field-label">CURP</div>
         </div>
         
         <div class="form-field">
          
-          <input type="tel" formControlName="telefono" placeholder="10 dígitos">
+          <input type="tel" class="gray-box2" formControlName="telefono" placeholder="10 dígitos">
            <div class="field-label">Número de teléfono</div>
         </div>
         
         
         <div class="form-field">
         
-          <input type="email" formControlName="email">
+          <input type="email"  class="gray-box2" formControlName="email">
             <div class="field-label">E-mail</div>
         </div>
         
         <!-- Fila 3 -->
         <div class="form-field">
           
-          <select formControlName="vivienda">
+          <select formControlName="vivienda" class="gray-box2">
             <option value="">Seleccione...</option>
             <option value="propia">Casa propia</option>
             <option value="prestada">Prestada</option>
@@ -77,58 +77,58 @@
         
         <div class="form-field">
           
-          <input type="text" formControlName="calle">
+          <input type="text"class="gray-box2"  formControlName="calle">
           <div class="field-label">Calle</div>
         </div>
         
         <div class="form-field">
           
-          <input type="text" formControlName="numero">
+          <input type="text" class="gray-box2" formControlName="numero">
           <div class="field-label">Número</div>
         </div>
         
         <!-- Fila 4 -->
         <div class="form-field">
        
-          <input type="text" formControlName="colonia">
+          <input type="text"class="gray-box2"  formControlName="colonia">
              <div class="field-label">Colonia</div>
         </div>
         
         <div class="form-field">
         
-          <input type="text" formControlName="localidad">
+          <input type="text"class="gray-box2"  formControlName="localidad">
             <div class="field-label">Localidad</div>
         </div>
         
         <div class="form-field">
           
-          <input type="text" formControlName="cp" placeholder="5 dígitos">
+          <input type="text" class="gray-box2" formControlName="cp" placeholder="5 dígitos">
           <div class="field-label">Código Postal</div>
         </div>
         
         <!-- Fila 5 -->
         <div class="form-field">
          
-          <input type="text" formControlName="estado">
+          <input type="text" class="gray-box2"  formControlName="estado">
            <div class="field-label">Estado</div>
         </div>
         
         <div class="form-field">
          
-          <input type="text" formControlName="conyuge">
+          <input type="text" class="gray-box2" formControlName="conyuge">
            <div class="field-label">Nombre del cónyuge</div>
         </div>
         
         <div class="form-field">
           
-          <input type="number" formControlName="hijos" min="0">
+          <input type="number" class="gray-box2" formControlName="hijos" min="0">
           <div class="field-label">Número de hijos</div>
         </div>
         
         <!-- Fila 6 -->
         <div class="form-field full-width">
           
-          <input type="text" formControlName="vehiculo">
+          <input type="text" class="gray-box2" formControlName="vehiculo">
           <div class="field-label">Marca y modelo de la unidad móvil</div>
         </div>
       </div>
@@ -141,25 +141,25 @@
       <div class="form-grid">
         <div class="form-field">
           
-          <input type="text" formControlName="direccionTrabajo">
+          <input type="text" class="gray-box2" formControlName="direccionTrabajo">
           <div class="field-label">Dirección del negocio/empleo</div>
         </div>
         
         <div class="form-field">
           
-          <input type="text" formControlName="puesto">
+          <input type="text" class="gray-box2" formControlName="puesto">
           <div class="field-label">Puesto que desempeña</div>
         </div>
         
         <div class="form-field">
           
-          <input type="number" formControlName="antiguedad" min="0">
+          <input type="number" class="gray-box2" formControlName="antiguedad" min="0">
           <div class="field-label">Antigüedad (años)</div>
         </div>
         
         <div class="form-field">
          
-          <input type="tel" formControlName="telefonoTrabajo" placeholder="10 dígitos">
+          <input type="tel"class="gray-box2"  formControlName="telefonoTrabajo" placeholder="10 dígitos">
            <div class="field-label">Teléfono del trabajo</div>
         </div>
       </div>
@@ -174,34 +174,39 @@
         
         <div class="form-grid">
           <div class="form-field">
+            
+            <input type="number" class="gray-box2" formControlName="monto" min="1000">
             <div class="field-label">Monto solicitado ($)</div>
-            <input type="number" formControlName="monto" min="1000">
           </div>
           
           <div class="form-field">
+            
+            <input type="number" class="gray-box2" formControlName="plazo" min="1">
             <div class="field-label">Plazo (meses)</div>
-            <input type="number" formControlName="plazo" min="1">
           </div>
 
            <div class="form-field">
-            <div class="field-label">Monto autorizado ($)</div>
-            <input type="number" formControlName="montoAutorizado" min="0">
+           
+            <input type="number" class="gray-box2" formControlName="montoAutorizado" min="0">
+             <div class="field-label">Monto autorizado ($)</div>
           </div>
 
           <div class="form-field">
-            <div class="field-label">Plazo autorizado (meses)</div>
-            <input type="number" formControlName="plazoAutorizado" min="0">
+           
+            <input type="number" class="gray-box2" formControlName="plazoAutorizado" min="0">
+             <div class="field-label">Plazo autorizado (meses)</div>
           </div>
           
           <div class="form-field full-width">
+            
+            <textarea formControlName="proposito" class="gray-box2" rows="3"></textarea>
             <div class="field-label">Propósito del préstamo</div>
-            <textarea formControlName="proposito" rows="3"></textarea>
           </div>
 
         </div>
       </div>
 
-      <div class="income-expense-section">
+      <div class="reference-grid">
         <div class="ie-column">
           <h3 class="ie-title">Ingresos Mensuales</h3>
            
@@ -213,7 +218,9 @@
           -->
           <div class="form-field">
             <div class="field-label">Ingresos extra (especifique)</div>
-            <input type="text" formControlName="descripcionIngresosExtra">
+
+            <textarea type="text" class="gray-box2" formControlName="descripcionIngresosExtra"></textarea>
+
             <input type="number" formControlName="ingresosExtra" min="0">
           </div>
           
@@ -223,14 +230,16 @@
           </div>
           
           <div class="form-field total-field">
+            
             <div class="field-label">Total ingresos</div>
+
             <div class="total-amount">{{ calcularTotalIngresos() | currency }}</div>
           </div>
         </div>
         
         <div class="ie-column">
           <h3 class="ie-title">Egresos Mensuales</h3>
-          
+          <div class="field-label">Servicios hogar</div>
           <div class="form-field">
             <div class="field-label">Servicios del hogar (luz, agua, gas, internet)</div>
             <input type="number" formControlName="gastosServiciosHogar" min="0">
@@ -250,7 +259,7 @@
             <div class="field-label">Otros gastos personales</div>
             <input type="number" formControlName="otrosGastosPersonales" min="0">
           </div>
-          
+          <div class="field-label"min="0" >Gastos del negocio</div>
           <div class="form-field">
             <div class="field-label">Servicios del negocio (luz, agua, internet)</div>
             <input type="number" formControlName="gastosServiciosNegocio" min="0">
@@ -282,76 +291,76 @@
       <div class="reference-grid">
         <!-- Sección de Aval -->
         <div class="reference-section">
-          <h3 class="reference-title">Aval</h3>
+          <h3 class="ie-title">Aval</h3>
           
           <div class="form-field">
             <div class="field-label">Nombre completo</div>
-            <input type="text" formControlName="avalNombre">
+            <input type="text" class="gray-box2" formControlName="avalNombre">
           </div>
           
           <div class="form-field">
             <div class="field-label">Teléfono</div>
-            <input type="tel" formControlName="avalTelefono">
+            <input type="tel" class="gray-box2" formControlName="avalTelefono">
           </div>
           
           <div class="form-field">
             <div class="field-label">Dirección</div>
             <div class="address-fields">
-              <input type="text" formControlName="avalCalle" placeholder="Calle">
-              <input type="text" formControlName="avalNumero" placeholder="Número">
-              <input type="text" formControlName="avalColonia" placeholder="Colonia">
-              <input type="text" formControlName="avalLocalidad" placeholder="Localidad">
-              <input type="text" formControlName="avalCP" placeholder="C.P.">
-              <input type="text" formControlName="avalEstado" placeholder="Estado">
+              <input type="text" class="gray-box2" formControlName="avalCalle" placeholder="Calle">
+              <input type="text" class="gray-box2" formControlName="avalNumero" placeholder="Número">
+              <input type="text"class="gray-box2"  formControlName="avalColonia" placeholder="Colonia">
+              <input type="text"  class="gray-box2" formControlName="avalLocalidad" placeholder="Localidad">
+              <input type="text" class="gray-box2" formControlName="avalCP" placeholder="C.P.">
+              <input type="text" class="gray-box2" formControlName="avalEstado" placeholder="Estado">
             </div>
           </div>
           
           <div class="form-field">
             <div class="field-label">Ocupación</div>
-            <input type="text" formControlName="avalOcupacion">
+            <input type="text" class="gray-box2" formControlName="avalOcupacion">
           </div>
           
           <div class="form-field">
             <div class="field-label">Tiempo de conocerlo</div>
-            <input type="text" formControlName="avalTiempoConocido">
+            <input type="text" class="gray-box2"formControlName="avalTiempoConocido">
           </div>
         </div>
         
         <!-- Sección de Referencia -->
         <div class="reference-section">
-          <h3 class="reference-title">Referencia personal</h3>
+          <h3 class="ie-title">Referencia personal</h3>
           
           <!-- Mismos campos que para el aval -->
           <div class="form-field">
             <div class="field-label">Nombre completo</div>
-            <input type="text" formControlName="referenciaNombre">
+            <input type="text"class="gray-box2"  formControlName="referenciaNombre">
           </div>
           
           <div class="form-field">
             <div class="field-label">Teléfono</div>
-            <input type="tel" formControlName="referencialTelefono">
+            <input type="tel"class="gray-box2" formControlName="referencialTelefono">
           </div>
           
           <div class="form-field">
             <div class="field-label">Dirección</div>
             <div class="address-fields">
-              <input type="text" formControlName="referenciaCalle" placeholder="Calle">
-              <input type="text" formControlName="referenciaNumero" placeholder="Número">
-              <input type="text" formControlName="referenciaColonia" placeholder="Colonia">
-              <input type="text" formControlName="referenciaLocalidad" placeholder="Localidad">
-              <input type="text" formControlName="referenciaCP" placeholder="C.P.">
-              <input type="text" formControlName="referenciaEstado" placeholder="Estado">
+              <input type="text" class="gray-box2" formControlName="referenciaCalle" placeholder="Calle">
+              <input type="text" class="gray-box2"formControlName="referenciaNumero" placeholder="Número">
+              <input type="text"class="gray-box2" formControlName="referenciaColonia" placeholder="Colonia">
+              <input type="text" class="gray-box2"formControlName="referenciaLocalidad" placeholder="Localidad">
+              <input type="text" class="gray-box2"formControlName="referenciaCP" placeholder="C.P.">
+              <input type="text" class="gray-box2" formControlName="referenciaEstado" placeholder="Estado">
             </div>
           </div>
           
           <div class="form-field">
             <div class="field-label">Ocupación</div>
-            <input type="text" formControlName="referenciaOcupacion">
+            <input type="text" class="gray-box2"formControlName="referenciaOcupacion">
           </div>
           
           <div class="form-field">
             <div class="field-label">Tiempo de conocerlo</div>
-            <input type="text" formControlName="referenciaTiempoConocido">
+            <input type="text" class="gray-box2"formControlName="referenciaTiempoConocido">
           </div>
           <!-- ... otros campos de referencia ... -->
         </div>
@@ -361,12 +370,12 @@
       <div class="map-section">
         <div class="form-field">
           <div class="field-label">Mapa de ubicación de casa</div>
-          <input type="text" formControlName="mapaCasa" placeholder="URL o coordenadas">
+          <input type="text" class="gray-box2"formControlName="mapaCasa" placeholder="URL o coordenadas">
         </div>
         
         <div class="form-field">
           <div class="field-label">Mapa de ubicación de negocio/empleo</div>
-          <input type="text" formControlName="mapaNegocio" placeholder="URL o coordenadas">
+          <input type="text"class="gray-box2" formControlName="mapaNegocio" placeholder="URL o coordenadas">
         </div>
       </div>
     </div>

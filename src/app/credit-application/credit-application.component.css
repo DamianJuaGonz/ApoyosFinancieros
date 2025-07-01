@@ -122,6 +122,11 @@
     border-bottom: 1px solid #ddd;
   }
 }
+.gray-box2 {
+  background-color: #D9D9D9;
+ 
+ 
+}
 
 .form-actions {
   text-align: center;
@@ -245,6 +250,7 @@
   font-weight: bold;
   font-size: 1.1rem;
   color: #333;
+  background-color: #D9D9D9;
 }
 
 /* Sección de aval y referencias */
