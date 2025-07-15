@@ -19,22 +19,20 @@
           <input type="text" class="gray-box2" formControlName="apellidoPaterno">
            <div class="field-label">Apellido Paterno</div>
         </div>
-        
-        <!-- Foto cuadrada al lado de apellido paterno y CURP -->
-        <div class="form-field photo-upload">
- <!-- 
-          <div class="field-label">Foto</div>
-          -->
-          <div class="square-image-upload">
-            <label for="profileImage">
-              <div class="image-preview" [style.background-image]="'url(' + (profileImage || 'img/sinperfil.png') + ')'"></div>
-              <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event)" hidden>
+  
+<div class="form-field photo-upload">
+  <div class="square-image-upload">
+    <label for="profileImage">
 
-<!--<span class="upload-text">Haz clic para subir foto</span>
-              -->              
-            </label>
-          </div>
-        </div>
+      <div class="image-preview" [style.background-image]="'url(' + (profileImagePreview  || 'img/sinperfil.png') + ')'">
+
+      </div>
+
+      <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event, 'foto')" hidden>
+    </label>
+  </div>
+</div>
+
         
         <!-- Fila 2 -->
         <div class="form-field">
@@ -75,6 +73,14 @@
           <div class="field-label">Vivienda</div>
         </div>
         
+
+        <div class="form-field">
+          
+          <input type="number" class="gray-box2" formControlName="antiguedadVivienda" min="0">
+          <div class="field-label">Antigüedad (años)</div>
+        </div>
+
+
         <div class="form-field">
           
           <input type="text"class="gray-box2"  formControlName="calle">
@@ -112,12 +118,38 @@
           <input type="text" class="gray-box2"  formControlName="estado">
            <div class="field-label">Estado</div>
         </div>
+               
+        <div class="form-field">          
+          <select formControlName="EstadoCivil" class="gray-box2">
+            <option value="">Seleccione...</option>
+            <option value="propia">Soltero/a</option>
+            <option value="prestada">Casado/a</option>
+            <option value="familiar">Divorciado/a</option>
+            <option value="renta">Viudo/a</option>
+            <option value="renta">Concubinato/a</option>
+          </select>
+          <div class="field-label">Estado Civil</div>
+        </div>
         
-        <div class="form-field">
-         
+        <div class="form-field">         
           <input type="text" class="gray-box2" formControlName="conyuge">
            <div class="field-label">Nombre del cónyuge</div>
         </div>
+
+
+         <div class="form-field">          
+          <input type="text" class="gray-box2" formControlName="TelefonoCON" min="0">
+          <div class="field-label">Telefono del cónyuge</div>
+        </div>
+        
+
+  
+         <div class="form-field">
+          
+          <input type="number" class="gray-box2" formControlName="OcupacionC" min="0">
+          <div class="field-label">Ocupacion del cónyuge</div>
+        </div>
+        
         
         <div class="form-field">
           
@@ -131,6 +163,7 @@
           <input type="text" class="gray-box2" formControlName="vehiculo">
           <div class="field-label">Marca y modelo de la unidad móvil</div>
         </div>
+        
       </div>
     </div>
     
@@ -184,19 +217,7 @@
             <input type="number" class="gray-box2" formControlName="plazo" min="1">
             <div class="field-label">Plazo (meses)</div>
           </div>
-
-           <div class="form-field">
            
-            <input type="number" class="gray-box2" formControlName="montoAutorizado" min="0">
-             <div class="field-label">Monto autorizado ($)</div>
-          </div>
-
-          <div class="form-field">
-           
-            <input type="number" class="gray-box2" formControlName="plazoAutorizado" min="0">
-             <div class="field-label">Plazo autorizado (meses)</div>
-          </div>
-          
           <div class="form-field full-width">
             
             <textarea formControlName="proposito" class="gray-box2" rows="3"></textarea>
@@ -210,12 +231,7 @@
         <div class="ie-column">
           <h3 class="ie-title">Ingresos Mensuales</h3>
            
-          <!--
-          <div class="form-field">
-            <div class="field-label">Sueldo/Ingresos fijos</div>
-            <input type="number" formControlName="ingresosFijos" min="0">
-          </div>
-          -->
+         
           <div class="form-field">
             <div class="field-label">Ingresos extra (especifique)</div>
 
@@ -259,7 +275,7 @@
             <div class="field-label">Otros gastos personales</div>
             <input type="number" formControlName="otrosGastosPersonales" min="0">
           </div>
-          <div class="field-label"min="0" >Gastos del negocio</div>
+          <div class="field-label"  >Gastos del negocio</div>
           <div class="form-field">
             <div class="field-label">Servicios del negocio (luz, agua, internet)</div>
             <input type="number" formControlName="gastosServiciosNegocio" min="0">
@@ -281,10 +297,12 @@
           </div>
         </div> 
       </div>
-
-
     </div>
-
+ <div class="form-field full-width">
+          
+          <input type="number" class="gray-box2" formControlName="Valormercancia">
+          <div class="field-label">Valor estimado en mercancia, instrumentos de trabajo, (Maquinaria, muebles, etc.)</div>
+        </div>
     <div class="form-section">
       <h2 class="section-title">Datos del aval y referencias personales:</h2>
       
@@ -362,27 +380,49 @@
             <div class="field-label">Tiempo de conocerlo</div>
             <input type="text" class="gray-box2"formControlName="referenciaTiempoConocido">
           </div>
-          <!-- ... otros campos de referencia ... -->
         </div>
       </div>
       
-      <!-- Mapas de ubicación -->
       <div class="map-section">
+
         <div class="form-field">
           <div class="field-label">Mapa de ubicación de casa</div>
           <input type="text" class="gray-box2"formControlName="mapaCasa" placeholder="URL o coordenadas">
-        </div>
-        
-        <div class="form-field">
-          <div class="field-label">Mapa de ubicación de negocio/empleo</div>
-          <input type="text"class="gray-box2" formControlName="mapaNegocio" placeholder="URL o coordenadas">
-        </div>
-      </div>
-    </div>
-    
-    <!-- Autorización de consulta crediticia -->
 
-   <!-- Dentro de la sección de autorización -->
+
+  <div class="form-field photo-upload"> 
+  <div class="field-label">Mapa de ubicación casa</div>          
+  <div class="square-image-upload">
+    <label for="ubicacionCasaImage">
+      <div class="image-preview" [style.background-image]="'url(' + (ubicacionCasaPreview  || 'img/sinperfil.png') + ')'"></div>
+      <input id="ubicacionCasaImage" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionCasa')" hidden>            
+    </label>
+  </div>
+</div>
+        </div>
+        <div class="form-field">
+          <div class="field-label">Mapa de ubicación negocio/empleo</div>
+          <input type="text" class="gray-box2"formControlName="mapaTrabajo" placeholder="URL o coordenadas">
+
+
+  <div class="form-field photo-upload"> 
+  <div class="field-label">Mapa de ubicación negocio/empleo</div>          
+  <div class="square-image-upload">
+    <label for="ubicacionTrabajo">
+      <div class="image-preview" [style.background-image]="'url(' + (ubicacionTrabajoPreview  || 'img/sinperfil.png') + ')'"></div>
+      <input id="ubicacionTrabajo" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionTrabajo')" hidden>            
+    </label>
+  </div>
+</div>
+        </div>
+
+
+
+ 
+ 
+      </div>
+    </div> 
+<!-- Dentro de la sección de autorización -->
 <div class="authorization-section">
   <h2 class="section-title">Autorización para consulta de historial crediticio</h2>
   
@@ -390,37 +430,38 @@
     <p class="authorization-text">
       "Por este medio autorizo que mi información crediticia sea utilizada para los fines que al interesado le convengan"
     </p>
+
+
     
     <div class="signature-field">
+
       <div class="field-label">Firma de autorización</div>
+
       <div class="signature-container">
+
+
         <canvas #signaturePad width="400" height="200"></canvas>
+
         <div class="signature-actions">
           <button type="button" class="clear-signature" (click)="clearSignature()">
             Limpiar Firma
           </button>
-        </div>
+        </div>    
+        
+        
       </div>
+
     </div>
+
+
+
   </div>
 </div>
-    <!--
-    <div class="form-actions">
-      <button type="submit" class="submit-btn" [disabled]="!creditForm.valid || isSubmitting">
-        <span *ngIf="!isSubmitting">Enviar Solicitud</span>
-        <span *ngIf="isSubmitting">Enviando...</span>
-      </button>
-    </div>
-    
-  -->
-
-
-
+ 
+ 
     <div class="form-actions">
       <button type="submit" class="submit-btn" [disabled]="!creditForm.valid">Enviar Solicitud</button>
     </div>
-
-
   </form>
 </div>
 

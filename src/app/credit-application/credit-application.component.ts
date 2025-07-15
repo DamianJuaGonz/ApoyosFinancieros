@@ -1,76 +1,91 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-  
-import { CreditService } from '../services/credit.service';
+import { CommonModule } from '@angular/common';
 import SignaturePad from 'signature_pad';
-import { routes } from '../app.routes';
- import { Router } from '@angular/router';
+import { CreditService } from '../services/credit.service'; // Importar el servicio
+import { finalize } from 'rxjs';
+export interface ImagenSolicitud {
+  tipo: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo';
+  base64: string;
+  mime_type?: string;
+}
+
 @Component({
   selector: 'app-credit-application',
-  imports: [CommonModule,ReactiveFormsModule],
- 
   templateUrl: './credit-application.component.html',
-  styleUrl: './credit-application.component.css'
+  styleUrls: ['./credit-application.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class CreditApplicationComponent implements AfterViewInit {
-  @ViewChild('signaturePad', { static: false }) signaturePadEl!: ElementRef;
-   creditForm: FormGroup;
-  /*profileImage: string | ArrayBuffer | null = null;
-*/
-  selectedImageFile: File | null = null;
-  profileImage: string | ArrayBuffer | null = null;
+export class CreditApplicationComponent implements OnInit {
+  @ViewChild('signaturePad', { static: true }) signaturePadElement!: ElementRef;
   signaturePad!: SignaturePad;
-  isSubmitting = false;
+  
+  creditForm: FormGroup;
+  isLoading = false;
+  
+  // Propiedades para previsualización
+  profileImagePreview: string | null = null;
+  ubicacionCasaPreview: string | null = null;
+  ubicacionTrabajoPreview: string | null = null;
+  signaturePreview: string | null = null;
 
-  constructor(private fb: FormBuilder,
-    private creditService: CreditService,
-  private router: Router) {
+  // Archivos de imagen para enviar al servidor
+  private imageFiles: {
+    foto?: File;
+    ubicacionCasa?: File;
+    ubicacionTrabajo?: File;
+  } = {};
+
+  constructor(
+    private fb: FormBuilder,
+    private creditService: CreditService // Inyectar el servicio
+  ) {
     this.creditForm = this.fb.group({
-      
-      // Datos personales
-       nombre:[''],
+      // Datos personales (agregar validadores según necesidad)
+            // Datos personales
+      nombre: [''],
       apellidoPaterno: [''],
       apellidoMaterno: [''],
       curp: [''],
       telefono: [''],
       email: [''],
       vivienda: [''],
+      antiguedadVivienda: [''],
       calle: [''],
       numero: [''],
-      colonia:[''],
+      colonia: [''],
       localidad: [''],
       cp: [''],
       estado: [''],
+      EstadoCivil: [''],
       conyuge: [''],
-      hijos: [''],
-      vehiculo: [''],      
+      TelefonoCON: [''],
+      OcupacionC: [''],
+      hijos: [0],
+      vehiculo: [''],
+      
       // Datos laborales
-      direccionTrabajo:[''],
-      puesto:[''],
-      antiguedad:[''],
+      direccionTrabajo: [''],
+      puesto: [''],
+      antiguedad: [''],
       telefonoTrabajo: [''],
+      
       // Datos del préstamo
       monto: [''],
       plazo: [''],
-      montoAutorizado: [''],
-      plazoAutorizado: [''],
       proposito: [''],
-    
-       // Ingresos
-      //ingresosFijos: ['', [Validators.required, Validators.min(0)]],
       descripcionIngresosExtra: [''],
-      ingresosExtra: ['', [Validators.min(0)]],
-      gananciasNegocio: ['', [Validators.min(0)]],
-      
-      // Egresos
-      gastosServiciosHogar: ['', [Validators.min(0)]],
-      gastosComidaVestido: ['', [Validators.min(0)]],
-      gastosRentaVivienda: ['', [Validators.min(0)]],
-      otrosGastosPersonales: ['', [Validators.min(0)]],
-      gastosServiciosNegocio: ['', [Validators.min(0)]],
-      gastosRentaNegocio: ['', [Validators.min(0)]],
-      inversionNegocio: ['', [Validators.min(0)]],
+      ingresosExtra: [0],
+      gananciasNegocio: [0],
+      gastosServiciosHogar: [0],
+      gastosComidaVestido: [0],
+      gastosRentaVivienda: [0],
+      otrosGastosPersonales: [0],
+      gastosServiciosNegocio: [0],
+      gastosRentaNegocio: [0],
+      inversionNegocio: [0],
+      Valormercancia: [0],
       
       // Aval
       avalNombre: [''],
@@ -86,7 +101,7 @@ export class CreditApplicationComponent implements AfterViewInit {
       
       // Referencia
       referenciaNombre: [''],
-            referenciaTelefono: [''],
+      referencialTelefono: [''],
       referenciaCalle: [''],
       referenciaNumero: [''],
       referenciaColonia: [''],
@@ -95,178 +110,185 @@ export class CreditApplicationComponent implements AfterViewInit {
       referenciaEstado: [''],
       referenciaOcupacion: [''],
       referenciaTiempoConocido: [''],
-      
-      // Referencia
-      // ... otros campos de referencia ...
-      
-      // Mapas
-      mapaCasa: [''],
-      mapaNegocio: [''],
-      
-      // Firma (podrías guardar como base64)
-      firmaDigital: ['']
     });
   }
 
-ngAfterViewInit() {
-    this.signaturePad = new SignaturePad(this.signaturePadEl.nativeElement, {
+  ngOnInit(): void {
+    this.signaturePad = new SignaturePad(this.signaturePadElement.nativeElement, {
       backgroundColor: 'rgb(255, 255, 255)',
       penColor: 'rgb(0, 0, 0)'
     });
-    
-    this.resizeSignaturePad();
-    window.addEventListener('resize', this.resizeSignaturePad.bind(this));
   }
 
-  private resizeSignaturePad() {
-    const canvas = this.signaturePadEl.nativeElement;
-    const ratio = Math.max(window.devicePixelRatio || 1, 1);
-    
-    canvas.width = canvas.offsetWidth * ratio;
-    canvas.height = canvas.offsetHeight * ratio;
-    canvas.getContext('2d').scale(ratio, ratio);
-    
-    this.signaturePad.clear(); // Limpiar después de redimensionar
-  }
-
-  clearSignature() {
-    this.signaturePad.clear();
-  }
-   calcularTotalIngresos(): number {
-    const form = this.creditForm.value;
-    return (form.ingresosExtra || 0) + 
-           (form.gananciasNegocio || 0);
-           //(form.ingresosFijos || 0) + 
-  }
-
-  calcularTotalEgresos(): number {
-    const form = this.creditForm.value;
-    return (form.gastosServiciosHogar || 0) + 
-           (form.gastosComidaVestido || 0) + 
-           (form.gastosRentaVivienda || 0) + 
-           (form.otrosGastosPersonales || 0) + 
-           (form.gastosServiciosNegocio || 0) + 
-           (form.gastosRentaNegocio || 0) + 
-           (form.inversionNegocio || 0);
-  }
-
- 
- 
-  onImageUpload(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // Validaciones
-      if (!file.type.match('image.*')) {
-        alert('Por favor, sube solo imágenes');
-        return;
-      }
+  onImageUpload(event: Event, type: 'foto' | 'ubicacionCasa' | 'ubicacionTrabajo'): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.imageFiles[type] = file;
       
-      if (file.size > 5 * 1024 * 1024) {
-        alert('La imagen no debe exceder los 5MB');
-        return;
-      }
-      
-      this.selectedImageFile = file;
-      
-      // Mostrar previsualización
       const reader = new FileReader();
-      reader.onload = () => {
-        this.profileImage = reader.result;
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        if (type === 'foto') {
+          this.profileImagePreview = result;
+        } else if (type === 'ubicacionCasa') {
+          this.ubicacionCasaPreview = result;
+        } else if (type === 'ubicacionTrabajo') {
+          this.ubicacionTrabajoPreview = result;
+        }
       };
       reader.readAsDataURL(file);
     }
   }
 
-  onSubmit() {
-    if (this.creditForm.invalid || this.isSubmitting) return;
+  clearSignature(): void {
+    this.signaturePad.clear();
+    this.signaturePreview = null;
+  }
 
-    // Verificar si hay firma
-    if (this.signaturePad.isEmpty()) {
-      alert('Por favor, proporcione su firma de autorización');
+  calcularTotalIngresos(): number {
+    const ingresosExtra = this.creditForm.get('ingresosExtra')?.value || 0;
+    const gananciasNegocio = this.creditForm.get('gananciasNegocio')?.value || 0;
+    return Number(ingresosExtra) + Number(gananciasNegocio);
+  }
+
+  calcularTotalEgresos(): number {
+    const gastosServiciosHogar = this.creditForm.get('gastosServiciosHogar')?.value || 0;
+    const gastosComidaVestido = this.creditForm.get('gastosComidaVestido')?.value || 0;
+    const gastosRentaVivienda = this.creditForm.get('gastosRentaVivienda')?.value || 0;
+    const otrosGastosPersonales = this.creditForm.get('otrosGastosPersonales')?.value || 0;
+    const gastosServiciosNegocio = this.creditForm.get('gastosServiciosNegocio')?.value || 0;
+    const gastosRentaNegocio = this.creditForm.get('gastosRentaNegocio')?.value || 0;
+    const inversionNegocio = this.creditForm.get('inversionNegocio')?.value || 0;
+
+    return (
+      Number(gastosServiciosHogar) +
+      Number(gastosComidaVestido) +
+      Number(gastosRentaVivienda) +
+      Number(otrosGastosPersonales) +
+      Number(gastosServiciosNegocio) +
+      Number(gastosRentaNegocio) +
+      Number(inversionNegocio)
+    );
+  }
+
+  onSubmit(): void {
+    if (this.creditForm.invalid) {
+      this.creditForm.markAllAsTouched();
+      alert('Por favor complete todos los campos requeridos');
       return;
     }
 
-    this.isSubmitting = true;
+    if (this.signaturePad.isEmpty()) {
+      alert('Por favor proporcione su firma de autorización');
+      return;
+    }
 
-    // Obtener la firma como imagen
-    const signatureData = this.signaturePad.toDataURL('image/png');
+    if (!this.profileImagePreview) {
+      alert('Por favor suba una fotografía');
+      return;
+    }
+
+    this.isLoading = true;
     
-    // Calcular totales
-    const totalIngresos = this.calcularTotalIngresos();
-    const totalEgresos = this.calcularTotalEgresos();
-
-    // Preparar datos de la solicitud
-    const solicitudData = {
-      datosPersonales: this.getDatosPersonales(),
-      datosLaborales: this.getDatosLaborales(),
-      datosPrestamo: {
-        ...this.creditForm.getRawValue(),
-        totalIngresos,
-        totalEgresos
-      }
-    };
-
-    this.creditService.crearSolicitud(
-      solicitudData, 
-      this.selectedImageFile || undefined,
-      signatureData
-    ).subscribe({
-      next: () => {
-        alert('Solicitud enviada correctamente');
-        this.router.navigate(['/confirmacion']);
-      },
-      error: (err) => {
-        console.error('Error al enviar solicitud:', err);
-        alert('Ocurrió un error al enviar la solicitud');
-        this.isSubmitting = false;
-      }
+    // Preparar imágenes para enviar
+    const imagenes: any[] = [];
+  
+  // Foto (asegurarse que tiene el prefijo data:image/)
+  if (this.profileImagePreview) {
+    imagenes.push({
+      tipo: 'foto',
+      base64: this.ensureBase64Prefix(this.profileImagePreview)
+    });
+  }
+  
+  // Firma
+  const signatureData = this.signaturePad.toDataURL();
+  imagenes.push({
+    tipo: 'firma',
+    base64: this.ensureBase64Prefix(signatureData)
+  });
+  
+  // Ubicaciones (asegurar prefijo)
+  if (this.ubicacionCasaPreview) {
+    imagenes.push({
+      tipo: 'ubicacion_casa',
+      base64: this.ensureBase64Prefix(this.ubicacionCasaPreview)
+    });
+  }
+  
+  if (this.ubicacionTrabajoPreview) {
+    imagenes.push({
+      tipo: 'ubicacion_trabajo',
+      base64: this.ensureBase64Prefix(this.ubicacionTrabajoPreview)
     });
   }
 
-
-
-
-
-
-
-
-
-
+  // Enviar datos
+  this.creditService.crearSolicitud(this.creditForm.value, imagenes)
+    .pipe(finalize(() => this.isLoading = false))
+    .subscribe({
+      next: (response) => this.handleSuccess(response),
+      error: (error) => this.handleError(error)
+    });
+}
+// Dentro de tu CreditApplicationComponent
+private handleSuccess(response: any): void {
+  console.log('Solicitud enviada con éxito', response);
   
-  private getDatosPersonales(): any {
-    const form = this.creditForm.value;
-    return {
-      nombre: form.nombre,
-      apellidoPaterno: form.apellidoPaterno,
-      apellidoMaterno: form.apellidoMaterno,
-      curp: form.curp,
-      telefono: form.telefono,
-      email: form.email,
-      vivienda: form.vivienda,
-      direccion: {
-        calle: form.calle,
-        numero: form.numero,
-        colonia: form.colonia,
-        localidad: form.localidad,
-        cp: form.cp,
-        estado: form.estado
-      },
-      conyuge: form.conyuge,
-      hijos: form.hijos,
-      vehiculo: form.vehiculo
-    };
-  }
-
-  private getDatosLaborales(): any {
-    const form = this.creditForm.value;
-    return {
-      direccionTrabajo: form.direccionTrabajo,
-      puesto: form.puesto,
-      antiguedad: form.antiguedad,
-      telefonoTrabajo: form.telefonoTrabajo
-    };
-  }
-
+  // Mostrar mensaje de éxito al usuario
+  alert('¡Solicitud enviada correctamente! Número de folio: ' + (response.solicitud_id || ''));
   
+  // Resetear formulario
+  this.resetForm();
+}
+
+private handleError(error: Error): void {
+  console.error('Error al enviar la solicitud:', error);
+  
+  // Mostrar mensaje de error adecuado al usuario
+  let errorMessage = 'Error al enviar la solicitud. Por favor intente nuevamente.';
+  
+  if (error.message.includes('servidor')) {
+    errorMessage = 'Problema con el servidor. Intente más tarde.';
+  } else if (error.message.includes('conectar')) {
+    errorMessage = 'No se pudo conectar al servidor. Verifique su conexión a internet.';
+  }
+  
+  alert(errorMessage);
+  
+  // Reactivar el formulario para permitir reintentos
+  this.isLoading = false;
+}
+
+private resetForm(): void {
+  // Resetear formulario
+  this.creditForm.reset();
+  
+  // Limpiar firma
+  this.signaturePad.clear();
+  this.signaturePreview = null;
+  
+  // Limpiar previsualizaciones de imágenes
+  this.profileImagePreview = null;
+  this.ubicacionCasaPreview = null;
+  this.ubicacionTrabajoPreview = null;
+  
+  // Resetear archivos
+  this.imageFiles = {};
+  
+  // Restablecer estado de carga
+  this.isLoading = false;
+}
+private ensureBase64Prefix(base64Str: string): string {
+  // Asegurar que la cadena base64 tenga el prefijo correcto
+  if (!base64Str.startsWith('data:')) {
+    return `data:image/png;base64,${base64Str}`;
+  }
+  return base64Str;
+}
+
+
+
 
 }

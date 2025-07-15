@@ -354,20 +354,18 @@
 
 
 /* Estilos para la firma */
-.signature-container {
+/* CSS complementario */
+.signature-container canvas {
+  width: 400px; /* Igual que en el HTML */
+  height: 200px; /* Igual que en el HTML */
   border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-  margin-top: 10px;
+  touch-action: none; /* Importante para móviles */
 }
 
-canvas {
-  width: 100%;
-  height: 200px;
-  background-color: white;
-  border-radius: 4px;
+.signature-container {
+  width: fit-content; /* Ajusta al tamaño del canvas */
+  margin: 0 auto; /* Centra el contenedor */
 }
-
 .signature-actions {
   text-align: right;
   padding: 8px;

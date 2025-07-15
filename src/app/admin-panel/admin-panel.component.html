@@ -1,5 +1,5 @@
-<div class="admin-container">
-  <!-- Login Form -->
+<!--<div class="admin-container">
+   
   <div *ngIf="!isLoggedIn" class="login-container">
     <div class="login-card">
       <div class="login-header">
@@ -7,6 +7,14 @@
         <h2>Acceso Administrativo</h2>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+        <div *ngIf="errorMessage" class="error-message">
+          {{errorMessage}}
+          <button (click)="errorMessage = null" class="close-error">&times;</button>
+        </div>
+        <div *ngIf="successMessage" class="success-message">
+          {{successMessage}}
+          <button (click)="successMessage = null" class="close-error">&times;</button>
+        </div>
         <div class="form-group">
           <label for="username">Usuario</label>
           <input 
@@ -15,7 +23,11 @@
             formControlName="username" 
             placeholder="Ingrese su usuario"
             class="form-input"
+            [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
           >
+          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="validation-error">
+            Usuario requerido (mínimo 3 caracteres)
+          </div>
         </div>
         <div class="form-group">
           <label for="password">Contraseña</label>
@@ -25,40 +37,55 @@
             formControlName="password" 
             placeholder="Ingrese su contraseña"
             class="form-input"
+            [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           >
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="validation-error">
+            Contraseña requerida (mínimo 6 caracteres)
+          </div>
         </div>
         <button 
           type="submit" 
           class="login-btn"
-          [disabled]="!loginForm.valid"
+          [disabled]="!loginForm.valid || isLoading"
         >
-          Iniciar Sesión
+          <span *ngIf="!isLoading">Iniciar Sesión</span>
+          <span *ngIf="isLoading" class="spinner"></span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Admin Dashboard -->
+  
   <div *ngIf="isLoggedIn" class="dashboard">
     <header class="dashboard-header">
       <div class="header-content">
         <h1><i class="fas fa-tachometer-alt"></i> Panel de Control</h1>
         <div class="header-actions">
-          <!--<button (click)="exportToExcel()" class="export-btn">
-            <i class="fas fa-file-excel"></i> Exportar a Excel
-          </button>
-          <button (click)="exportToPDF()" class="export-btn">
-            <i class="fas fa-file-pdf"></i> Exportar a PDF
-          </button>-->
           <button (click)="logout()" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
           </button>
         </div>
       </div>
     </header>
-    <!-- Main Content -->
+
+   
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+     
+    <div *ngIf="errorMessage" class="global-error">
+      {{errorMessage}}
+      <button (click)="errorMessage = null" class="close-error">&times;</button>
+    </div>
+    
+    <div *ngIf="successMessage" class="global-success">
+      {{successMessage}}
+      <button (click)="successMessage = null" class="close-error">&times;</button>
+    </div>
+ 
     <main class="dashboard-content">
-      <!-- Stats Cards -->
+      
       <div class="stats-container">
         <div class="stat-card">
           <div class="stat-value">{{solicitudes.length}}</div>
@@ -70,15 +97,20 @@
           <div class="stat-label">Aprobadas</div>
           <i class="fas fa-check-circle stat-icon"></i>
         </div>
+        <div class="stat-card rejected">
+          <div class="stat-value">{{solicitudesRechazadas.length}}</div>
+          <div class="stat-label">Rechazadas</div>
+          <i class="fas fa-times-circle stat-icon"></i>
+        </div>
       </div>
 
-      <!-- Solicitudes Pendientes -->
- <section class="section">
+      
+      <section class="section">
         <div class="section-header">
           <h2><i class="fas fa-hourglass-half"></i> Solicitudes Pendientes</h2>
         </div>
         
-        <div *ngIf="solicitudes.length === 0" class="empty-state">
+        <div *ngIf="solicitudes.length === 0 && !isLoading" class="empty-state">
           <i class="fas fa-inbox"></i>
           <p>No hay solicitudes pendientes</p>
         </div>
@@ -87,14 +119,14 @@
           <div *ngFor="let solicitud of solicitudes" class="request-card">
             <div class="card-header">
               <div class="user-info">
-                <div *ngIf="solicitud.fotoUrl" class="user-avatar">
-                  <img [src]="solicitud.fotoUrl" alt="Foto del solicitante">
+                <div *ngIf="getImageUrl(solicitud, 'foto')" class="user-avatar">
+                  <img [src]="getImageUrl(solicitud, 'foto')" alt="Foto del solicitante">
                 </div>
                 <div class="user-details">
-                  <h3>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h3>
+                  <h3>{{ getFullName(solicitud) }}</h3>
                   <span class="request-date">
                     <i class="far fa-calendar-alt"></i> 
-                    {{solicitud.fechaSolicitud | date:'mediumDate'}}
+                    {{ formatDate(solicitud.fecha_solicitud) }}
                   </span>
                 </div>
               </div>
@@ -103,159 +135,273 @@
 
             <div class="card-body">
               <div class="info-row">
-                <span><i class="fas fa-phone"></i> {{solicitud.datosPersonales.telefono}}</span>
-                <span><i class="fas fa-dollar-sign"></i> {{solicitud.datosPrestamo.monto | currency}}</span>
-                <span><i class="fas fa-calendar-week"></i> {{solicitud.datosPrestamo.plazo}} meses</span>
+                <span><i class="fas fa-phone"></i> {{ parseJsonField(solicitud.datos_personales)?.telefono || 'N/A' }}</span>
+                <span><i class="fas fa-dollar-sign"></i> {{ parseJsonField(solicitud.datos_prestamo)?.monto | currency }}</span>
+                <span><i class="fas fa-calendar-week"></i> {{ parseJsonField(solicitud.datos_prestamo)?.plazo || 'N/A' }} meses</span>
               </div>
               
               <div class="info-row totals-row">
-                <span><i class="fas fa-arrow-up"></i> {{solicitud.totalIngresos | currency}}</span>
-                <span><i class="fas fa-arrow-down"></i> {{solicitud.totalEgresos | currency}}</span>
+                <span><i class="fas fa-arrow-up"></i> {{solicitud.total_ingresos | currency}}</span>
+                <span><i class="fas fa-arrow-down"></i> {{solicitud.total_egresos | currency}}</span>
               </div>
 
-              <div *ngIf="solicitud.datosPrestamo.proposito" class="info-row">
+              <div *ngIf="parseJsonField(solicitud.datos_prestamo)?.proposito" class="info-row">
                 <p class="purpose">
                   <i class="far fa-comment-dots"></i> 
-                  {{solicitud.datosPrestamo.proposito}}
+                  {{ parseJsonField(solicitud.datos_prestamo)?.proposito }}
                 </p>
               </div>
             </div>
 
             <div class="card-actions">
-              <button (click)="verDetalles(solicitud)" class="action-btn details">
+              <button (click)="showDetails(solicitud)" class="action-btn details">
                 <i class="fas fa-eye"></i> Detalles
               </button>
               <button (click)="exportToExcel(solicitud)" class="action-btn excel">
-    <i class="fas fa-file-excel"></i> Excel
-  </button>
-  <!--
-  <button (click)="exportToPDF(solicitud)" class="action-btn pdf">
-    <i class="fas fa-file-pdf"></i> PDF
-  </button>-->
-              <button (click)="aprobarSolicitud(solicitud.id)" class="action-btn approve">
+                <i class="fas fa-file-excel"></i> Excel
+              </button>
+              <button (click)="changeRequestStatus(solicitud.id, 'aprobada')" class="action-btn approve">
                 <i class="fas fa-check"></i> Aprobar
               </button>
-              <button (click)="rechazarSolicitud(solicitud)" class="action-btn reject">
+              <button (click)="changeRequestStatus(solicitud.id, 'rechazada')" class="action-btn reject">
                 <i class="fas fa-times"></i> Rechazar
               </button>
             </div>
           </div>
         </div>
       </section>
-      <!-- Solicitudes Aprobadas -->
+ 
       <section class="section">
-  <div class="section-header">
-    <h2><i class="fas fa-check-circle"></i> Solicitudes Aprobadas</h2>
-  </div>
-  
-  <div *ngIf="solicitudesAprobadas.length === 0" class="empty-state">
-    <i class="fas fa-inbox"></i>
-    <p>No hay solicitudes aprobadas</p>
-  </div>
-
-  <div class="card-grid">
-    <div *ngFor="let solicitud of solicitudesAprobadas" class="request-card approved-card">
-      <div class="card-header">
-        <div class="user-info">
-          <div *ngIf="solicitud.fotoUrl" class="user-avatar">
-            <img [src]="solicitud.fotoUrl" alt="Foto del solicitante">
-          </div>
-          <div class="user-details">
-            <h3>{{solicitud.datosPersonales.nombre}} {{solicitud.datosPersonales.apellidoPaterno}}</h3>
-            <span class="request-date">
-              <i class="far fa-calendar-alt"></i> 
-              {{solicitud.fechaSolicitud | date:'mediumDate'}}
-            </span>
-          </div>
-        </div>
-        <span class="badge approved">Aprobada</span>
-      </div>
-
-      <div class="card-body">
-        <div class="info-row">
-          <span><i class="fas fa-phone"></i> {{solicitud.datosPersonales.telefono}}</span>
-          <span><i class="fas fa-dollar-sign"></i> {{solicitud.datosPrestamo.monto | currency}}</span>
-          <span><i class="fas fa-calendar-week"></i> {{solicitud.datosPrestamo.plazo}} meses</span>
+        <div class="section-header">
+          <h2><i class="fas fa-check-circle"></i> Solicitudes Aprobadas</h2>
         </div>
         
-        <div class="info-row totals-row">
-          <span><i class="fas fa-arrow-up"></i> {{solicitud.totalIngresos | currency}}</span>
-          <span><i class="fas fa-arrow-down"></i> {{solicitud.totalEgresos | currency}}</span>
+        <div *ngIf="solicitudesAprobadas.length === 0 && !isLoading" class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No hay solicitudes aprobadas</p>
         </div>
 
-        <div *ngIf="solicitud.datosPrestamo.proposito" class="info-row">
-          <p class="purpose">
-            <i class="far fa-comment-dots"></i> 
-            {{solicitud.datosPrestamo.proposito}}
-          </p>
-        </div>
-      </div>
+        <div class="card-grid">
+          <div *ngFor="let solicitud of solicitudesAprobadas" class="request-card approved-card">
+            <div class="card-header">
+              <div class="user-info">
+                <div *ngIf="getImageUrl(solicitud, 'foto')" class="user-avatar">
+                  <img [src]="getImageUrl(solicitud, 'foto')" alt="Foto del solicitante">
+                </div>
+                <div class="user-details">
+                  <h3>{{ getFullName(solicitud) }}</h3>
+                  <span class="request-date">
+                    <i class="far fa-calendar-alt"></i> 
+                    {{ formatDate(solicitud.fecha_solicitud) }}
+                  </span>
+                </div>
+              </div>
+              <span class="badge approved">Aprobada</span>
+            </div>
 
-      <div class="card-actions">
-        <button (click)="verDetalles(solicitud)" class="action-btn details">
-          <i class="fas fa-eye"></i> Detalles
-        </button>
-        <button (click)="exportToExcel(solicitud)" class="action-btn pdf">
-          <i class="fas fa-file-pdf"></i> Exportar
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+            <div class="card-body">
+              <div class="info-row">
+                <span><i class="fas fa-phone"></i> {{ parseJsonField(solicitud.datos_personales)?.telefono || 'N/A' }}</span>
+                <span><i class="fas fa-dollar-sign"></i> {{ parseJsonField(solicitud.datos_prestamo)?.monto | currency }}</span>
+                <span><i class="fas fa-calendar-week"></i> {{ parseJsonField(solicitud.datos_prestamo)?.plazo || 'N/A' }} meses</span>
+              </div>
+              
+              <div class="info-row totals-row">
+                <span><i class="fas fa-arrow-up"></i> {{solicitud.total_ingresos | currency}}</span>
+                <span><i class="fas fa-arrow-down"></i> {{solicitud.total_egresos | currency}}</span>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button (click)="showDetails(solicitud)" class="action-btn details">
+                <i class="fas fa-eye"></i> Detalles
+              </button>
+              <button (click)="exportToExcel(solicitud)" class="action-btn excel">
+                <i class="fas fa-file-excel"></i> Excel
+              </button>
+              <button (click)="deleteRequest(solicitud.id)" class="action-btn delete">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <section class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-times-circle"></i> Solicitudes Rechazadas</h2>
+        </div>
+        
+        <div *ngIf="solicitudesRechazadas.length === 0 && !isLoading" class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No hay solicitudes rechazadas</p>
+        </div>
+
+        <div class="card-grid">
+          <div *ngFor="let solicitud of solicitudesRechazadas" class="request-card rejected-card">
+            <div class="card-header">
+              <div class="user-info">
+                <div *ngIf="getImageUrl(solicitud, 'foto')" class="user-avatar">
+                  <img [src]="getImageUrl(solicitud, 'foto')" alt="Foto del solicitante">
+                </div>
+                <div class="user-details">
+                  <h3>{{ getFullName(solicitud) }}</h3>
+                  <span class="request-date">
+                    <i class="far fa-calendar-alt"></i> 
+                    {{ formatDate(solicitud.fecha_solicitud) }}
+                  </span>
+                </div>
+              </div>
+              <span class="badge rejected">Rechazada</span>
+            </div>
+
+            <div class="card-body">
+              <div class="info-row">
+                <span><i class="fas fa-phone"></i> {{ parseJsonField(solicitud.datos_personales)?.telefono || 'N/A' }}</span>
+                <span><i class="fas fa-dollar-sign"></i> {{ parseJsonField(solicitud.datos_prestamo)?.monto | currency }}</span>
+                <span><i class="fas fa-calendar-week"></i> {{ parseJsonField(solicitud.datos_prestamo)?.plazo || 'N/A' }} meses</span>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button (click)="showDetails(solicitud)" class="action-btn details">
+                <i class="fas fa-eye"></i> Detalles
+              </button>
+              <button (click)="exportToExcel(solicitud)" class="action-btn excel">
+                <i class="fas fa-file-excel"></i> Excel
+              </button>
+              <button (click)="deleteRequest(solicitud.id)" class="action-btn delete">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
-
-<div *ngIf="showModal" class="modal-overlay">
+ 
+  <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-container">
       <div class="modal-header">
-        <h2>Detalles de la Solicitud</h2>
-        <button (click)="cerrarModal()" class="modal-close">&times;</button>
+        <h2>Detalles de la Solicitud #{{selectedSolicitud?.id}}</h2>
+        <button (click)="closeModal()" class="modal-close">&times;</button>
       </div>
       
       <div class="modal-body">
-        <div *ngIf="selectedSolicitud">
-          <div class="modal-section">
-            <h3><i class="fas fa-user"></i> Datos Personales</h3>
-            <div class="modal-photo-container">
-              <img *ngIf="selectedSolicitud.fotoUrl" [src]="selectedSolicitud.fotoUrl" alt="Foto" class="modal-photo">
-            </div>
-            <div class="modal-grid">
-              <div><strong>Nombre:</strong> {{selectedSolicitud.datosPersonales.nombre}}</div>
-              <div><strong>Apellido Paterno:</strong> {{selectedSolicitud.datosPersonales.apellidoPaterno}}</div>
-              <div><strong>Apellido Materno:</strong> {{selectedSolicitud.datosPersonales.apellidoMaterno}}</div>
-              <div><strong>CURP:</strong> {{selectedSolicitud.datosPersonales.curp}}</div>
-              <!-- Más campos personales... -->
+        <div *ngIf="selectedSolicitud"> 
+          <div class="modal-tabs">
+            <button (click)="selectImage('foto')" [class.active]="selectedImageType === 'foto'">
+              <i class="fas fa-user"></i> Foto
+            </button>
+            <button (click)="selectImage('firma')" [class.active]="selectedImageType === 'firma'">
+              <i class="fas fa-signature"></i> Firma
+            </button>
+            <button (click)="selectImage('ubicacion_casa')" [class.active]="selectedImageType === 'ubicacion_casa'">
+              <i class="fas fa-home"></i> Ubicación
+            </button>
+            <button (click)="selectImage('ubicacion_trabajo')" [class.active]="selectedImageType === 'ubicacion_trabajo'">
+              <i class="fas fa-building"></i> Trabajo
+            </button>
+          </div>
+ 
+          <div class="modal-image-preview">
+            <img *ngIf="getImageUrl(selectedSolicitud, selectedImageType)" 
+                 [src]="getImageUrl(selectedSolicitud, selectedImageType)" 
+                 [alt]="selectedImageType">
+            <div *ngIf="!getImageUrl(selectedSolicitud, selectedImageType)" class="no-image">
+              <i class="far fa-image"></i>
+              <p>No hay imagen disponible</p>
             </div>
           </div>
-
+ 
+          <div class="modal-section">
+            <h3><i class="fas fa-user"></i> Datos Personales</h3>
+            <div class="modal-grid">
+              <div><strong>Nombre:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.nombre || 'N/A' }}</div>
+              <div><strong>Apellido Paterno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellidoPaterno || 'N/A' }}</div>
+              <div><strong>Apellido Materno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellidoMaterno || 'N/A' }}</div>
+              <div><strong>CURP:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.curp || 'N/A' }}</div>
+              <div><strong>Teléfono:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.telefono || 'N/A' }}</div>
+              <div><strong>Email:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.email || 'N/A' }}</div>
+              <div><strong>Vivienda:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.vivienda || 'N/A' }}</div>
+              <div><strong>Estado Civil:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.estadoCivil || 'N/A' }}</div>
+              <div><strong>Vehículo:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.vehiculo ? 'Sí' : 'No' }}</div>
+              <div><strong>Hijos:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.hijos || '0' }}</div>
+            </div>
+            
+            <div *ngIf="parseJsonField(selectedSolicitud.datos_personales)?.conyuge">
+              <h4><i class="fas fa-user-friends"></i> Datos del Cónyuge</h4>
+              <div class="modal-grid">
+                <div><strong>Nombre:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.nombre || 'N/A' }}</div>
+                <div><strong>Teléfono:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.telefono || 'N/A' }}</div>
+                <div><strong>Ocupación:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.ocupacion || 'N/A' }}</div>
+              </div>
+            </div>
+            
+            <div *ngIf="parseJsonField(selectedSolicitud.datos_personales)?.direccion">
+              <h4><i class="fas fa-map-marker-alt"></i> Dirección</h4>
+              <div class="modal-grid">
+                <div><strong>Calle:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.calle || 'N/A' }}</div>
+                <div><strong>Número:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.numero || 'N/A' }}</div>
+                <div><strong>Colonia:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.colonia || 'N/A' }}</div>
+                <div><strong>Localidad:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.localidad || 'N/A' }}</div>
+                <div><strong>C.P.:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.cp || 'N/A' }}</div>
+                <div><strong>Estado:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.direccion?.estado || 'N/A' }}</div>
+              </div>
+            </div>
+          </div>
+ 
           <div class="modal-section">
             <h3><i class="fas fa-briefcase"></i> Datos Laborales</h3>
             <div class="modal-grid">
-              <!-- Campos laborales... -->
+              <div><strong>Puesto:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.puesto || 'N/A' }}</div>
+              <div><strong>Antigüedad:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.antiguedad || 'N/A' }}</div>
+              <div><strong>Teléfono Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.telefonoTrabajo || 'N/A' }}</div>
+              <div><strong>Dirección Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.direccionTrabajo || 'N/A' }}</div>
             </div>
           </div>
-
+ 
           <div class="modal-section">
             <h3><i class="fas fa-hand-holding-usd"></i> Datos del Préstamo</h3>
             <div class="modal-grid">
-              <div><strong>Monto solicitado:</strong> {{selectedSolicitud.datosPrestamo.monto | currency}}</div>
-              <div><strong>Plazo solicitado:</strong> {{selectedSolicitud.datosPrestamo.plazo}} meses</div>
-              <div><strong>Total ingresos:</strong> {{selectedSolicitud.totalIngresos | currency}}</div>
-              <div><strong>Total egresos:</strong> {{selectedSolicitud.totalEgresos | currency}}</div>
-              <!-- Más campos de préstamo... -->
+              <div><strong>Monto solicitado:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.monto | currency }}</div>
+              <div><strong>Plazo solicitado:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.plazo || 'N/A' }} meses</div>
+              <div><strong>Propósito:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.proposito || 'N/A' }}</div>
+              <div><strong>Total ingresos:</strong> {{ selectedSolicitud.total_ingresos | currency }}</div>
+              <div><strong>Total egresos:</strong> {{ selectedSolicitud.total_egresos | currency }}</div>
             </div>
-          </div>
-
-          <div *ngIf="selectedSolicitud.firmaUrl" class="modal-section">
-            <h3><i class="fas fa-signature"></i> Firma de Autorización</h3>
-            <img [src]="selectedSolicitud.firmaUrl" alt="Firma" class="modal-signature">
+            
+            <h4><i class="fas fa-chart-line"></i> Detalles Financieros</h4>
+            <div class="modal-grid">
+              <div><strong>Ingresos extra:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.ingresosExtra | currency }}</div>
+              <div><strong>Ganancias negocio:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.gananciasNegocio | currency }}</div>
+              <div><strong>Gastos servicios hogar:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.gastosServiciosHogar | currency }}</div>
+              <div><strong>Gastos comida/vestido:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.gastosComidaVestido | currency }}</div>
+              <div><strong>Gastos renta vivienda:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.gastosRentaVivienda | currency }}</div>
+              <div><strong>Otros gastos personales:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.otrosGastosPersonales | currency }}</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button (click)="cerrarModal()" class="modal-btn">Cerrar</button>
+        <button (click)="exportToExcel(selectedSolicitud)" class="modal-btn excel">
+          <i class="fas fa-file-excel"></i> Exportar a Excel
+        </button>
+        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+                (click)="changeRequestStatus(selectedSolicitud.id, 'aprobada')" 
+                class="modal-btn approve">
+          <i class="fas fa-check"></i> Aprobar Solicitud
+        </button>
+        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+                (click)="changeRequestStatus(selectedSolicitud.id, 'rechazada')" 
+                class="modal-btn reject">
+          <i class="fas fa-times"></i> Rechazar Solicitud
+        </button>
+        <button (click)="closeModal()" class="modal-btn close">
+          <i class="fas fa-times"></i> Cerrar
+        </button>
       </div>
     </div>
   </div>
-</div>
+</div>-->

@@ -6,7 +6,8 @@ import { RequisitosComponent } from './requisitos/requisitos.component';
 import { NosotrosComponent } from './nosotros/nosotros.component';
 import { CreditosComponent } from './creditos/creditos.component';
 import { CreditApplicationComponent } from './credit-application/credit-application.component';
-import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';  
+import { ApiTestComponent } from './api-test/api-test.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent}, // Ruta principal
@@ -28,7 +29,8 @@ export const routes: Routes = [
 { path: 'credito-incremento', component: CreditosComponent,data: { tipo: 'incremento' } } ,
 { path: 'credito-comercial', component: CreditosComponent,data: { tipo: 'comercial' } } ,
 { path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } ,
-{ path: 'admin', component: AdminPanelComponent },
+
+{ path: 'admin', component: ApiTestComponent },
 
 { path: 'formulario', component: CreditApplicationComponent }, // Ruta para Únete
 ];
