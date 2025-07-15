@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import * as ExcelJS from 'exceljs';
 import { adminpanelservice } from '../services/admin-panel.service';
 import { CommonModule } from '@angular/common';
+import { privateDecrypt } from 'node:crypto';
  
 
 @Component({
@@ -35,28 +36,29 @@ export class AdminPanelComponent implements OnInit {
   selectedSolicitud: any = null;
   selectedImageType: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' = 'foto';
 
-  constructor(
+constructor(
     private fb: FormBuilder,
-    private adminService: adminpanelservice,
-    private creditService: CreditService // Inyectar el servicio
-  ) {
+    private adminpanelservice: adminpanelservice,
+    private creditService: CreditService
+) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+        username: ['', [Validators.required, Validators.minLength(3)]],
+        password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
-
+    
+    this.isLoggedIn = this.adminpanelservice.isAuthenticated();
+}
   ngOnInit(): void {
-    this.isLoggedIn = this.adminService.isAuthenticated();
+    this.isLoggedIn = this.adminpanelservice.isAuthenticated();
     if (this.isLoggedIn) {
       this.cargarSolicitudes();
     }
   }
 
   // ==================== MÉTODOS DE AUTENTICACIÓN ====================
-  login(): void {
+ login(): void {
     if (this.loginForm.invalid) {
-      return;
+        return;
     }
 
     this.isLoading = true;
@@ -64,22 +66,20 @@ export class AdminPanelComponent implements OnInit {
 
     const { username, password } = this.loginForm.value;
 
-    this.adminService.login(username, password).subscribe({
-      next: () => {
-        this.isLoggedIn = true;
-        this.isLoading = false;
-        this.cargarSolicitudes();
-        this.showSuccess('Sesión iniciada correctamente');
-      },
-      error: (error) => {
-        this.errorMessage = 'Credenciales incorrectas' ;
-        this.isLoading = false;
-      }
+    this.adminpanelservice.login(username, password).subscribe({
+        next: () => {
+            this.isLoggedIn = true;
+            this.isLoading = false;
+            this.cargarSolicitudes();
+        },
+        error: (error) => {
+            this.errorMessage = 'Credenciales incorrectas';
+            this.isLoading = false;
+        }
     });
-  }
-
+}
   logout(): void {
-    this.adminService.logout();
+    this.adminpanelservice.logout();
     this.isLoggedIn = false;
     this.solicitudes = [];
     this.solicitudesAprobadas = [];
@@ -89,27 +89,38 @@ export class AdminPanelComponent implements OnInit {
   }
 
   // ==================== MÉTODOS DE SOLICITUDES ====================
-  cargarSolicitudes(): void {
-    this.isLoading = true;
-    
-    this.adminService.getSolicitudes().subscribe({
-      next: (solicitudes) => {
-        this.solicitudes = solicitudes.filter((s: any) => s.estado === 'pendiente');
-        this.solicitudesAprobadas = solicitudes.filter((s: any) => s.estado === 'aprobada');
-        this.solicitudesRechazadas = solicitudes.filter((s: any) => s.estado === 'rechazada');
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.showError('Error al cargar solicitudes');
-        this.isLoading = false;
+// En admin-panel.component.ts
+
+cargarSolicitudes(): void {
+  this.isLoading = true;
+  this.errorMessage = null;
+  
+  console.log('Token actual:', this.adminpanelservice.getAuthHeaders().get('Authorization')); // Verifica el token
+  
+  this.adminpanelservice.getSolicitudes().subscribe({
+    next: (solicitudes) => {
+      console.log('Solicitudes recibidas:', solicitudes);
+      this.solicitudes = solicitudes;
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error en componente:', error);
+      this.errorMessage = typeof error === 'string' ? error : 'Error al cargar solicitudes';
+      this.isLoading = false;
+      
+      // Si es error de autenticación, forzar logout
+      if (error.includes('Sesión expirada')) {
+        this.adminpanelservice.logout();
+        this.isLoggedIn = false;
       }
-    });
-  }
+    }
+  });
+}
 
   changeRequestStatus(id: number, estado: string): void {
     this.isLoading = true;
     
-    this.adminService.cambiarEstadoSolicitud(id, estado).subscribe({
+    this.adminpanelservice.cambiarEstadoSolicitud(id, estado).subscribe({
       next: () => {
         this.cargarSolicitudes();
         this.showModal = false;
@@ -139,7 +150,7 @@ export class AdminPanelComponent implements OnInit {
   showDetails(solicitud: any): void {
     this.isLoading = true;
     
-    this.adminService.getSolicitudById(solicitud.id).subscribe({
+    this.adminpanelservice.getSolicitudById(solicitud.id).subscribe({
       next: (solicitudCompleta) => {
         this.selectedSolicitud = solicitudCompleta;
         this.selectedImageType = 'foto';
