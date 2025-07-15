@@ -30,7 +30,7 @@ export const routes: Routes = [
 { path: 'credito-comercial', component: CreditosComponent,data: { tipo: 'comercial' } } ,
 { path: 'credito-consumo', component: CreditosComponent,data: { tipo: 'consumo' } } ,
 
-{ path: 'admin', component: ApiTestComponent },
+{ path: 'admin', component: AdminPanelComponent },
 
 { path: 'formulario', component: CreditApplicationComponent }, // Ruta para Únete
 ];

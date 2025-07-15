@@ -138,294 +138,157 @@ interface ImagenSolicitud {
   base64: string;
   
 }*/
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-export interface ImagenSolicitud {
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+interface ImagenSolicitud {
   tipo: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo';
   base64: string;
   mime_type?: string;
 }
-
-export interface SolicitudData {
-  // Datos personales
-  nombre: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  curp: string;
-  telefono: string;
-  email: string;
-  vivienda: string;
-  antiguedadVivienda: string;
-  calle: string;
-  numero: string;
-  colonia: string;
-  localidad: string;
-  cp: string;
-  estado: string;
-  EstadoCivil: string;
-  conyuge: string;
-  TelefonoCON: string;
-  OcupacionC: string;
-  hijos: number;
-  vehiculo: string;
-  
-  // Datos laborales
-  direccionTrabajo: string;
-  puesto: string;
-  antiguedad: string;
-  telefonoTrabajo: string;
-  
-  // Datos del préstamo
-  monto: string;
-  plazo: string;
-  proposito: string;
-  descripcionIngresosExtra: string;
-  ingresosExtra: number;
-  gananciasNegocio: number;
-  gastosServiciosHogar: number;
-  gastosComidaVestido: number;
-  gastosRentaVivienda: number;
-  otrosGastosPersonales: number;
-  gastosServiciosNegocio: number;
-  gastosRentaNegocio: number;
-  inversionNegocio: number;
-  Valormercancia: number;
-  
-  // Aval
-  avalNombre: string;
-  avalTelefono: string;
-  avalCalle: string;
-  avalNumero: string;
-  avalColonia: string;
-  avalLocalidad: string;
-  avalCP: string;
-  avalEstado: string;
-  avalOcupacion: string;
-  avalTiempoConocido: string;
-  
-  // Referencia
-  referenciaNombre: string;
-  referencialTelefono: string;
-  referenciaCalle: string;
-  referenciaNumero: string;
-  referenciaColonia: string;
-  referenciaLocalidad: string;
-  referenciaCP: string;
-  referenciaEstado: string;
-  referenciaOcupacion: string;
-  referenciaTiempoConocido: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class CreditService {
-  private apiUrl = 'https://apoyosfinancieros.com.mx/api';
-  private authToken: string | null = null;
+  private apiUrl = 'https://apoyosfinancieros.com.mx/api/solicitudes.php'; // Cambiar a localhost en desarrollo si es necesario
 
-  constructor(private http: HttpClient) {
-    this.loadToken();
-  }
+  constructor(private http: HttpClient) { }
 
-  private loadToken(): void {
-    this.authToken = localStorage.getItem('auth_token');
-  }
+  crearSolicitud(datosSolicitud: any, imagenes: any[]): Observable<any> {
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }),
+        withCredentials: true
+    };
 
-  private getAuthHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+    // Preparar los datos para enviar
+    const datosPersonales = this.prepararDatosPersonales(datosSolicitud);
+    const datosLaborales = this.prepararDatosLaborales(datosSolicitud);
+    const datosPrestamo = this.prepararDatosPrestamo(datosSolicitud);
+
+    // Calcular totales
+    const totalIngresos = this.calcularTotalIngresos(datosSolicitud);
+    const totalEgresos = this.calcularTotalEgresos(datosSolicitud);
+
+    // Crear payload
+    const payload = {
+      datos_personales: datosPersonales,
+      datos_laborales: datosLaborales,
+      datos_prestamo: datosPrestamo,
+      total_ingresos: totalIngresos,
+      total_egresos: totalEgresos,
+      imagenes: imagenes
+    };
+
+    return this.http.post(this.apiUrl, payload, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
     });
+  return this.http.post(this.apiUrl, payload, httpOptions);
+}
 
-    if (this.authToken) {
-      headers = headers.set('Authorization', `Bearer ${this.authToken}`);
-    }
-
-    return headers;
-  }
-/*
-  private handleError(error: any): Observable<never> {
-    console.error('Error en el servicio:', error);
-    let errorMessage = 'Ocurrió un error en la solicitud';
-    
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Error del lado del servidor
-      errorMessage = `Código: ${error.status}\nMensaje: ${error.message}`;
-      
-      if (error.error && error.error.message) {
-        errorMessage = error.error.message;
-      }
-    }
-    
-    return throwError(() => new Error(errorMessage));
-  }
-*/
-  crearSolicitud(solicitudData: any, imagenes: any[]): Observable<any> {
-    const formData = new FormData();
-    
-    // Convertir JSON a strings y añadir al FormData
-    formData.append('datos_personales', JSON.stringify(this.extraerDatosPersonales(solicitudData)));
-    formData.append('datos_laborales', JSON.stringify(this.extraerDatosLaborales(solicitudData)));
-    formData.append('datos_prestamo', JSON.stringify(this.extraerDatosPrestamo(solicitudData)));
-    
-    // Añadir imágenes al FormData
-    imagenes.forEach((imagen, index) => {
-      const blob = this.convertBase64ToBlob(imagen.base64);
-      formData.append(`imagenes[${index}][tipo]`, imagen.tipo);
-      formData.append(`imagenes[${index}][imagen]`, blob, `${imagen.tipo}_${Date.now()}.${this.getFileExtension(imagen.base64)}`);
-    });
-
-    return this.http.post(`${this.apiUrl}/solicitudes/crear`, formData)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  private convertBase64ToBlob(base64Data: string): Blob {
-    // Separar el tipo MIME de los datos base64
-    const parts = base64Data.split(';base64,');
-    const contentType = parts[0].split(':')[1];
-    const raw = window.atob(parts[1]);
-    const rawLength = raw.length;
-    const uInt8Array = new Uint8Array(rawLength);
-
-    for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-
-    return new Blob([uInt8Array], { type: contentType });
-  }
-
-  private getFileExtension(base64Data: string): string {
-    const mime = base64Data.split(';')[0].split(':')[1];
-    switch (mime) {
-      case 'image/png': return 'png';
-      case 'image/jpeg': return 'jpg';
-      case 'image/jpg': return 'jpg';
-      case 'image/svg+xml': return 'svg';
-      default: return 'png';
-    }
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Error desconocido';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error del cliente: ${error.error.message}`;
-    } else {
-      errorMessage = `Error del servidor: ${error.status} - ${error.message}`;
-      if (error.error?.message) {
-        errorMessage += ` | Detalles: ${error.error.message}`;
-      }
-    }
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
-  }
-
-  private extraerDatosPersonales(formData: SolicitudData): any {
+  private prepararDatosPersonales(datos: any): any {
     return {
-      nombre: formData.nombre,
-      apellidoPaterno: formData.apellidoPaterno,
-      apellidoMaterno: formData.apellidoMaterno,
-      curp: formData.curp,
-      telefono: formData.telefono,
-      email: formData.email,
-      vivienda: formData.vivienda,
-      antiguedadVivienda: formData.antiguedadVivienda,
+      nombre: datos.nombre,
+      apellido_paterno: datos.apellidoPaterno,
+      apellido_materno: datos.apellidoMaterno,
+      curp: datos.curp,
+      telefono: datos.telefono,
+      email: datos.email,
       direccion: {
-        calle: formData.calle,
-        numero: formData.numero,
-        colonia: formData.colonia,
-        localidad: formData.localidad,
-        cp: formData.cp,
-        estado: formData.estado
+        calle: datos.calle,
+        numero: datos.numero,
+        colonia: datos.colonia,
+        localidad: datos.localidad,
+        cp: datos.cp,
+        estado: datos.estado
       },
-      estadoCivil: formData.EstadoCivil,
-      conyuge: {
-        nombre: formData.conyuge,
-        telefono: formData.TelefonoCON,
-        ocupacion: formData.OcupacionC
+      vivienda: datos.vivienda,
+      antiguedad_vivienda: datos.antiguedadVivienda,
+      estado_civil: datos.EstadoCivil,
+      conyuge: datos.conyuge,
+      telefono_conyuge: datos.TelefonoCON,
+      ocupacion_conyuge: datos.OcupacionC,
+      hijos: datos.hijos,
+      vehiculo: datos.vehiculo
+    };
+  }
+
+  private prepararDatosLaborales(datos: any): any {
+    return {
+      direccion: datos.direccionTrabajo,
+      puesto: datos.puesto,
+      antiguedad: datos.antiguedad,
+      telefono: datos.telefonoTrabajo
+    };
+  }
+
+  private prepararDatosPrestamo(datos: any): any {
+    return {
+      monto: datos.monto,
+      plazo: datos.plazo,
+      proposito: datos.proposito,
+      descripcion_ingresos_extra: datos.descripcionIngresosExtra,
+      aval: {
+        nombre: datos.avalNombre,
+        telefono: datos.avalTelefono,
+        direccion: {
+          calle: datos.avalCalle,
+          numero: datos.avalNumero,
+          colonia: datos.avalColonia,
+          localidad: datos.avalLocalidad,
+          cp: datos.avalCP,
+          estado: datos.avalEstado
+        },
+        ocupacion: datos.avalOcupacion,
+        tiempo_conocido: datos.avalTiempoConocido
       },
-      hijos: formData.hijos,
-      vehiculo: formData.vehiculo
+      referencia: {
+        nombre: datos.referenciaNombre,
+        telefono: datos.referencialTelefono,
+        direccion: {
+          calle: datos.referenciaCalle,
+          numero: datos.referenciaNumero,
+          colonia: datos.referenciaColonia,
+          localidad: datos.referenciaLocalidad,
+          cp: datos.referenciaCP,
+          estado: datos.referenciaEstado
+        },
+        ocupacion: datos.referenciaOcupacion,
+        tiempo_conocido: datos.referenciaTiempoConocido
+      }
     };
   }
 
-  private extraerDatosLaborales(formData: SolicitudData): any {
-    return {
-      direccionTrabajo: formData.direccionTrabajo,
-      puesto: formData.puesto,
-      antiguedad: formData.antiguedad,
-      telefonoTrabajo: formData.telefonoTrabajo
-    };
+  private calcularTotalIngresos(datos: any): number {
+    const ingresosExtra = datos.ingresosExtra || 0;
+    const gananciasNegocio = datos.gananciasNegocio || 0;
+    return Number(ingresosExtra) + Number(gananciasNegocio);
   }
 
-  private extraerDatosPrestamo(formData: SolicitudData): any {
-    return {
-      monto: formData.monto,
-      plazo: formData.plazo,
-      proposito: formData.proposito,
-      ingresosExtra: formData.ingresosExtra,
-      descripcionIngresosExtra: formData.descripcionIngresosExtra,
-      gananciasNegocio: formData.gananciasNegocio,
-      gastosServiciosHogar: formData.gastosServiciosHogar,
-      gastosComidaVestido: formData.gastosComidaVestido,
-      gastosRentaVivienda: formData.gastosRentaVivienda,
-      otrosGastosPersonales: formData.otrosGastosPersonales,
-      gastosServiciosNegocio: formData.gastosServiciosNegocio,
-      gastosRentaNegocio: formData.gastosRentaNegocio,
-      inversionNegocio: formData.inversionNegocio,
-      Valormercancia: formData.Valormercancia,
-      // Datos del aval
-      avalNombre: formData.avalNombre,
-      avalTelefono: formData.avalTelefono,
-      avalCalle: formData.avalCalle,
-      avalNumero: formData.avalNumero,
-      avalColonia: formData.avalColonia,
-      avalLocalidad: formData.avalLocalidad,
-      avalCP: formData.avalCP,
-      avalEstado: formData.avalEstado,
-      avalOcupacion: formData.avalOcupacion,
-      avalTiempoConocido: formData.avalTiempoConocido,
-      // Referencia personal
-      referenciaNombre: formData.referenciaNombre,
-      referencialTelefono: formData.referencialTelefono,
-      referenciaCalle: formData.referenciaCalle,
-      referenciaNumero: formData.referenciaNumero,
-      referenciaColonia: formData.referenciaColonia,
-      referenciaLocalidad: formData.referenciaLocalidad,
-      referenciaCP: formData.referenciaCP,
-      referenciaEstado: formData.referenciaEstado,
-      referenciaOcupacion: formData.referenciaOcupacion,
-      referenciaTiempoConocido: formData.referenciaTiempoConocido
-    };
-  }
+  private calcularTotalEgresos(datos: any): number {
+    const gastosServiciosHogar = datos.gastosServiciosHogar || 0;
+    const gastosComidaVestido = datos.gastosComidaVestido || 0;
+    const gastosRentaVivienda = datos.gastosRentaVivienda || 0;
+    const otrosGastosPersonales = datos.otrosGastosPersonales || 0;
+    const gastosServiciosNegocio = datos.gastosServiciosNegocio || 0;
+    const gastosRentaNegocio = datos.gastosRentaNegocio || 0;
+    const inversionNegocio = datos.inversionNegocio || 0;
 
-  // Métodos adicionales que podrías necesitar
-  obtenerSolicitudes(estado?: string): Observable<any> {
-    const url = estado ? `${this.apiUrl}/solicitudes?estado=${estado}` : `${this.apiUrl}/solicitudes`;
-    return this.http.get(url, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  obtenerSolicitud(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/solicitudes/${id}`, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      catchError(this.handleError)
+    return (
+      Number(gastosServiciosHogar) +
+      Number(gastosComidaVestido) +
+      Number(gastosRentaVivienda) +
+      Number(otrosGastosPersonales) +
+      Number(gastosServiciosNegocio) +
+      Number(gastosRentaNegocio) +
+      Number(inversionNegocio)
     );
   }
  
-
-
-
 
 
 

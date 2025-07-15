@@ -1,22 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreditService } from '../services/credit.service';
 import { saveAs } from 'file-saver';
 import * as ExcelJS from 'exceljs';
+import { adminpanelservice } from '../services/admin-panel.service';
+import { CommonModule } from '@angular/common';
+ 
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css',
 
    
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent implements OnInit { 
   // Estados del componente
   isLoggedIn = false;
   isLoading = false;
   errorMessage: string | null = null;
+  successMessage: string | null = null;
   
   // Formularios
   loginForm: FormGroup;
@@ -24,6 +28,7 @@ export class AdminPanelComponent implements OnInit {
   // Datos
   solicitudes: any[] = [];
   solicitudesAprobadas: any[] = [];
+  solicitudesRechazadas: any[] = [];
   
   // Modal
   showModal = false;
@@ -32,7 +37,8 @@ export class AdminPanelComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private creditService: CreditService
+    private adminService: adminpanelservice,
+    private creditService: CreditService // Inyectar el servicio
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -40,11 +46,14 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+    this.isLoggedIn = this.adminService.isAuthenticated();
+    if (this.isLoggedIn) {
+      this.cargarSolicitudes();
+    }
   }
 
   // ==================== MÉTODOS DE AUTENTICACIÓN ====================
- 
   login(): void {
     if (this.loginForm.invalid) {
       return;
@@ -55,21 +64,93 @@ export class AdminPanelComponent implements OnInit {
 
     const { username, password } = this.loginForm.value;
 
-     
+    this.adminService.login(username, password).subscribe({
+      next: () => {
+        this.isLoggedIn = true;
+        this.isLoading = false;
+        this.cargarSolicitudes();
+        this.showSuccess('Sesión iniciada correctamente');
+      },
+      error: (error) => {
+        this.errorMessage = 'Credenciales incorrectas' ;
+        this.isLoading = false;
+      }
+    });
   }
 
- 
+  logout(): void {
+    this.adminService.logout();
+    this.isLoggedIn = false;
+    this.solicitudes = [];
+    this.solicitudesAprobadas = [];
+    this.solicitudesRechazadas = [];
+    this.loginForm.reset();
+    this.showSuccess('Sesión cerrada correctamente');
+  }
 
   // ==================== MÉTODOS DE SOLICITUDES ====================
- 
- 
-   
+  cargarSolicitudes(): void {
+    this.isLoading = true;
+    
+    this.adminService.getSolicitudes().subscribe({
+      next: (solicitudes) => {
+        this.solicitudes = solicitudes.filter((s: any) => s.estado === 'pendiente');
+        this.solicitudesAprobadas = solicitudes.filter((s: any) => s.estado === 'aprobada');
+        this.solicitudesRechazadas = solicitudes.filter((s: any) => s.estado === 'rechazada');
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.showError('Error al cargar solicitudes');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  changeRequestStatus(id: number, estado: string): void {
+    this.isLoading = true;
+    
+    this.adminService.cambiarEstadoSolicitud(id, estado).subscribe({
+      next: () => {
+        this.cargarSolicitudes();
+        this.showModal = false;
+        this.showSuccess(`Solicitud ${estado === 'aprobada' ? 'aprobada' : 'rechazada'} correctamente`);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.showError('Error al cambiar estado de la solicitud');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  deleteRequest(id: number): void {
+    if (!confirm('¿Estás seguro de eliminar esta solicitud?')) {
+      return;
+    }
+
+    this.isLoading = true;
+    // Aquí deberías implementar el método delete en tu servicio si lo necesitas
+    // this.adminService.deleteSolicitud(id).subscribe(...)
+    this.showError('Función de eliminación no implementada aún');
+    this.isLoading = false;
+  }
 
   // ==================== MÉTODOS DEL MODAL ====================
   showDetails(solicitud: any): void {
-    this.selectedSolicitud = solicitud;
-    this.selectedImageType = 'foto';
-    this.showModal = true;
+    this.isLoading = true;
+    
+    this.adminService.getSolicitudById(solicitud.id).subscribe({
+      next: (solicitudCompleta) => {
+        this.selectedSolicitud = solicitudCompleta;
+        this.selectedImageType = 'foto';
+        this.showModal = true;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.showError('Error al cargar detalles de la solicitud');
+        this.isLoading = false;
+      }
+    });
   }
 
   closeModal(): void {
@@ -81,21 +162,24 @@ export class AdminPanelComponent implements OnInit {
     this.selectedImageType = type;
   }
 
-  getImage(solicitud: any, type: string): string | null {
-    if (!solicitud.imagenes) return null;
-    
-    // Buscar la imagen por tipo
-    const imagen = solicitud.imagenes.find((img: any) => img.tipo === type);
-    if (!imagen) return null;
-    
-    // Si ya tiene el prefijo data:image, devolverlo directamente
-    if (imagen.imagen_base64.startsWith('data:')) {
-      return imagen.imagen_base64;
-    }
-    
-    // Si no, construir la URL data
-    return `data:${imagen.mime_type || 'image/png'};base64,${imagen.imagen_base64}`;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   async exportToExcel(solicitud: any): Promise<void> {
     try {
@@ -248,7 +332,59 @@ export class AdminPanelComponent implements OnInit {
 
 
 
+ parseJsonField(field: any): any {
+    if (typeof field === 'string') {
+      try {
+        return JSON.parse(field);
+      } catch (e) {
+        return {};
+      }
+    }
+    return field || {};
+  }
 
+  getFullName(solicitud: any): string {
+    const datos = this.parseJsonField(solicitud.datos_personales);
+    return `${datos.nombre} ${datos.apellidoPaterno} ${datos.apellidoMaterno || ''}`.trim();
+  }
+
+  getImageUrl(solicitud: any, type: string): string | null {
+    if (!solicitud.imagenes) return null;
+    
+    // Buscar la imagen por tipo
+    const imagen = solicitud.imagenes[type] || solicitud.imagenes.find((img: any) => img.tipo === type);
+    if (!imagen) return null;
+    
+    // Si ya tiene el prefijo data:image, devolverlo directamente
+    if (imagen.base64?.startsWith('data:') || imagen.imagen_base64?.startsWith('data:')) {
+      return imagen.base64 || imagen.imagen_base64;
+    }
+    
+    // Si no, construir la URL data
+    return `data:${imagen.mime_type || 'image/png'};base64,${imagen.base64 || imagen.imagen_base64}`;
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-MX', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  showError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => this.errorMessage = null, 5000);
+  }
+
+  showSuccess(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => this.successMessage = null, 5000);
+  }
 
 
 

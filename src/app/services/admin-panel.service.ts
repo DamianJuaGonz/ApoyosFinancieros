@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+ 
+import { saveAs } from 'file-saver';
 
 interface Solicitud {
   id?: number;
@@ -33,167 +35,79 @@ interface LoginResponse {
 @Injectable({
   providedIn: 'root'
 })
-export class CreditApiService {
-  private apiUrl = 'https://apoyosfinancieros.com.mx/api';
+ 
+
+ 
+export class adminpanelservice {
+  private apiUrl = 'https://apoyosfinancieros.com.mx/api/admin';
   private authToken: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.loadToken();
-  }
+  constructor(private http: HttpClient) { }
 
-  // ==================== MÉTODOS DE AUTENTICACIÓN ====================
-
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/admin/login`, { username, password }).pipe(
-      tap(response => {
-        if (response.success) {
-          this.storeToken(response.token);
+  // ==================== AUTENTICACIÓN ====================
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login.php`, { username, password }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          this.authToken = response.token;
+          localStorage.setItem('admin_token', response.token);
         }
-      }),
-      catchError(this.handleError)
+      })
     );
   }
 
   logout(): void {
     this.authToken = null;
-    localStorage.removeItem('auth_token');
-    this.router.navigate(['/login']);
+    localStorage.removeItem('admin_token');
   }
 
   isAuthenticated(): boolean {
-    return !!this.authToken;
+    return !!this.authToken || !!localStorage.getItem('admin_token');
   }
 
-  // ==================== MÉTODOS DE SOLICITUDES ====================
-
-  crearSolicitud(solicitudData: any, imagenes: any[]): Observable<any> {
-    const data = {
-      datos_personales: this.extraerDatosPersonales(solicitudData),
-      datos_laborales: this.extraerDatosLaborales(solicitudData),
-      datos_prestamo: this.extraerDatosPrestamo(solicitudData),
-      imagenes: imagenes
-    };
-
-    return this.http.post(`${this.apiUrl}/solicitudes/crear`, data, { 
-      headers: this.getAuthHeaders() 
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  obtenerSolicitudes(estado?: string): Observable<Solicitud[]> {
-    const url = estado ? `${this.apiUrl}/solicitudes?estado=${estado}` : `${this.apiUrl}/solicitudes`;
-    return this.http.get<Solicitud[]>(url, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  obtenerSolicitud(id: number): Observable<Solicitud> {
-    return this.http.get<Solicitud>(`${this.apiUrl}/solicitudes/${id}`, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  actualizarEstadoSolicitud(id: number, estado: 'aprobada' | 'rechazada'): Observable<any> {
-    return this.http.patch(
-      `${this.apiUrl}/solicitudes/${id}`,
-      { estado },
-      { headers: this.getAuthHeaders() }
-    ).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  eliminarSolicitud(id: number): Observable<any> {
-    return this.http.delete(
-      `${this.apiUrl}/solicitudes/${id}`,
-      { headers: this.getAuthHeaders() }
-    ).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  // ==================== MÉTODOS PRIVADOS ====================
-
-  private storeToken(token: string): void {
-    localStorage.setItem('auth_token', token);
-    this.authToken = token;
-  }
-
-  private loadToken(): void {
-    this.authToken = localStorage.getItem('auth_token');
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+  getAuthHeaders(): HttpHeaders {
+    const token = this.authToken || localStorage.getItem('admin_token');
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     });
-
-    if (this.authToken) {
-      headers = headers.set('Authorization', `Bearer ${this.authToken}`);
-    }
-
-    return headers;
   }
 
-  private handleError(error: any): Observable<never> {
-    let errorMessage = 'Ocurrió un error';
-    if (error.error instanceof ErrorEvent) {
-      // Error del cliente
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Error del servidor
-      errorMessage = `Código: ${error.status}\nMensaje: ${error.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
+  // ==================== SOLICITUDES ====================
+  getSolicitudes(estado?: string): Observable<any[]> {
+    const url = estado ? `${this.apiUrl}/solicitudes.php?estado=${estado}` : `${this.apiUrl}/solicitudes.php`;
+    return this.http.get<any[]>(url, { headers: this.getAuthHeaders() });
   }
 
-  // ==================== HELPERS PARA DATOS ====================
-
-  private extraerDatosPersonales(formData: any): any {
-    return {
-      nombre: formData.nombre,
-      apellidoPaterno: formData.apellidoPaterno,
-      apellidoMaterno: formData.apellidoMaterno,
-      curp: formData.curp,
-      telefono: formData.telefono,
-      email: formData.email,
-      vivienda: formData.vivienda,
-      antiguedadVivienda: formData.antiguedadVivienda,
-      direccion: {
-        calle: formData.calle,
-        numero: formData.numero,
-        colonia: formData.colonia,
-        localidad: formData.localidad,
-        cp: formData.cp,
-        estado: formData.estado
-      }
-    };
+  getSolicitudById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/solicitud.php?id=${id}`, { headers: this.getAuthHeaders() });
   }
 
-  private extraerDatosLaborales(formData: any): any {
-    return {
-      direccionTrabajo: formData.direccionTrabajo,
-      puesto: formData.puesto,
-      antiguedad: formData.antiguedad,
-      telefonoTrabajo: formData.telefonoTrabajo
-    };
+  cambiarEstadoSolicitud(id: number, estado: string): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/solicitud.php`, 
+      { id, estado },
+      { headers: this.getAuthHeaders() }
+    );
   }
 
-  private extraerDatosPrestamo(formData: any): any {
-    return {
-      monto: formData.monto,
-      plazo: formData.plazo,
-      proposito: formData.proposito,
-      ingresosExtra: formData.ingresosExtra,
-      gananciasNegocio: formData.gananciasNegocio,
-      gastosServiciosHogar: formData.gastosServiciosHogar,
-      gastosComidaVestido: formData.gastosComidaVestido
-    };
+  // ==================== REPORTES ====================
+  descargarPlantillaExcel(): Observable<ArrayBuffer> {
+    return this.http.get(`${this.apiUrl}/plantilla.xlsx`, {
+      headers: this.getAuthHeaders(),
+      responseType: 'arraybuffer'
+    });
+  }
+
+  generarReporteExcel(filtros: any): Observable<ArrayBuffer> {
+    return this.http.post(`${this.apiUrl}/reporte.php`, filtros, {
+      headers: this.getAuthHeaders(),
+      responseType: 'arraybuffer'
+    });
+  }
+
+  // ==================== UTILIDADES ====================
+  descargarArchivo(buffer: ArrayBuffer, nombreArchivo: string): void {
+    saveAs(new Blob([buffer]), nombreArchivo);
   }
 }
