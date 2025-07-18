@@ -47,7 +47,10 @@ export class CreditApplicationComponent implements OnInit {
       nombre: [''],
       apellidoPaterno: [''],
       apellidoMaterno: [''],
-      curp: [''],
+      curp: ['', [
+      Validators.required, 
+      Validators.pattern(/^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z]{2}$/)
+    ]],
       telefono: [''],
       email: [''],
       vivienda: [''],
@@ -287,8 +290,4 @@ private ensureBase64Prefix(base64Str: string): string {
   }
   return base64Str;
 }
-
-
-
-
 }
