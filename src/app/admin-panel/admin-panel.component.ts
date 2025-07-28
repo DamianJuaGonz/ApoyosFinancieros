@@ -20,7 +20,7 @@ import { forkJoin, lastValueFrom } from 'rxjs';
 export class AdminPanelComponent implements OnInit { 
   // Estados del componente
    // Estados del componente
-  isLoggedIn = false;
+ isLoggedIn = false;
   isLoading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -37,7 +37,6 @@ export class AdminPanelComponent implements OnInit {
   showModal = false;
   selectedSolicitud: any = null;
   selectedImageType: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' = 'foto';
-
   constructor(
     private fb: FormBuilder,
     private creditService: CreditService,
@@ -48,285 +47,129 @@ export class AdminPanelComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
-
-  ngOnInit(): void {
-    this.isLoggedIn = this.adminService.isAuthenticated();
-    if (this.isLoggedIn) {
-      this.cargarSolicitudes();
-    }
+   ngOnInit(): void {
+    this.adminService.isAuthenticated().subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+      if (loggedIn) {
+        this.loadSolicitudes();
+      }
+    });
   }
 
-  // ==================== MÉTODOS DE AUTENTICACIÓN ====================
-login(): void {
-  if (this.loginForm.invalid) {
-    return;
+  // Métodos de autenticación
+  login(): void {
+    if (this.loginForm.invalid) return;
+
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const { username, password } = this.loginForm.value;
+
+    this.adminService.login(username, password).subscribe({
+      next: () => {
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Credenciales incorrectas';
+        this.isLoading = false;
+      }
+    });
   }
-
-  this.isLoading = true;
-  this.errorMessage = null;
-
-  const { username, password } = this.loginForm.value;
-
-  this.adminService.login(username, password).subscribe({
-    next: () => {
-      this.isLoggedIn = true;
-      this.loadSolicitudes();
-      this.isLoading = false;
-    },
-    error: (error) => {
-      this.errorMessage = error.message || 'Error al iniciar sesión';
-      this.isLoading = false;
-    }
-  });
-}
 
   logout(): void {
     this.adminService.logout();
-    this.isLoggedIn = false;
     this.solicitudes = [];
     this.solicitudesAprobadas = [];
     this.solicitudesRechazadas = [];
-    this.loginForm.reset();
   }
 
-  // ==================== MÉTODOS DE SOLICITUDES ====================
-  cargarSolicitudes(): void {
-  this.isLoading = true;
-  
-  forkJoin([
-    this.adminService.getSolicitudes('pendiente'),
-    this.adminService.getSolicitudes('aprobada'),
-    this.adminService.getSolicitudes('rechazada')
-  ]).subscribe({
-    next: ([pendientes, aprobadas, rechazadas]) => {
-      this.solicitudes = pendientes;
-      this.solicitudesAprobadas = aprobadas;
-      this.solicitudesRechazadas = rechazadas;
-      this.isLoading = false;
-    },
-    error: (error) => {
-      this.errorMessage = 'Error al cargar solicitudes';
-      this.isLoading = false;
-    }
-  });
-}
-
-
-
-
-
-
-
-
-changeRequestStatus(id: number, estado: string): void {
-  this.isLoading = true;
-  
-  this.adminService.changeSolicitudStatus(id, estado).subscribe({
-    next: (response: any) => {
-      console.log('Respuesta completa del servidor:', response);
-      
-      if (response.success) {
-        // Actualizar las listas localmente
-        this.updateLocalRequests(id, response.data.nuevo_id, estado);
-        
-        this.successMessage = `Solicitud ${estado} correctamente (Nuevo ID: ${response.data.nuevo_id})`;
-      } else {
-        this.errorMessage = response.message || 'Error al procesar la solicitud';
-      }
-      
-      this.isLoading = false;
-      
-      if (this.showModal) {
-        this.closeModal();
-      }
-    },
-    error: (error) => {
-      console.error('Error en la petición:', error);
-      this.errorMessage = error.error?.message || `Error al ${estado} solicitud`;
-      this.isLoading = false;
-    }
-  });
-}
-
-private updateLocalRequests(oldId: number, newId: number, newStatus: string): void {
-  // Encontrar la solicitud original
-  const allRequests = [
-    ...this.solicitudes,
-    ...this.solicitudesAprobadas,
-    ...this.solicitudesRechazadas
-  ];
-  
-  const originalIndex = allRequests.findIndex(r => r.id === oldId);
-  
-  if (originalIndex !== -1) {
-    // Clonar la solicitud con nuevo ID y estado
-    const newRequest = {
-      ...allRequests[originalIndex],
-      id: newId,
-      estado: newStatus
-    };
-    
-    // Eliminar la solicitud antigua
-    this.solicitudes = this.solicitudes.filter(r => r.id !== oldId);
-    this.solicitudesAprobadas = this.solicitudesAprobadas.filter(r => r.id !== oldId);
-    this.solicitudesRechazadas = this.solicitudesRechazadas.filter(r => r.id !== oldId);
-    
-    // Agregar a la lista correspondiente
-    if (newStatus === 'aprobada') {
-      this.solicitudesAprobadas.unshift(newRequest);
-    } else if (newStatus === 'rechazada') {
-      this.solicitudesRechazadas.unshift(newRequest);
-    } else {
-      this.solicitudes.unshift(newRequest);
-    }
-  }
-}
-/*
-changeRequestStatus(id: number, estado: string): void {
-  if (!id || !estado) return;
-  
-  this.isLoading = true;
-  this.errorMessage = null;
-  
-  this.adminService.changeSolicitudStatus(id, estado).subscribe({
-    next: (response) => {
-      console.log('Respuesta del servidor:', response);
-      
-      // Actualizar la lista local sin recargar toda la página
-      this.updateLocalRequestStatus(id, estado);
-      
-      this.successMessage = `Solicitud ${estado} correctamente`;
-      this.isLoading = false;
-      
-      if (this.showModal) {
-        this.closeModal();
-      }
-    },
-    error: (error) => {
-      console.error('Error completo:', error);
-      this.errorMessage = error.error?.message || `Error al ${estado} solicitud`;
-      this.isLoading = false;
-    }
-  });
-}
-
-*/
-// Método para actualizar el estado localmente
- 
-
-// Reorganizar las solicitudes en sus listas correspondientes
-private organizeRequests(): void {
-  this.solicitudes = this.solicitudes.filter(r => r.estado === 'pendiente');
-  this.solicitudesAprobadas = this.solicitudesAprobadas.filter(r => r.estado === 'aprobada');
-  this.solicitudesRechazadas = this.solicitudesRechazadas.filter(r => r.estado === 'rechazada');
-  
-  // Agregar las solicitudes a sus nuevas listas según su estado
-  const allRequests = [
-    ...this.solicitudes,
-    ...this.solicitudesAprobadas,
-    ...this.solicitudesRechazadas
-  ];
-  
-  this.solicitudes = allRequests.filter(r => r.estado === 'pendiente');
-  this.solicitudesAprobadas = allRequests.filter(r => r.estado === 'aprobada');
-  this.solicitudesRechazadas = allRequests.filter(r => r.estado === 'rechazada');
-}
-
-
-
-
-
-
-
-
-
-
-
-private findRequestInAnyList(id: number): any {
-    const allRequests = [
-        ...this.solicitudes,
-        ...this.solicitudesAprobadas,
-        ...this.solicitudesRechazadas
-    ];
-    return allRequests.find(r => r.id === id);
-}
-
-private getErrorMessage(error: any): string {
-    if (error.message) return error.message;
-    if (error.error?.message) return error.error.message;
-    if (error.statusText) return error.statusText;
-    return 'Error desconocido al cambiar estado';
-}
- loadingProgress: number = 0;
-
- 
-loadSolicitudes(): void {
-  this.isLoading = true;
-  this.loadingProgress = 0;
-  
-  const updateProgress = () => {
-    this.loadingProgress = Math.min(this.loadingProgress + 10, 90);
-  };
-  
-  const progressInterval = setInterval(updateProgress, 300);
-  
-  forkJoin([
-    this.adminService.getSolicitudes('pendiente'),
-    this.adminService.getSolicitudes('aprobada'),
-    this.adminService.getSolicitudes('rechazada')
-  ]).subscribe({
-    next: ([pendientes, aprobadas, rechazadas]) => {
-      clearInterval(progressInterval);
-      this.loadingProgress = 100;
-      
-      setTimeout(() => {
-        this.solicitudes = pendientes;
-        this.solicitudesAprobadas = aprobadas;
-        this.solicitudesRechazadas = rechazadas;
-        this.isLoading = false;
-      }, 500);
-    },
-    error: (error) => {
-      clearInterval(progressInterval);
-      this.errorMessage = 'Error al cargar solicitudes';
-      this.isLoading = false;
-    }
-  });
-}
-
-// Método para eliminar solicitud
-deleteRequest(id: number): void {
-  if (!confirm('¿Estás seguro de eliminar esta solicitud?')) return;
-  
-  this.isLoading = true;
-  
-  this.adminService.deleteSolicitud(id).subscribe({
-    next: () => {
-      this.loadSolicitudes();
-      this.successMessage = 'Solicitud eliminada correctamente';
-      this.isLoading = false;
-    },
-    error: (error) => {
-      this.errorMessage = 'Error al eliminar solicitud';
-      this.isLoading = false;
-    }
-  });
-}
-
-
-  // ==================== MÉTODOS DEL MODAL ====================
-  showDetails(solicitud: any): void {
+  // Métodos para solicitudes
+  loadSolicitudes(): void {
     this.isLoading = true;
     
+    this.adminService.getSolicitudes('pendiente').subscribe({
+      next: (res: any) => {
+        this.solicitudes = res.data || [];
+        this.loadAprobadas();
+        this.loadRechazadas();
+      },
+      error: (err) => {
+        this.showError('Error al cargar solicitudes');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadAprobadas(): void {
+    this.adminService.getSolicitudes('aprobada').subscribe({
+      next: (res: any) => {
+        this.solicitudesAprobadas = res.data || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.showError('Error al cargar aprobadas');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadRechazadas(): void {
+    this.adminService.getSolicitudes('rechazada').subscribe({
+      next: (res: any) => {
+        this.solicitudesRechazadas = res.data || [];
+      },
+      error: (err) => {
+        console.error('Error al cargar rechazadas', err);
+      }
+    });
+  }
+
+  showDetails(solicitud: any): void {
+    this.isLoading = true;
     this.adminService.getSolicitudById(solicitud.id).subscribe({
-      next: (solicitudCompleta) => {
-        this.selectedSolicitud = solicitudCompleta;
+      next: (res: any) => {
+        this.selectedSolicitud = res.data;
         this.selectedImageType = 'foto';
         this.showModal = true;
         this.isLoading = false;
       },
-      error: (error) => {
-        this.errorMessage = 'Error al cargar detalles de la solicitud';
+      error: (err) => {
+        this.showError('Error al cargar detalles');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  changeRequestStatus(id: number, estado: string): void {
+    if (!confirm(`¿Estás seguro de marcar como ${estado}?`)) return;
+    
+    this.isLoading = true;
+    this.adminService.changeSolicitudStatus(id, estado).subscribe({
+      next: (res: any) => {
+        this.showSuccess(`Solicitud marcada como ${estado}`);
+        this.loadSolicitudes();
+        this.isLoading = false;
+        if (this.showModal) this.closeModal();
+      },
+      error: (err) => {
+        this.showError(`Error al cambiar estado: ${err.message}`);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  deleteRequest(id: number): void {
+    if (!confirm('¿Estás seguro de eliminar esta solicitud?')) return;
+    
+    this.isLoading = true;
+    this.adminService.deleteSolicitud(id).subscribe({
+      next: () => {
+        this.showSuccess('Solicitud eliminada');
+        this.loadSolicitudes();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.showError('Error al eliminar solicitud');
         this.isLoading = false;
       }
     });
@@ -341,7 +184,7 @@ deleteRequest(id: number): void {
     this.selectedImageType = type;
   }
 
-  // ==================== MÉTODOS DE UTILIDAD ====================
+  // Métodos de utilidad
   parseJsonField(field: any): any {
     try {
       return typeof field === 'string' ? JSON.parse(field) : field;
@@ -364,18 +207,44 @@ deleteRequest(id: number): void {
   getImageUrl(solicitud: any, type: string): string | null {
     if (!solicitud.imagenes) return null;
     
-    // Buscar la imagen por tipo
     const imagen = solicitud.imagenes.find((img: any) => img.tipo === type);
     if (!imagen) return null;
     
-    // Si ya tiene el prefijo data:image, devolverlo directamente
     if (imagen.imagen_base64.startsWith('data:')) {
       return imagen.imagen_base64;
     }
     
-    // Si no, construir la URL data
     return `data:${imagen.mime_type || 'image/png'};base64,${imagen.imagen_base64}`;
   }
+
+  showError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => this.errorMessage = null, 5000);
+  }
+
+  showSuccess(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => this.successMessage = null, 5000);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -539,24 +408,7 @@ deleteRequest(id: number): void {
 
 
 
-
-
-
-
-
-
-
-
-  showError(message: string): void {
-    this.errorMessage = message;
-    setTimeout(() => this.errorMessage = null, 5000);
-  }
-
-  showSuccess(message: string): void {
-    this.successMessage = message;
-    setTimeout(() => this.successMessage = null, 5000);
-  }
-
+ 
 
 
  

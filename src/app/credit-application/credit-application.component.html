@@ -9,60 +9,66 @@
       <div class="form-grid personal-data">
         <!-- Fila 1 -->
         <div class="form-field">
-        
           <input type="text" class="gray-box2" formControlName="nombre">
           <div class="field-label">Nombre</div>
+          <div *ngIf="showError('nombre')" class="error-message">
+            {{ getErrorMessage('nombre') }}
+          </div>
         </div>
         
         <div class="form-field">
-         
           <input type="text" class="gray-box2" formControlName="apellidoPaterno">
-           <div class="field-label">Apellido Paterno</div>
+          <div class="field-label">Apellido Paterno</div>
+          <div *ngIf="showError('apellidoPaterno')" class="error-message">
+            {{ getErrorMessage('apellidoPaterno') }}
+          </div>
         </div>
-  
-<div class="form-field photo-upload">
-  <div class="square-image-upload">
-    <label for="profileImage">
 
-      <div class="image-preview" [style.background-image]="'url(' + (profileImagePreview  || 'img/sinperfil.png') + ')'">
-
-      </div>
-
-      <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event, 'foto')" hidden>
-    </label>
-  </div>
-</div>
-
+        <div class="form-field photo-upload">
+          <div class="square-image-upload">
+            <label for="profileImage">
+              <div class="image-preview" [style.background-image]="'url(' + (profileImagePreview || 'img/sinperfil.png') + ')'"></div>
+              <input id="profileImage" type="file" accept="image/*" (change)="onImageUpload($event, 'foto')" hidden>
+            </label>
+          </div>
+          <div class="field-label">Fotografía</div>
+          <div *ngIf="showImageError && !profileImagePreview" class="error-message">
+            Por favor suba una fotografía
+          </div>
+        </div>
         
         <!-- Fila 2 -->
         <div class="form-field">
-          
           <input type="text" class="gray-box2" formControlName="apellidoMaterno">
           <div class="field-label">Apellido Materno</div>
         </div>
         
         <div class="form-field">
-          
-          <input type="text"  class="gray-box2" formControlName="curp" placeholder="Ej. ABCD123456HABCDEF12">
+          <input type="text" class="gray-box2" formControlName="curp" placeholder="Ej. ABCD123456HABCDEF12">
           <div class="field-label">CURP</div>
+          <div *ngIf="showError('curp')" class="error-message">
+            {{ getErrorMessage('curp') }}
+          </div>
         </div>
         
         <div class="form-field">
-         
           <input type="tel" class="gray-box2" formControlName="telefono" placeholder="10 dígitos">
-           <div class="field-label">Número de teléfono</div>
+          <div class="field-label">Número de teléfono</div>
+          <div *ngIf="showError('telefono')" class="error-message">
+            {{ getErrorMessage('telefono') }}
+          </div>
         </div>
         
-        
         <div class="form-field">
-        
-          <input type="email"  class="gray-box2" formControlName="email">
-            <div class="field-label">E-mail</div>
+          <input type="email" class="gray-box2" formControlName="email">
+          <div class="field-label">E-mail</div>
+          <div *ngIf="showError('email')" class="error-message">
+            {{ getErrorMessage('email') }}
+          </div>
         </div>
         
         <!-- Fila 3 -->
         <div class="form-field">
-          
           <select formControlName="vivienda" class="gray-box2">
             <option value="">Seleccione...</option>
             <option value="propia">Casa propia</option>
@@ -71,99 +77,118 @@
             <option value="renta">Renta</option>
           </select>
           <div class="field-label">Vivienda</div>
+          <div *ngIf="showError('vivienda')" class="error-message">
+            {{ getErrorMessage('vivienda') }}
+          </div>
         </div>
-        
 
         <div class="form-field">
-          
           <input type="number" class="gray-box2" formControlName="antiguedadVivienda" min="0">
           <div class="field-label">Antigüedad (años)</div>
+          <div *ngIf="showError('antiguedadVivienda')" class="error-message">
+            {{ getErrorMessage('antiguedadVivienda') }}
+          </div>
         </div>
 
-
         <div class="form-field">
-          
-          <input type="text"class="gray-box2"  formControlName="calle">
+          <input type="text" class="gray-box2" formControlName="calle">
           <div class="field-label">Calle</div>
+          <div *ngIf="showError('calle')" class="error-message">
+            {{ getErrorMessage('calle') }}
+          </div>
         </div>
         
         <div class="form-field">
-          
           <input type="text" class="gray-box2" formControlName="numero">
           <div class="field-label">Número</div>
+          <div *ngIf="showError('numero')" class="error-message">
+            {{ getErrorMessage('numero') }}
+          </div>
         </div>
         
         <!-- Fila 4 -->
         <div class="form-field">
-       
-          <input type="text"class="gray-box2"  formControlName="colonia">
-             <div class="field-label">Colonia</div>
+          <input type="text" class="gray-box2" formControlName="colonia">
+          <div class="field-label">Colonia</div>
+          <div *ngIf="showError('colonia')" class="error-message">
+            {{ getErrorMessage('colonia') }}
+          </div>
         </div>
         
         <div class="form-field">
-        
-          <input type="text"class="gray-box2"  formControlName="localidad">
-            <div class="field-label">Localidad</div>
+          <input type="text" class="gray-box2" formControlName="localidad">
+          <div class="field-label">Localidad</div>
+          <div *ngIf="showError('localidad')" class="error-message">
+            {{ getErrorMessage('localidad') }}
+          </div>
         </div>
         
         <div class="form-field">
-          
           <input type="text" class="gray-box2" formControlName="cp" placeholder="5 dígitos">
           <div class="field-label">Código Postal</div>
+          <div *ngIf="showError('cp')" class="error-message">
+            {{ getErrorMessage('cp') }}
+          </div>
         </div>
         
         <!-- Fila 5 -->
         <div class="form-field">
-         
-          <input type="text" class="gray-box2"  formControlName="estado">
-           <div class="field-label">Estado</div>
+          <input type="text" class="gray-box2" formControlName="estado">
+          <div class="field-label">Estado</div>
+          <div *ngIf="showError('estado')" class="error-message">
+            {{ getErrorMessage('estado') }}
+          </div>
         </div>
                
         <div class="form-field">          
           <select formControlName="EstadoCivil" class="gray-box2">
             <option value="">Seleccione...</option>
-            <option value="propia">Soltero/a</option>
-            <option value="prestada">Casado/a</option>
-            <option value="familiar">Divorciado/a</option>
-            <option value="renta">Viudo/a</option>
-            <option value="renta">Concubinato/a</option>
+            <option value="soltero">Soltero/a</option>
+            <option value="casado">Casado/a</option>
+            <option value="divorciado">Divorciado/a</option>
+            <option value="viudo">Viudo/a</option>
+            <option value="concubinato">Concubinato/a</option>
           </select>
           <div class="field-label">Estado Civil</div>
+          <div *ngIf="showError('EstadoCivil')" class="error-message">
+            {{ getErrorMessage('EstadoCivil') }}
+          </div>
         </div>
         
         <div class="form-field">         
           <input type="text" class="gray-box2" formControlName="conyuge">
-           <div class="field-label">Nombre del cónyuge</div>
+          <div class="field-label">Nombre del cónyuge</div>
         </div>
 
-
-         <div class="form-field">          
+        <div class="form-field">          
           <input type="text" class="gray-box2" formControlName="TelefonoCON" min="0">
-          <div class="field-label">Telefono del cónyuge</div>
+          <div class="field-label">Teléfono del cónyuge</div>
+          <div *ngIf="showError('TelefonoCON')" class="error-message">
+            {{ getErrorMessage('TelefonoCON') }}
+          </div>
         </div>
-        
-
-  
-         <div class="form-field">
-          
-          <input type="number" class="gray-box2" formControlName="OcupacionC" min="0">
-          <div class="field-label">Ocupacion del cónyuge</div>
-        </div>
-        
         
         <div class="form-field">
-          
+          <input type="text" class="gray-box2" formControlName="OcupacionC" min="0">
+          <div class="field-label">Ocupación del cónyuge</div>
+        </div>
+        
+        <div class="form-field">
           <input type="number" class="gray-box2" formControlName="hijos" min="0">
           <div class="field-label">Número de hijos</div>
+          <div *ngIf="showError('hijos')" class="error-message">
+            {{ getErrorMessage('hijos') }}
+          </div>
         </div>
         
         <!-- Fila 6 -->
         <div class="form-field full-width">
-          
           <input type="text" class="gray-box2" formControlName="vehiculo">
           <div class="field-label">Marca y modelo de la unidad móvil</div>
+          <div *ngIf="showError('vehiculo')" class="error-message">
+            {{ getErrorMessage('vehiculo') }}
+          </div>
         </div>
-        
       </div>
     </div>
     
@@ -173,27 +198,35 @@
       
       <div class="form-grid">
         <div class="form-field">
-          
           <input type="text" class="gray-box2" formControlName="direccionTrabajo">
           <div class="field-label">Dirección del negocio/empleo</div>
+          <div *ngIf="showError('direccionTrabajo')" class="error-message">
+            {{ getErrorMessage('direccionTrabajo') }}
+          </div>
         </div>
         
         <div class="form-field">
-          
           <input type="text" class="gray-box2" formControlName="puesto">
           <div class="field-label">Puesto que desempeña</div>
+          <div *ngIf="showError('puesto')" class="error-message">
+            {{ getErrorMessage('puesto') }}
+          </div>
         </div>
         
         <div class="form-field">
-          
           <input type="number" class="gray-box2" formControlName="antiguedad" min="0">
           <div class="field-label">Antigüedad (años)</div>
+          <div *ngIf="showError('antiguedad')" class="error-message">
+            {{ getErrorMessage('antiguedad') }}
+          </div>
         </div>
         
         <div class="form-field">
-         
-          <input type="tel"class="gray-box2"  formControlName="telefonoTrabajo" placeholder="10 dígitos">
-           <div class="field-label">Teléfono del trabajo</div>
+          <input type="tel" class="gray-box2" formControlName="telefonoTrabajo" placeholder="10 dígitos">
+          <div class="field-label">Teléfono del trabajo</div>
+          <div *ngIf="showError('telefonoTrabajo')" class="error-message">
+            {{ getErrorMessage('telefonoTrabajo') }}
+          </div>
         </div>
       </div>
     </div>
@@ -207,23 +240,28 @@
         
         <div class="form-grid">
           <div class="form-field">
-            
             <input type="number" class="gray-box2" formControlName="monto" min="1000">
             <div class="field-label">Monto solicitado ($)</div>
+            <div *ngIf="showError('monto')" class="error-message">
+              {{ getErrorMessage('monto') }}
+            </div>
           </div>
           
           <div class="form-field">
-            
             <input type="number" class="gray-box2" formControlName="plazo" min="1">
             <div class="field-label">Plazo (meses)</div>
+            <div *ngIf="showError('plazo')" class="error-message">
+              {{ getErrorMessage('plazo') }}
+            </div>
           </div>
            
           <div class="form-field full-width">
-            
             <textarea formControlName="proposito" class="gray-box2" rows="3"></textarea>
             <div class="field-label">Propósito del préstamo</div>
+            <div *ngIf="showError('proposito')" class="error-message">
+              {{ getErrorMessage('proposito') }}
+            </div>
           </div>
-
         </div>
       </div>
 
@@ -231,12 +269,9 @@
         <div class="ie-column">
           <h3 class="ie-title">Ingresos Mensuales</h3>
            
-         
           <div class="form-field">
             <div class="field-label">Ingresos extra (especifique)</div>
-
             <textarea type="text" class="gray-box2" formControlName="descripcionIngresosExtra"></textarea>
-
             <input type="number" formControlName="ingresosExtra" min="0">
           </div>
           
@@ -246,9 +281,7 @@
           </div>
           
           <div class="form-field total-field">
-            
             <div class="field-label">Total ingresos</div>
-
             <div class="total-amount">{{ calcularTotalIngresos() | currency }}</div>
           </div>
         </div>
@@ -275,7 +308,7 @@
             <div class="field-label">Otros gastos personales</div>
             <input type="number" formControlName="otrosGastosPersonales" min="0">
           </div>
-          <div class="field-label"  >Gastos del negocio</div>
+          <div class="field-label">Gastos del negocio</div>
           <div class="form-field">
             <div class="field-label">Servicios del negocio (luz, agua, internet)</div>
             <input type="number" formControlName="gastosServiciosNegocio" min="0">
@@ -298,11 +331,12 @@
         </div> 
       </div>
     </div>
- <div class="form-field full-width">
-          
-          <input type="number" class="gray-box2" formControlName="Valormercancia">
-          <div class="field-label">Valor estimado en mercancia, instrumentos de trabajo, (Maquinaria, muebles, etc.)</div>
-        </div>
+    
+    <div class="form-field full-width">
+      <input type="number" class="gray-box2" formControlName="Valormercancia">
+      <div class="field-label">Valor estimado en mercancía, instrumentos de trabajo (Maquinaria, muebles, etc.)</div>
+    </div>
+    
     <div class="form-section">
       <h2 class="section-title">Datos del aval y referencias personales:</h2>
       
@@ -319,6 +353,9 @@
           <div class="form-field">
             <div class="field-label">Teléfono</div>
             <input type="tel" class="gray-box2" formControlName="avalTelefono">
+            <div *ngIf="showError('avalTelefono')" class="error-message">
+              {{ getErrorMessage('avalTelefono') }}
+            </div>
           </div>
           
           <div class="form-field">
@@ -326,8 +363,8 @@
             <div class="address-fields">
               <input type="text" class="gray-box2" formControlName="avalCalle" placeholder="Calle">
               <input type="text" class="gray-box2" formControlName="avalNumero" placeholder="Número">
-              <input type="text"class="gray-box2"  formControlName="avalColonia" placeholder="Colonia">
-              <input type="text"  class="gray-box2" formControlName="avalLocalidad" placeholder="Localidad">
+              <input type="text" class="gray-box2" formControlName="avalColonia" placeholder="Colonia">
+              <input type="text" class="gray-box2" formControlName="avalLocalidad" placeholder="Localidad">
               <input type="text" class="gray-box2" formControlName="avalCP" placeholder="C.P.">
               <input type="text" class="gray-box2" formControlName="avalEstado" placeholder="Estado">
             </div>
@@ -340,7 +377,7 @@
           
           <div class="form-field">
             <div class="field-label">Tiempo de conocerlo</div>
-            <input type="text" class="gray-box2"formControlName="avalTiempoConocido">
+            <input type="text" class="gray-box2" formControlName="avalTiempoConocido">
           </div>
         </div>
         
@@ -348,119 +385,98 @@
         <div class="reference-section">
           <h3 class="ie-title">Referencia personal</h3>
           
-          <!-- Mismos campos que para el aval -->
           <div class="form-field">
             <div class="field-label">Nombre completo</div>
-            <input type="text"class="gray-box2"  formControlName="referenciaNombre">
+            <input type="text" class="gray-box2" formControlName="referenciaNombre">
           </div>
           
           <div class="form-field">
             <div class="field-label">Teléfono</div>
-            <input type="tel"class="gray-box2" formControlName="referencialTelefono">
+            <input type="tel" class="gray-box2" formControlName="referencialTelefono">
+            <div *ngIf="showError('referencialTelefono')" class="error-message">
+              {{ getErrorMessage('referencialTelefono') }}
+            </div>
           </div>
           
           <div class="form-field">
             <div class="field-label">Dirección</div>
             <div class="address-fields">
               <input type="text" class="gray-box2" formControlName="referenciaCalle" placeholder="Calle">
-              <input type="text" class="gray-box2"formControlName="referenciaNumero" placeholder="Número">
-              <input type="text"class="gray-box2" formControlName="referenciaColonia" placeholder="Colonia">
-              <input type="text" class="gray-box2"formControlName="referenciaLocalidad" placeholder="Localidad">
-              <input type="text" class="gray-box2"formControlName="referenciaCP" placeholder="C.P.">
+              <input type="text" class="gray-box2" formControlName="referenciaNumero" placeholder="Número">
+              <input type="text" class="gray-box2" formControlName="referenciaColonia" placeholder="Colonia">
+              <input type="text" class="gray-box2" formControlName="referenciaLocalidad" placeholder="Localidad">
+              <input type="text" class="gray-box2" formControlName="referenciaCP" placeholder="C.P.">
               <input type="text" class="gray-box2" formControlName="referenciaEstado" placeholder="Estado">
             </div>
           </div>
           
           <div class="form-field">
             <div class="field-label">Ocupación</div>
-            <input type="text" class="gray-box2"formControlName="referenciaOcupacion">
+            <input type="text" class="gray-box2" formControlName="referenciaOcupacion">
           </div>
           
           <div class="form-field">
             <div class="field-label">Tiempo de conocerlo</div>
-            <input type="text" class="gray-box2"formControlName="referenciaTiempoConocido">
+            <input type="text" class="gray-box2" formControlName="referenciaTiempoConocido">
           </div>
         </div>
       </div>
       
       <div class="map-section">
-
         <div class="form-field">
           <div class="field-label">Mapa de ubicación de casa</div>
-          <input type="text" class="gray-box2"formControlName="mapaCasa" placeholder="URL o coordenadas">
-
-
-  <div class="form-field photo-upload"> 
-  <div class="field-label">Mapa de ubicación casa</div>          
-  <div class="square-image-upload">
-    <label for="ubicacionCasaImage">
-      <div class="image-preview" [style.background-image]="'url(' + (ubicacionCasaPreview  || 'img/sinperfil.png') + ')'"></div>
-      <input id="ubicacionCasaImage" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionCasa')" hidden>            
-    </label>
-  </div>
-</div>
+          <div class="form-field photo-upload">          
+            <div class="square-image-upload">
+              <label for="ubicacionCasaImage">
+                <div class="image-preview" [style.background-image]="'url(' + (ubicacionCasaPreview || 'img/sinperfil.png') + ')'"></div>
+                <input id="ubicacionCasaImage" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionCasa')" hidden>            
+              </label>
+            </div>
+          </div>
         </div>
+        
         <div class="form-field">
           <div class="field-label">Mapa de ubicación negocio/empleo</div>
-          <input type="text" class="gray-box2"formControlName="mapaTrabajo" placeholder="URL o coordenadas">
-
-
-  <div class="form-field photo-upload"> 
-  <div class="field-label">Mapa de ubicación negocio/empleo</div>          
-  <div class="square-image-upload">
-    <label for="ubicacionTrabajo">
-      <div class="image-preview" [style.background-image]="'url(' + (ubicacionTrabajoPreview  || 'img/sinperfil.png') + ')'"></div>
-      <input id="ubicacionTrabajo" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionTrabajo')" hidden>            
-    </label>
-  </div>
-</div>
+          <div class="form-field photo-upload">          
+            <div class="square-image-upload">
+              <label for="ubicacionTrabajo">
+                <div class="image-preview" [style.background-image]="'url(' + (ubicacionTrabajoPreview || 'img/sinperfil.png') + ')'"></div>
+                <input id="ubicacionTrabajo" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionTrabajo')" hidden>            
+              </label>
+            </div>
+          </div>
         </div>
-
-
-
- 
- 
       </div>
-    </div> 
-<!-- Dentro de la sección de autorización -->
-<div class="authorization-section">
-  <h2 class="section-title">Autorización para consulta de historial crediticio</h2>
-  
-  <div class="authorization-box">
-    <p class="authorization-text">
-      "Por este medio autorizo que mi información crediticia sea utilizada para los fines que al interesado le convengan"
-    </p>
-
-
-    
-    <div class="signature-field">
-
-      <div class="field-label">Firma de autorización</div>
-
-      <div class="signature-container">
-
-
-        <canvas #signaturePad width="400" height="200"></canvas>
-
-        <div class="signature-actions">
-          <button type="button" class="clear-signature" (click)="clearSignature()">
-            Limpiar Firma
-          </button>
-        </div>    
-        
-        
-      </div>
-
     </div>
-
-
-
-  </div>
-</div>
- 
- 
+    
+    <!-- Sección de autorización -->
+    <div class="authorization-section">
+      <h2 class="section-title">Autorización para consulta de historial crediticio</h2>
+      
+      <div class="authorization-box">
+        <p class="authorization-text">
+          "Por este medio autorizo que mi información crediticia sea utilizada para los fines que al interesado le convengan"
+        </p>
+        
+        <div class="signature-field">
+          <div class="field-label">Firma de autorización</div>
+          <div class="signature-container">
+            <canvas #signaturePad width="400" height="200"></canvas>
+            <div class="signature-actions">
+              <button type="button" class="clear-signature" (click)="clearSignature()">
+                Limpiar Firma
+              </button>
+            </div>    
+          </div>
+          <div *ngIf="showSignatureError && isSignatureEmpty()" class="error-message">
+            Por favor proporcione su firma de autorización
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div class="form-actions">
-      <button type="submit" class="submit-btn" [disabled]="!creditForm.valid">Enviar Solicitud</button>
+      <button type="submit" class="submit-btn">Enviar Solicitud</button>
     </div>
   </form>
 </div>

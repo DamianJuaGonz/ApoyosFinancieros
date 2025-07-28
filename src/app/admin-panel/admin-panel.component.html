@@ -1,34 +1,5 @@
 <div class="admin-container">
    
-
-
-
-
-
-
-
-
-
-
-<div *ngIf="isLoading" class="loading-overlay">
-  <div class="loading-spinner"></div>
-  <div class="loading-progress">
-    <div class="progress-bar" [style.width.%]="loadingProgress"></div>
-  </div>
-  <div class="loading-text">Cargando... {{loadingProgress}}%</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
   <div *ngIf="!isLoggedIn" class="login-container">
     <div class="login-card">
       <div class="login-header">
@@ -116,27 +87,21 @@
     <main class="dashboard-content">
       
       <div class="stats-container">
-
-
         <div class="stat-card">
           <div class="stat-value">{{solicitudes.length}}</div>
           <div class="stat-label">Pendientes</div>
           <i class="fas fa-clock stat-icon"></i>
         </div>
-<!--
-
         <div class="stat-card approved">
           <div class="stat-value">{{solicitudesAprobadas.length}}</div>
           <div class="stat-label">Aprobadas</div>
           <i class="fas fa-check-circle stat-icon"></i>
         </div>
-
-
         <div class="stat-card rejected">
           <div class="stat-value">{{solicitudesRechazadas.length}}</div>
           <div class="stat-label">Rechazadas</div>
           <i class="fas fa-times-circle stat-icon"></i>
-        </div>*/-->
+        </div>
       </div>
 
       
@@ -151,35 +116,6 @@
         </div>
 
         <div class="card-grid">
-
-
-
-
-
-
-
-
-
-
-
-            <div *ngIf="isLoading && solicitudes.length === 0" class="request-card-skeleton">
-    <div class="skeleton-header"></div>
-    <div class="skeleton-body">
-      <div class="skeleton-line"></div>
-      <div class="skeleton-line"></div>
-      <div class="skeleton-line"></div>
-    </div>
-  </div>
-  
-
-
-
-
-
-
-
-
-
           <div *ngFor="let solicitud of solicitudes" class="request-card">
             <div class="card-header">
               <div class="user-info">
@@ -224,14 +160,21 @@
               <button (click)="exportToExcel(solicitud)" class="action-btn excel">
                 <i class="fas fa-file-excel"></i> Excel
               </button>
-              <button (click)="deleteRequest(solicitud.id)" class="action-btn delete">
-                <i class="fas fa-trash"></i> Eliminar
+
+          <!-- En tu template -->
+ 
+              <button (click)="changeRequestStatus(solicitud.id, 'aprobada')" class="action-btn approve">
+                <i class="fas fa-check"></i> Aprobar
+              </button>
+
+              <button (click)="changeRequestStatus(solicitud.id, 'rechazada')" class="action-btn reject">
+                <i class="fas fa-times"></i> Rechazar
               </button>
             </div>
           </div>
         </div>
       </section>
- <!--
+ 
       <section class="section">
         <div class="section-header">
           <h2><i class="fas fa-check-circle"></i> Solicitudes Aprobadas</h2>
@@ -338,10 +281,6 @@
           </div>
         </div>
       </section>
--->
-
-
-
     </main>
   </div>
  
@@ -453,8 +392,15 @@
         <button (click)="exportToExcel(selectedSolicitud)" class="modal-btn excel">
           <i class="fas fa-file-excel"></i> Exportar a Excel
         </button>
-        <button (click)="deleteRequest(selectedSolicitud.id)" class="modal-btn delete">
-          <i class="fas fa-trash"></i> Eliminar Solicitud
+        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+                (click)="changeRequestStatus(selectedSolicitud.id, 'aprobada')" 
+                class="modal-btn approve">
+          <i class="fas fa-check"></i> Aprobar Solicitud
+        </button>
+        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+                (click)="changeRequestStatus(selectedSolicitud.id, 'rechazada')" 
+                class="modal-btn reject">
+          <i class="fas fa-times"></i> Rechazar Solicitud
         </button>
         <button (click)="closeModal()" class="modal-btn close">
           <i class="fas fa-times"></i> Cerrar
