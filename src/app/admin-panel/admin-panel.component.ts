@@ -7,8 +7,19 @@ import { adminpanelservice } from '../services/admin-panel.service';
 import { CommonModule } from '@angular/common';
 import { privateDecrypt } from 'node:crypto';
 import { forkJoin, lastValueFrom } from 'rxjs';
+
+declare module 'exceljs' {
+  interface Anchor {
+    col: number;
+    row: number;
+  }
+}
+
+
  type EstadoSolicitud = 'pendiente' | 'aprobada' | 'rechazada';
 
+
+ 
 @Component({
   selector: 'app-admin-panel',
   imports: [CommonModule,FormsModule,ReactiveFormsModule],
@@ -20,6 +31,9 @@ import { forkJoin, lastValueFrom } from 'rxjs';
 export class AdminPanelComponent implements OnInit { 
   // Estados del componente
    // Estados del componente
+
+
+
  isLoggedIn = false;
   isLoading = false;
   errorMessage: string | null = null;
@@ -204,20 +218,33 @@ export class AdminPanelComponent implements OnInit {
     return date.toLocaleDateString('es-MX');
   }
 
-  getImageUrl(solicitud: any, type: string): string | null {
-    if (!solicitud.imagenes) return null;
-    
-    const imagen = solicitud.imagenes.find((img: any) => img.tipo === type);
-    if (!imagen) return null;
-    
-    if (imagen.imagen_base64.startsWith('data:')) {
-      return imagen.imagen_base64;
-    }
-    
-    return `data:${imagen.mime_type || 'image/png'};base64,${imagen.imagen_base64}`;
-  }
+getImageUrl(solicitud: any, type: string): string | null {
 
-  showError(message: string): void {
+ 
+
+  
+  if (!solicitud.imagenes || !Array.isArray(solicitud.imagenes)) return null;
+  
+  const imagen = solicitud.imagenes.find((img: any) => img.tipo === type);
+ 
+
+
+  if (!imagen || !imagen.imagen_base64) return null;
+  
+  // Si ya tiene el prefijo data:image, devolverlo directamente
+  if (imagen.imagen_base64.startsWith('data:')) {
+    return imagen.imagen_base64;
+  }
+  
+  // Si no, construir la URL data según el tipo MIME
+  const mimeType = imagen.mime_type || 'image/jpeg';
+  return `data:${mimeType};base64,${imagen.imagen_base64}`;
+}
+
+
+
+
+showError(message: string): void {
     this.errorMessage = message;
     setTimeout(() => this.errorMessage = null, 5000);
   }
@@ -260,32 +287,104 @@ export class AdminPanelComponent implements OnInit {
 
 
 
-
-
-
-  async exportToExcel(solicitud: any): Promise<void> {
-    try {
-      const templateBuffer = await this.creditService.descargarPlantillaExcel();
-      const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(templateBuffer);
-      
-      const worksheetName = 'SOLICITUD DE CREDITO';
-      const worksheet = workbook.getWorksheet(worksheetName);
-      
-      if (!worksheet) {
-        throw new Error(`No se encontró la hoja '${worksheetName}' en la plantilla`);
-      }
-      
-      this.fillExcelTemplate(worksheet, solicitud);
-      await this.insertImagesToExcel(workbook, worksheet, solicitud);
-      
-      const buffer = await workbook.xlsx.writeBuffer();
-      saveAs(new Blob([buffer]), `Solicitud_${solicitud.id}.xlsx`);
-    } catch (error) {
-      console.error('Error al exportar a Excel:', error);
-      alert('Error al exportar a Excel: ' + (error as Error).message);
+async exportToExcel(solicitud: any): Promise<void> {
+  try {
+    this.isLoading = true;
+    
+    // Si no tiene imágenes, cargar los detalles completos primero
+    if (!solicitud.imagenes || solicitud.imagenes.length === 0) {
+      const solicitudCompleta = await lastValueFrom(
+        this.adminService.getSolicitudById(solicitud.id)
+      );
+      solicitud = solicitudCompleta.data;
     }
+
+    const templateBuffer = await this.creditService.descargarPlantillaExcel();
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(templateBuffer);
+    
+    const worksheetName = 'SOLICITUD DE CREDITO';
+    const worksheet = workbook.getWorksheet(worksheetName);
+    
+    if (!worksheet) {
+      throw new Error(`No se encontró la hoja '${worksheetName}' en la plantilla`);
+    }
+    
+    this.fillExcelTemplate(worksheet, solicitud);
+    await this.insertImagesToExcel(workbook, worksheet, solicitud);
+    
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(new Blob([buffer]), `Solicitud_${solicitud.id}_${new Date().toISOString().slice(0,10)}.xlsx`);
+    this.isLoading = false;
+  } catch (error) {
+    console.error('Error al exportar a Excel:', error);
+    this.showError('Error al exportar a Excel: ' + (error as Error).message);
+    this.isLoading = false;
   }
+}
+
+private async insertImagesToExcel(workbook: ExcelJS.Workbook, worksheet: ExcelJS.Worksheet, solicitud: any): Promise<void> {
+  try {
+    if (!solicitud.imagenes || solicitud.imagenes.length === 0) {
+      console.warn('No hay imágenes para insertar');
+      return;
+    }
+
+    // Función auxiliar para agregar imágenes
+    const addImageToSheet = (base64Data: string, startCol: number, startRow: number, endCol: number, endRow: number) => {
+      if (!base64Data) return;
+
+      // Determinar el tipo de imagen
+      let extension: 'jpeg' | 'png' | 'gif' = 'jpeg';
+      if (base64Data.includes('image/png')) extension = 'png';
+      else if (base64Data.includes('image/gif')) extension = 'gif';
+
+      // Limpiar el base64 si viene con prefijo data:image
+      const cleanBase64 = base64Data.startsWith('data:') 
+        ? base64Data.split(',')[1] 
+        : base64Data;
+
+      // Agregar la imagen al libro
+      const imageId = workbook.addImage({
+        base64: cleanBase64,
+        extension: extension
+      });
+
+      // Insertar en la hoja
+worksheet.addImage(imageId, {
+  tl: { col: startCol, row: startRow } as ExcelJS.Anchor,
+  br: { col: endCol, row: endRow } as ExcelJS.Anchor,
+  editAs: 'oneCell'
+});
+    };
+
+    // Obtener las imágenes en base64
+    //const foto = this.getImageUrl(solicitud, 'foto');
+
+
+    const firma = this.getImageUrl(solicitud, 'firma');
+    const ubicacionCasa = this.getImageUrl(solicitud, 'ubicacion_casa');
+    const ubicacionTrabajo = this.getImageUrl(solicitud, 'ubicacion_trabajo');
+
+    // Insertar cada imagen en su posición correspondiente
+    // Ajusta estas coordenadas según tu plantilla Excel
+    //if (foto) addImageToSheet(foto, 1, 1, 3, 3); // Foto (col1, row1 a col3, row3)
+    if (firma) addImageToSheet(firma, 5, 54, 7, 56); // Firma5
+    if (ubicacionCasa) addImageToSheet(ubicacionCasa, 2, 40, 5, 46); // Ubicación casa
+    if (ubicacionTrabajo) addImageToSheet(ubicacionTrabajo, 7, 40, 9.5, 46); // Ubicación trabajo
+
+  } catch (error) {
+    console.error('Error al insertar imágenes:', error);
+    throw error;
+  }
+}
+
+
+
+
+
+
+
 
   private fillExcelTemplate(worksheet: ExcelJS.Worksheet, solicitud: any): void {
     // Datos personales
@@ -302,7 +401,8 @@ export class AdminPanelComponent implements OnInit {
     worksheet.getCell('H4').value = datosPersonales.curp || '';
     worksheet.getCell('C5').value = datosPersonales.telefono || '';
     worksheet.getCell('H5').value = datosPersonales.vivienda || '';
-    
+
+    worksheet.getCell('J5').value = datosPersonales.antiguedad_vivienda || 0;
     // Dirección
     worksheet.getCell('C7').value = datosPersonales.direccion?.calle || '';
     worksheet.getCell('F7').value = datosPersonales.direccion?.numero || '';
@@ -311,35 +411,44 @@ export class AdminPanelComponent implements OnInit {
     worksheet.getCell('I7').value = datosPersonales.direccion?.cp || '';
     worksheet.getCell('J7').value = datosPersonales.direccion?.estado || '';
     
+
     // Situación familiar
-    worksheet.getCell('E9').value = datosPersonales.conyuge?.nombre || '';
+    worksheet.getCell('E9').value = datosPersonales.conyuge || '';
     worksheet.getCell('J10').value = datosPersonales.hijos || 0;
+     worksheet.getCell('C8').value = datosPersonales.estado_civil || '';
     worksheet.getCell('H8').value = datosPersonales.vehiculo || '';
 
+worksheet.getCell('I9').value = datosPersonales.telefono_conyuge || '';
+   
+worksheet.getCell('C10').value = datosPersonales.ocupacion_conyuge || '';
+
     // Datos laborales
-    worksheet.getCell('B13').value = datosLaborales.direccionTrabajo || '';
+    worksheet.getCell('B13').value = datosLaborales.direccion || '';
     worksheet.getCell('E13').value = datosLaborales.puesto || '';
     worksheet.getCell('H13').value = datosLaborales.antiguedad || '';
-    worksheet.getCell('I13').value = datosLaborales.telefonoTrabajo || '';
+    worksheet.getCell('I13').value = datosLaborales.telefono || '';
 
     // Datos del préstamo
-    worksheet.getCell('B16').value = datosPrestamo.monto || 0;
+    worksheet.getCell('B16').value = "$"+datosPrestamo.monto || 0;
     worksheet.getCell('D16').value = datosPrestamo.plazo || 0;
+
+
     worksheet.getCell('F16').value = datosPrestamo.proposito || '';
     worksheet.getCell('B19').value = datosPrestamo.descripcionIngresosExtra || '';
-    worksheet.getCell('F24').value = datosPrestamo.ingresosExtra || 0;
-    worksheet.getCell('F25').value = datosPrestamo.gananciasNegocio || 0;
-    worksheet.getCell('F27').value = solicitud.total_ingresos || 0;
-    worksheet.getCell('J27').value = solicitud.total_egresos || 0;
+
+    worksheet.getCell('F24').value = "$"+datosPrestamo.ingresosExtra || 0;
+    worksheet.getCell('F25').value = "$"+datosPrestamo.gananciasNegocio || 0;
+    worksheet.getCell('F27').value = "$"+solicitud.total_ingresos || 0;
+    worksheet.getCell('J27').value = "$"+solicitud.total_egresos || 0;
 
     // Egresos detallados
-    worksheet.getCell('J19').value = datosPrestamo.gastosServiciosHogar || 0;
-    worksheet.getCell('J20').value = datosPrestamo.gastosComidaVestido || 0;
-    worksheet.getCell('J21').value = datosPrestamo.gastosRentaVivienda || 0;
-    worksheet.getCell('J22').value = datosPrestamo.otrosGastosPersonales || 0;
-    worksheet.getCell('J24').value = datosPrestamo.gastosServiciosNegocio || 0;
-    worksheet.getCell('J25').value = datosPrestamo.gastosRentaNegocio || 0;
-    worksheet.getCell('J26').value = datosPrestamo.inversionNegocio || 0;
+    worksheet.getCell('J19').value = "$"+datosPrestamo.gastosServiciosHogar || 0 ;
+    worksheet.getCell('J20').value = "$"+datosPrestamo.gastosComidaVestido || 0;
+    worksheet.getCell('J21').value = "$"+datosPrestamo.gastosRentaVivienda || 0;
+    worksheet.getCell('J22').value = "$"+datosPrestamo.otrosGastosPersonales || 0;
+    worksheet.getCell('J24').value = "$"+datosPrestamo.gastosServiciosNegocio || 0;
+    worksheet.getCell('J25').value = "$"+datosPrestamo.gastosRentaNegocio || 0;
+    worksheet.getCell('J26').value = "$"+datosPrestamo.inversionNegocio || 0;
 
     // Datos del aval
     worksheet.getCell('D31').value = datosPrestamo.avalNombre || '';
@@ -365,45 +474,6 @@ export class AdminPanelComponent implements OnInit {
     worksheet.getCell('C38').value = datosPrestamo.referenciaOcupacion || '';
     worksheet.getCell('J38').value = datosPrestamo.referenciaTiempoConocido || '';
   }
-
-  private async insertImagesToExcel(workbook: ExcelJS.Workbook, worksheet: ExcelJS.Worksheet, solicitud: any): Promise<void> {
-    try {
-      const addImageSafe = (imgId: number, tlCol: number, tlRow: number, brCol: number, brRow: number) => {
-        (worksheet as any).addImage(imgId, {
-          tl: { col: tlCol, row: tlRow },
-          br: { col: brCol, row: brRow },
-          editAs: 'oneCell'
-        });
-      };
-
-      // Insertar foto si existe
-      if (solicitud.imagenes?.foto) {
-        const fotoId = workbook.addImage({
-          base64: solicitud.imagenes.foto.split(',')[1],
-          extension: 'jpeg'
-        });
-        addImageSafe(fotoId, 1, 1, 3, 3);
-      }
-
-      // Insertar firma si existe
-      if (solicitud.imagenes?.firma) {
-        const firmaId = workbook.addImage({
-          base64: solicitud.imagenes.firma.split(',')[1],
-          extension: 'png'
-        });
-        addImageSafe(firmaId, 5, 54, 7, 56);
-      }
-
-    } catch (error) {
-      console.error('Error al insertar imágenes:', error);
-      throw error;
-    }
-  }
-
-
-
-
-
 
 
 

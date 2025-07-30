@@ -6,10 +6,11 @@ import { CreditService } from '../services/credit.service';
 import { finalize } from 'rxjs';
 
 export interface ImagenSolicitud {
-  tipo: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo';
+  tipo: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' | 'url_ubicacion_casa' | 'url_ubicacion_trabajo';
   base64: string;
   mime_type?: string;
 }
+
 
 @Component({
   selector: 'app-credit-application',
@@ -132,7 +133,9 @@ export class CreditApplicationComponent implements OnInit {
       referenciaCP: ['', Validators.pattern(/^[0-9]{5}$/)],
       referenciaEstado: [''],
       referenciaOcupacion: [''],
-      referenciaTiempoConocido: ['']
+      referenciaTiempoConocido: [''],
+          urlUbicacionCasa: [''],
+  urlUbicacionTrabajo: [''],
     });
   }
 
@@ -356,6 +359,21 @@ onImageUpload(event: Event, type: 'foto' | 'ubicacionCasa' | 'ubicacionTrabajo')
         base64: this.ensureBase64Prefix(this.ubicacionTrabajoPreview)
       });
     }
+    if (this.creditForm.get('urlUbicacionCasa')?.value) {
+  imagenes.push({
+    tipo: 'url_ubicacion_casa',
+    base64: this.creditForm.get('urlUbicacionCasa')?.value,
+    mime_type: 'text/url'
+  });
+}
+
+if (this.creditForm.get('urlUbicacionTrabajo')?.value) {
+  imagenes.push({
+    tipo: 'url_ubicacion_trabajo',
+    base64: this.creditForm.get('urlUbicacionTrabajo')?.value,
+    mime_type: 'text/url'
+  });
+}
 
     // Preparar datos del formulario
     const formData = {

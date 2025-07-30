@@ -1,7 +1,21 @@
 <div class="credit-container">
+
+
+
+    <div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Enviando solicitud...</p>
+    </div>
+  </div>
+ 
+
+
+
   <h1 class="main-title">SOLICITUD DE CRÉDITO</h1>
   
-  <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="creditForm" (ngSubmit)="onSubmit()" [class.loading-disabled]="isLoading">
+ 
     <!-- Sección de datos personales -->
     <div class="form-section">
       <h2 class="section-title">Datos del solicitante:</h2>
@@ -422,31 +436,59 @@
         </div>
       </div>
       
-      <div class="map-section">
-        <div class="form-field">
-          <div class="field-label">Mapa de ubicación de casa</div>
-          <div class="form-field photo-upload">          
-            <div class="square-image-upload">
-              <label for="ubicacionCasaImage">
-                <div class="image-preview" [style.background-image]="'url(' + (ubicacionCasaPreview || 'img/sinperfil.png') + ')'"></div>
-                <input id="ubicacionCasaImage" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionCasa')" hidden>            
-              </label>
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-field">
-          <div class="field-label">Mapa de ubicación negocio/empleo</div>
-          <div class="form-field photo-upload">          
-            <div class="square-image-upload">
-              <label for="ubicacionTrabajo">
-                <div class="image-preview" [style.background-image]="'url(' + (ubicacionTrabajoPreview || 'img/sinperfil.png') + ')'"></div>
-                <input id="ubicacionTrabajo" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionTrabajo')" hidden>            
-              </label>
-            </div>
-          </div>
-        </div>
+
+<div class="map-section">
+  <div class="form-field">
+    <div class="field-label">Mapa de ubicación de casa</div>
+    <div class="form-field photo-upload">          
+      <div class="square-image-upload">
+        <label for="ubicacionCasaImage">
+          <div class="image-preview" [style.background-image]="'url(' + (ubicacionCasaPreview || 'img/sinperfil.png') + ')'"></div>
+          <input id="ubicacionCasaImage" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionCasa')" hidden>            
+        </label>
       </div>
+    </div>
+    <div class="form-field">
+      <input type="url" class="gray-box2" formControlName="urlUbicacionCasa" placeholder="https://maps.google.com/...">
+      <div class="field-label">O ingrese URL del mapa</div>
+      <div *ngIf="showError('urlUbicacionCasa')" class="error-message">
+        Por favor ingrese una URL válida
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-field">
+    <div class="field-label">Mapa de ubicación negocio/empleo</div>
+    <div class="form-field photo-upload">          
+      <div class="square-image-upload">
+        <label for="ubicacionTrabajo">
+          <div class="image-preview" [style.background-image]="'url(' + (ubicacionTrabajoPreview || 'img/sinperfil.png') + ')'"></div>
+          <input id="ubicacionTrabajo" type="file" accept="image/*" (change)="onImageUpload($event, 'ubicacionTrabajo')" hidden>            
+        </label>
+      </div>
+    </div>
+    <div class="form-field">
+      <input type="url" class="gray-box2" formControlName="urlUbicacionTrabajo" placeholder="https://maps.google.com/...">
+      <div class="field-label">O ingrese URL del mapa</div>
+      <div *ngIf="showError('urlUbicacionTrabajo')" class="error-message">
+        Por favor ingrese una URL válida
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
     
     <!-- Sección de autorización -->
@@ -475,8 +517,11 @@
       </div>
     </div>
     
-    <div class="form-actions">
-      <button type="submit" class="submit-btn">Enviar Solicitud</button>
-    </div>
+<div class="form-actions">
+  <button type="submit" class="submit-btn" [disabled]="isLoading">
+    <span *ngIf="!isLoading">Enviar Solicitud</span>
+    <span *ngIf="isLoading">Enviando...</span>
+  </button>
+</div>
   </form>
 </div>

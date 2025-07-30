@@ -226,42 +226,46 @@ export class CreditService {
     };
   }
 
-  private prepararDatosPrestamo(datos: any): any {
-    return {
-      monto: datos.monto,
-      plazo: datos.plazo,
-      proposito: datos.proposito,
-      descripcion_ingresos_extra: datos.descripcionIngresosExtra,
-      aval: {
-        nombre: datos.avalNombre,
-        telefono: datos.avalTelefono,
-        direccion: {
-          calle: datos.avalCalle,
-          numero: datos.avalNumero,
-          colonia: datos.avalColonia,
-          localidad: datos.avalLocalidad,
-          cp: datos.avalCP,
-          estado: datos.avalEstado
-        },
-        ocupacion: datos.avalOcupacion,
-        tiempo_conocido: datos.avalTiempoConocido
-      },
-      referencia: {
-        nombre: datos.referenciaNombre,
-        telefono: datos.referencialTelefono,
-        direccion: {
-          calle: datos.referenciaCalle,
-          numero: datos.referenciaNumero,
-          colonia: datos.referenciaColonia,
-          localidad: datos.referenciaLocalidad,
-          cp: datos.referenciaCP,
-          estado: datos.referenciaEstado
-        },
-        ocupacion: datos.referenciaOcupacion,
-        tiempo_conocido: datos.referenciaTiempoConocido
-      }
-    };
-  }
+private prepararDatosPrestamo(datos: any): any {
+  return {
+    monto: datos.monto || "",
+    plazo: datos.plazo || "",
+    proposito: datos.proposito || "",
+    ingresosExtra: datos.ingresosExtra || 0,
+    descripcionIngresosExtra: datos.descripcionIngresosExtra || "",
+    gananciasNegocio: datos.gananciasNegocio || 0,
+    gastosServiciosHogar: datos.gastosServiciosHogar || 0,
+    gastosComidaVestido: datos.gastosComidaVestido || 0,
+    gastosRentaVivienda: datos.gastosRentaVivienda || 0,
+    otrosGastosPersonales: datos.otrosGastosPersonales || 0,
+    gastosServiciosNegocio: datos.gastosServiciosNegocio || 0,
+    gastosRentaNegocio: datos.gastosRentaNegocio || 0,
+    inversionNegocio: datos.inversionNegocio || 0,
+    Valormercancia: datos.Valormercancia || 0,
+    // Aval
+    avalNombre: datos.avalNombre || "",
+    avalTelefono: datos.avalTelefono || "",
+    avalCalle: datos.avalCalle || "",
+    avalNumero: datos.avalNumero || "",
+    avalColonia: datos.avalColonia || "",
+    avalLocalidad: datos.avalLocalidad || "",
+    avalCP: datos.avalCP || "",
+    avalEstado: datos.avalEstado || "",
+    avalOcupacion: datos.avalOcupacion || "",
+    avalTiempoConocido: datos.avalTiempoConocido || "",
+    // Referencia
+    referenciaNombre: datos.referenciaNombre || "",
+    referencialTelefono: datos.referencialTelefono || "",
+    referenciaCalle: datos.referenciaCalle || "",
+    referenciaNumero: datos.referenciaNumero || "",
+    referenciaColonia: datos.referenciaColonia || "",
+    referenciaLocalidad: datos.referenciaLocalidad || "",
+    referenciaCP: datos.referenciaCP || "",
+    referenciaEstado: datos.referenciaEstado || "",
+    referenciaOcupacion: datos.referenciaOcupacion || "",
+    referenciaTiempoConocido: datos.referenciaTiempoConocido || ""
+  };
+}
 
   private calcularTotalIngresos(datos: any): number {
     const ingresosExtra = datos.ingresosExtra || 0;
