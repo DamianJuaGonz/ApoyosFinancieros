@@ -50,7 +50,7 @@ export class AdminPanelComponent implements OnInit {
   // Modal
   showModal = false;
   selectedSolicitud: any = null;
-  selectedImageType: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' = 'foto';
+  selectedImageType: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' | 'url_ubicacion_casa' | 'url_ubicacion_trabajo' = 'foto';
   constructor(
     private fb: FormBuilder,
     private creditService: CreditService,
@@ -194,9 +194,9 @@ export class AdminPanelComponent implements OnInit {
     this.selectedSolicitud = null;
   }
 
-  selectImage(type: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo'): void {
-    this.selectedImageType = type;
-  }
+selectImage(type: 'foto' | 'firma' | 'ubicacion_casa' | 'ubicacion_trabajo' | 'url_ubicacion_casa' | 'url_ubicacion_trabajo'): void {
+  this.selectedImageType = type;
+}
 
   // Métodos de utilidad
   parseJsonField(field: any): any {
@@ -219,9 +219,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
 getImageUrl(solicitud: any, type: string): string | null {
-
- 
-
   
   if (!solicitud.imagenes || !Array.isArray(solicitud.imagenes)) return null;
   
@@ -230,6 +227,10 @@ getImageUrl(solicitud: any, type: string): string | null {
 
 
   if (!imagen || !imagen.imagen_base64) return null;
+
+    if (type === 'url_ubicacion_casa' || type === 'url_ubicacion_trabajo') {
+    return imagen.imagen_base64; // Retornar directamente la URL
+  }
   
   // Si ya tiene el prefijo data:image, devolverlo directamente
   if (imagen.imagen_base64.startsWith('data:')) {
@@ -240,9 +241,23 @@ getImageUrl(solicitud: any, type: string): string | null {
   const mimeType = imagen.mime_type || 'image/jpeg';
   return `data:${mimeType};base64,${imagen.imagen_base64}`;
 }
+getMapUrl(solicitud: any, type: string): string | null {
+  if (!solicitud.imagenes || !Array.isArray(solicitud.imagenes)) return null;
+  
+  const imagen = solicitud.imagenes.find((img: any) => 
+    img.tipo === type && (type === 'url_ubicacion_casa' || type === 'url_ubicacion_trabajo')
+  );
+  return imagen?.imagen_base64 || null;
+}
 
-
-
+openMap(solicitud: any, type: string): void {
+  if (type === 'url_ubicacion_casa' || type === 'url_ubicacion_trabajo') {
+    const url = this.getMapUrl(solicitud, type);
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+}
 
 showError(message: string): void {
     this.errorMessage = message;
@@ -397,7 +412,7 @@ worksheet.addImage(imageId, {
     const datosPrestamo = typeof solicitud.datos_prestamo === 'string' ? 
       JSON.parse(solicitud.datos_prestamo) : solicitud.datos_prestamo;
 
-    worksheet.getCell('C4').value = `${datosPersonales.nombre} ${datosPersonales.apellidoPaterno} ${datosPersonales.apellidoMaterno || ''}`;
+    worksheet.getCell('C4').value = `${datosPersonales.nombre} ${datosPersonales.apellido_paterno} ${datosPersonales.apellido_materno || ''}`;
     worksheet.getCell('H4').value = datosPersonales.curp || '';
     worksheet.getCell('C5').value = datosPersonales.telefono || '';
     worksheet.getCell('H5').value = datosPersonales.vivienda || '';

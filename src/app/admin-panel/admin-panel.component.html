@@ -3,6 +3,8 @@
   <div *ngIf="!isLoggedIn" class="login-container">
     <div class="login-card">
       <div class="login-header">
+
+
         <img src="icon/LOGO.png" alt="Logo" class="logo">
         <h2>Acceso Administrativo</h2>
       </div>
@@ -284,61 +286,99 @@
     </main>
   </div>
  
-  <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-container">
-      <div class="modal-header">
-        <h2>Detalles de la Solicitud #{{selectedSolicitud?.id}}</h2>
-        <button (click)="closeModal()" class="modal-close">&times;</button>
-      </div>
-      
-      <div class="modal-body">
-        <div *ngIf="selectedSolicitud"> 
-          <div class="modal-tabs">
-            <button (click)="selectImage('foto')" [class.active]="selectedImageType === 'foto'">
-              <i class="fas fa-user"></i> Foto
-            </button>
-            <button (click)="selectImage('firma')" [class.active]="selectedImageType === 'firma'">
-              <i class="fas fa-signature"></i> Firma
-            </button>
-            <button (click)="selectImage('ubicacion_casa')" [class.active]="selectedImageType === 'ubicacion_casa'">
-              <i class="fas fa-home"></i> Ubicación
-            </button>
-            <button (click)="selectImage('ubicacion_trabajo')" [class.active]="selectedImageType === 'ubicacion_trabajo'">
-              <i class="fas fa-building"></i> Trabajo
+
+
+
+
+
+
+
+
+
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Detalles de la Solicitud #{{selectedSolicitud?.id}}</h2>
+      <button (click)="closeModal()" class="modal-close">&times;</button>
+    </div>
+    
+    <div class="modal-body">
+      <div *ngIf="selectedSolicitud"> 
+        <div class="modal-tabs">
+          <button (click)="selectImage('foto')" [class.active]="selectedImageType === 'foto'">
+            <i class="fas fa-user"></i> Foto
+          </button>
+          <button (click)="selectImage('firma')" [class.active]="selectedImageType === 'firma'">
+            <i class="fas fa-signature"></i> Firma
+          </button>
+          <button (click)="selectImage('ubicacion_casa')" [class.active]="selectedImageType === 'ubicacion_casa'">
+            <i class="fas fa-map-marker-alt"></i> Ubicación Casa
+          </button>
+          <button (click)="selectImage('ubicacion_trabajo')" [class.active]="selectedImageType === 'ubicacion_trabajo'">
+            <i class="fas fa-building"></i> Ubicación Trabajo
+          </button>
+          <button (click)="selectImage('url_ubicacion_casa')" [class.active]="selectedImageType === 'url_ubicacion_casa'">
+            <i class="fas fa-link"></i> URL Casa
+          </button>
+          <button (click)="selectImage('url_ubicacion_trabajo')" [class.active]="selectedImageType === 'url_ubicacion_trabajo'">
+            <i class="fas fa-link"></i> URL Trabajo
+          </button>
+        </div>
+
+        <div class="modal-image-preview">
+          <!-- Imagen normal -->
+          <img *ngIf="getImageUrl(selectedSolicitud, selectedImageType) && 
+                      !['url_ubicacion_casa', 'url_ubicacion_trabajo'].includes(selectedImageType)" 
+               [src]="getImageUrl(selectedSolicitud, selectedImageType)" 
+               [alt]="selectedImageType"
+               class="image-display">
+          
+          <!-- URL de mapa -->
+          <div *ngIf="['url_ubicacion_casa', 'url_ubicacion_trabajo'].includes(selectedImageType)" class="url-container">
+            <h4>URL de {{selectedImageType === 'url_ubicacion_casa' ? 'Ubicación de Casa' : 'Ubicación de Trabajo'}}</h4>
+            <a [href]="getMapUrl(selectedSolicitud, selectedImageType)" 
+               target="_blank" 
+               class="map-url"
+               [title]="getMapUrl(selectedSolicitud, selectedImageType)">
+              {{getMapUrl(selectedSolicitud, selectedImageType)}}
+            </a>
+            <button (click)="openMap(selectedSolicitud, selectedImageType)" class="open-map-btn">
+              <i class="fas fa-external-link-alt"></i> Abrir en nueva pestaña
             </button>
           </div>
- 
-          <div class="modal-image-preview">
-            <img *ngIf="getImageUrl(selectedSolicitud, selectedImageType)" 
-                 [src]="getImageUrl(selectedSolicitud, selectedImageType)" 
-                 [alt]="selectedImageType">
-            <div *ngIf="!getImageUrl(selectedSolicitud, selectedImageType)" class="no-image">
-              <i class="far fa-image"></i>
-              <p>No hay imagen disponible</p>
-            </div>
+          
+          <!-- Sin imagen/URL -->
+          <div *ngIf="!getImageUrl(selectedSolicitud, selectedImageType) && 
+                      !(['url_ubicacion_casa', 'url_ubicacion_trabajo'].includes(selectedImageType) && getMapUrl(selectedSolicitud, selectedImageType))" 
+               class="no-image">
+            <i class="far fa-image"></i>
+            <p>No hay {{selectedImageType.includes('url') ? 'URL' : 'imagen'}} disponible</p>
           </div>
+        </div>
+
+
  
           <div class="modal-section">
             <h3><i class="fas fa-user"></i> Datos Personales</h3>
             <div class="modal-grid">
               <div><strong>Nombre:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.nombre || 'N/A' }}</div>
-              <div><strong>Apellido Paterno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellidoPaterno || 'N/A' }}</div>
-              <div><strong>Apellido Materno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellidoMaterno || 'N/A' }}</div>
+              <div><strong>Apellido Paterno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellido_paterno || 'N/A' }}</div>
+              <div><strong>Apellido Materno:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.apellido_materno || 'N/A' }}</div>
               <div><strong>CURP:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.curp || 'N/A' }}</div>
               <div><strong>Teléfono:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.telefono || 'N/A' }}</div>
               <div><strong>Email:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.email || 'N/A' }}</div>
               <div><strong>Vivienda:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.vivienda || 'N/A' }}</div>
-              <div><strong>Estado Civil:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.estadoCivil || 'N/A' }}</div>
-              <div><strong>Vehículo:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.vehiculo ? 'Sí' : 'No' }}</div>
+              <div><strong>Estado Civil:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.estado_civil || 'N/A' }}</div>
+              <div><strong>Vehículo:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.vehiculo || 'N/A' }}</div>
               <div><strong>Hijos:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.hijos || '0' }}</div>
             </div>
             
             <div *ngIf="parseJsonField(selectedSolicitud.datos_personales)?.conyuge">
               <h4><i class="fas fa-user-friends"></i> Datos del Cónyuge</h4>
               <div class="modal-grid">
-                <div><strong>Nombre:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.nombre || 'N/A' }}</div>
-                <div><strong>Teléfono:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.telefono || 'N/A' }}</div>
-                <div><strong>Ocupación:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge?.ocupacion || 'N/A' }}</div>
+                <div><strong>Nombre:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.conyuge || 'N/A' }}</div>
+                <div><strong>Teléfono:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.telefono_conyuge || 'N/A' }}</div>
+                <div><strong>Ocupación:</strong> {{ parseJsonField(selectedSolicitud.datos_personales)?.ocupacion_conyuge || 'N/A' }}</div>
               </div>
             </div>
             
@@ -360,8 +400,8 @@
             <div class="modal-grid">
               <div><strong>Puesto:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.puesto || 'N/A' }}</div>
               <div><strong>Antigüedad:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.antiguedad || 'N/A' }}</div>
-              <div><strong>Teléfono Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.telefonoTrabajo || 'N/A' }}</div>
-              <div><strong>Dirección Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.direccionTrabajo || 'N/A' }}</div>
+              <div><strong>Teléfono Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.telefono || 'N/A' }}</div>
+              <div><strong>Dirección Trabajo:</strong> {{ parseJsonField(selectedSolicitud.datos_laborales)?.direccion || 'N/A' }}</div>
             </div>
           </div>
  
@@ -385,27 +425,32 @@
               <div><strong>Otros gastos personales:</strong> {{ parseJsonField(selectedSolicitud.datos_prestamo)?.otrosGastosPersonales | currency }}</div>
             </div>
           </div>
+
+
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button (click)="exportToExcel(selectedSolicitud)" class="modal-btn excel">
-          <i class="fas fa-file-excel"></i> Exportar a Excel
-        </button>
-        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
-                (click)="changeRequestStatus(selectedSolicitud.id, 'aprobada')" 
-                class="modal-btn approve">
-          <i class="fas fa-check"></i> Aprobar Solicitud
-        </button>
-        <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
-                (click)="changeRequestStatus(selectedSolicitud.id, 'rechazada')" 
-                class="modal-btn reject">
-          <i class="fas fa-times"></i> Rechazar Solicitud
-        </button>
-        <button (click)="closeModal()" class="modal-btn close">
-          <i class="fas fa-times"></i> Cerrar
-        </button>
-      </div>
+          <div class="modal-footer">
+      <button (click)="exportToExcel(selectedSolicitud)" class="modal-btn excel">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+      </button>
+      <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+              (click)="changeRequestStatus(selectedSolicitud.id, 'aprobada')" 
+              class="modal-btn approve">
+        <i class="fas fa-check"></i> Aprobar
+      </button>
+      <button *ngIf="selectedSolicitud?.estado === 'pendiente'" 
+              (click)="changeRequestStatus(selectedSolicitud.id, 'rechazada')" 
+              class="modal-btn reject">
+        <i class="fas fa-times"></i> Rechazar
+      </button>
+      <button (click)="closeModal()" class="modal-btn close">
+        <i class="fas fa-times"></i> Cerrar
+      </button>
+    </div>
     </div>
   </div>
+
+
+
 </div>

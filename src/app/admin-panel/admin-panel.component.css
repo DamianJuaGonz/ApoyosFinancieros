@@ -694,3 +694,236 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Nuevos estilos para el modal de detalles */
+.modal-image-preview {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #ddd;
+}
+
+/* Contenedor de imágenes */
+.image-display {
+  max-width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+/* Contenedor de URL */
+.url-container {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 600px;
+}
+
+.map-url {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1976d2;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.map-url:hover {
+  text-decoration: underline;
+}
+
+.open-map-btn {
+  background: #4361ee;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.open-map-btn:hover {
+  background: #3a56d4;
+  transform: translateY(-1px);
+}
+
+.open-map-btn i {
+  font-size: 0.9em;
+}
+
+/* Pestañas mejoradas */
+.modal-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.modal-tabs button {
+  padding: 10px 15px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #495057;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-tabs button i {
+  font-size: 0.9em;
+}
+
+.modal-tabs button.active {
+  background: #4361ee;
+  color: white;
+  border-color: #3a56d4;
+}
+
+.modal-tabs button:hover:not(.active) {
+  background: #e9ecef;
+}
+
+/* Mensaje cuando no hay imagen */
+.no-image {
+  text-align: center;
+  color: #6c757d;
+}
+
+.no-image i {
+  font-size: 3rem;
+  color: #e9ecef;
+  margin-bottom: 10px;
+}
+
+.no-image p {
+  font-size: 0.9rem;
+}
+
+/* Botones del footer mejorados */
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  background: #f8f9fa;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.modal-btn i {
+  font-size: 0.9em;
+}
+
+.modal-btn.close {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.modal-btn.close:hover {
+  background: #e9ecef;
+}
+
+.modal-btn.excel {
+  background: #217346;
+  color: white;
+  border: none;
+}
+
+.modal-btn.excel:hover {
+  background: #1a5f38;
+}
+
+.modal-btn.approve {
+  background: #4cc9f0;
+  color: white;
+  border: none;
+}
+
+.modal-btn.approve:hover {
+  background: #3ab7de;
+}
+
+.modal-btn.reject {
+  background: #f72585;
+  color: white;
+  border: none;
+}
+
+.modal-btn.reject:hover {
+  background: #e5177b;
+}

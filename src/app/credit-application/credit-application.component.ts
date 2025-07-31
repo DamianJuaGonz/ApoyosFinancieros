@@ -298,6 +298,16 @@ onImageUpload(event: Event, type: 'foto' | 'ubicacionCasa' | 'ubicacionTrabajo')
 }
 
 
+
+
+
+
+
+
+
+
+
+
   onSubmit(): void {
 
     // Marcar todos los campos como tocados para mostrar errores
@@ -308,10 +318,7 @@ onImageUpload(event: Event, type: 'foto' | 'ubicacionCasa' | 'ubicacionTrabajo')
     this.scrollToError();
     return;
   }
-    
-
-
-    
+      
     // Validar foto
     if (!this.profileImagePreview) {
       this.showImageError = true;
@@ -400,6 +407,15 @@ if (this.creditForm.get('urlUbicacionTrabajo')?.value) {
         error: (error) => this.handleError(error)
       });
   }
+  ////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
   private scrollToError(): void {
     const firstErrorElement = document.querySelector('.ng-invalid');
